@@ -1,0 +1,40 @@
+# Ignore Gradle build directory
+/build/
+.gradle/
+
+# Ignore IDE settings (e.g., IntelliJ, Eclipse)
+.idea/
+*.iml
+
+# Ignore OS-specific files
+.DS_Store
+**/**/.DS_Store
+
+# Ignore other generated files like jars and logs
+*.jar
+*.war
+*.zip
+*.log
+*.tar
+
+
+# Ignore CMake generated files if applicable
+CMakeFiles/
+CMakeCache.txt
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+
+# Ignore OS-specific files
+.DS_Store
+
+# Ignore jar and other build artifacts if needed
+*.jar
+*.zip
+*.tar
+.idea/misc.xml
+
+.vs
+.vscode
