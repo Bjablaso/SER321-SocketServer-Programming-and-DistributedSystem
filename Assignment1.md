@@ -157,12 +157,14 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
 
 ### 2.3. Understanding Gradle (7.5 points)
 - What changes did you make to the `build.gradle` file and Java files?
-    > I made no changes to my gradle file but i did change the port number in IP address in my 
-      client and or server java file. i use the gradle build command and update the gradle version to
-      8.5 inorder for it to work with my current java version running on my computer.
+    > The changes introduced a new Gradle task, runFrac, to execute the Fraction program with customizable numerator 
+    and denominator arguments. The task uses Gradle properties (-Pnum and -Pdenom) to pass these values, defaulting 
+    both to 1 if not provided. It includes validation to ensure the denominator is not zero, throwing an exception if 
+     violated. Additionally, it specifies the mainClass as Fraction and configures the classpath using the 
+    sourceSets.main.runtimeClasspath.
 
 - **Deliverables:** Copy the Java Gradle folder into your GitHub Assignment1 directory.
-
+    > Done
 ---
 
 ### 2.4. Setting Up the Second System (7.5 points)
