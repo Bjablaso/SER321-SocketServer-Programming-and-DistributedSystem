@@ -82,16 +82,6 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
 
 ---
 
-## Prerequisites
-1. Familiarize yourself with the command line in Unix.
-2. Review the information on Canvas.
-
-### Learning Outcomes
-- Efficient use of the command line.
-- Comfort with command line pipelining and I/O redirection.
-
----
-
 ## Command Line Tasks (17 points)
 
 **System Used:** 
@@ -148,7 +138,9 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
    - ![img_3.png](Assignment1/Images/Example2/img_3.png)
  
    - **Explanation:** Briefly explain what this example does.
-
+> In this example, the server runs and waits for three clients before terminating. Once all three clients
+> connect and messages are sent to the server, it automatically disconnects.
+>
 3. Example 3: What is the name of the example?
    - **Screenshot:** Provide a screenshot showing the example execution.
    - **Explanation:** Briefly explain what this example does.
@@ -351,11 +343,42 @@ g. What is the difference in relative overhead between UDP and TCP, and why?
 
 #### 3.3.1. Running Locally (6 points)
 - **Screencast Link:** Provide your screencast link here.
+Screen Cast : https://youtu.be/JOoUvtR-Va8
 - **Questions:** What commands did you run, and what output did you get?
+- **Commands:**
+> gradle SocketServer -Pports=8080,8081,8082
+
+> gradle SocketClient -Phost=localhost -Pport=8080 -Pmessage="Message to Port 8080" -Pnumber=1
+
+> gradle SocketClient -Phost=localhost -Pport=8081 -Pmessage="Message to Port 8081" -Pnumber=2
+
+> gradle SocketClient -Phost=localhost -Pport=8082 -Pmessage="Message to Port 8082" -Pnumber=3
+
+- **out put:**
+
+> Task :SocketServer
+Server ready for 3 connections
+Server waiting for a connection
+Received the String Message to Port 8080
+Received the Integer 1
+Server waiting for a connection
+Received the String Message to Port 8081
+Received the Integer 2
+Server waiting for a connection
+Received the String Message to Port 8082
+Received the Integer 3
 
 #### 3.3.2. Server on AWS (5 points)
+![img.png](Assignment1/Images/AWS/img.png)
+![img_1.png](Assignment1/Images/AWS/img_1.png)
 - What changes were required to run the server on AWS and the client locally?
+ > I changed the IP and port in the Java file. I believe my Gradle configuration remained the 
+> same since I had already added the Gradle task in the last part of the assignment 
+ > that allows the server to listen on three different ports. I just updated the same task 
+ > for my virtual computer on AWS. 
 - How did you configure Wireshark for this setup?
+- > ip.addr == 51.20.144.68 && (tcp.port == 8080 || tcp.port == 8081 || tcp.port == 8082)
+  > or ip.addr == 51.20.144.68
 
 #### 3.3.3. Client on AWS (3 points)
 - Can you run the server locally and the client on AWS? Why or why not?
@@ -387,7 +410,3 @@ g. What is the difference in relative overhead between UDP and TCP, and why?
    > This highlights the inherent challenges in making a local server accessible to external clients while maintaining security.
 ---
 
-## Additional Information
-- Ensure all links and screenshots are accessible.
-- Replace placeholder text with actual details before submission.
-- Maintain proper formatting and clean up any unnecessary content.
