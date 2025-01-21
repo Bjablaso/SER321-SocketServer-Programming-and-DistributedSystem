@@ -4,70 +4,70 @@
 ## Assignment: Part I - Linux, Setup
 
    1. Create a directory named "cli_assignment":
-             ![img.png](Assignment1/Images/Linux%20Task/img.png)
+             ![img.png](Images/Linux%20Task/img.png)
    2. Change the current working directory to the new directory created in the previous step:
-      ![img_1.png](Assignment1/Images/Linux%20Task/img_1.png)
+      ![img_1.png](Images/Linux%20Task/img_1.png)
    3. Create a new file named "stuff.txt" using the touch command:
-       ![img_2.png](Assignment1/Images/Linux%20Task/img_2.png)
+       ![img_2.png](Images/Linux%20Task/img_2.png)
    4. Add some text (multiple lines) to this text file using the cat command:
-       ![img_3.png](Assignment1/Images/Linux%20Task/img_3.png)
+       ![img_3.png](Images/Linux%20Task/img_3.png)
    5. Count the number of words and lines in the file "stuff.txt":
-      ![img_4.png](Assignment1/Images/Linux%20Task/img_4.png)
+      ![img_4.png](Images/Linux%20Task/img_4.png)
    6. Append more text to the file "stuff.txt":
-      ![img_5.png](Assignment1/Images/Linux%20Task/img_5.png)
-      ![img_6.png](Assignment1/Images/Linux%20Task/img_6.png)
+      ![img_5.png](Images/Linux%20Task/img_5.png)
+      ![img_6.png](Images/Linux%20Task/img_6.png)
    7. Create a new directory "draft":
       8. Move the "stuff.txt" file to the directory "draft":
-      ![img_7.png](Assignment1/Images/Linux%20Task/img_7.png)
-      ![img_8.png](Assignment1/Images/Linux%20Task/img_8.png)
+      ![img_7.png](Images/Linux%20Task/img_7.png)
+      ![img_8.png](Images/Linux%20Task/img_8.png)
    9. Change your working directory to "draft" and create a hidden file named "secret.txt":
-      ![img_9.png](Assignment1/Images/Linux%20Task/img_9.png)
+      ![img_9.png](Images/Linux%20Task/img_9.png)
    10. 10 Create a new directory ("final") as a copy of the "draft" directory:
-       ![img_10.png](Assignment1/Images/Linux%20Task/img_10.png)
-       ![img_11.png](Assignment1/Images/Linux%20Task/img_11.png)
+       ![img_10.png](Images/Linux%20Task/img_10.png)
+       ![img_11.png](Images/Linux%20Task/img_11.png)
    11.  Rename the "draft" directory to "draft.remove":
-        ![img_12.png](Assignment1/Images/Linux%20Task/img_12.png)
+        ![img_12.png](Images/Linux%20Task/img_12.png)
    12. Move the "draft.remove" directory inside the "final" directory:
-         ![img_13.png](Assignment1/Images/Linux%20Task/img_13.png)
+         ![img_13.png](Images/Linux%20Task/img_13.png)
    13. List all the files and sub-directories in "cli_assignment" and their permissions:
-        ![img_14.png](Assignment1/Images/Linux%20Task/img_14.png)
-        ![img_15.png](Assignment1/Images/Linux%20Task/img_15.png)
+        ![img_14.png](Images/Linux%20Task/img_14.png)
+        ![img_15.png](Images/Linux%20Task/img_15.png)
    14. List the contents of the given file "NASA_access_log_Aug95.gz" without extracting it:
-       ![img.png](Assignment1/Images/linux%20task%20pt2/img.png)
-        ![img_1.png](Assignment1/Images/linux%20task%20pt2/img_1.png)
+       ![img.png](Images/linux%20task%20pt2/img.png)
+        ![img_1.png](Images/linux%20task%20pt2/img_1.png)
    15.  Extract the given file "NASA_access_log_Aug95.gz":
-       ![img_2.png](Assignment1/Images/linux%20task%20pt2/img_2.png)
+       ![img_2.png](Images/linux%20task%20pt2/img_2.png)
    16. Rename the extracted file to "logs.txt":
-        ![img_3.png](Assignment1/Images/linux%20task%20pt2/img_3.png)
+        ![img_3.png](Images/linux%20task%20pt2/img_3.png)
    17. Move the file "logs.txt" to the "cli_assignment" directory:
         > Already in cli_assignment
-        ![img_4.png](Assignment1/Images/linux%20task%20pt2/img_4.png)
+        ![img_4.png](Images/linux%20task%20pt2/img_4.png)
    18. Read the top 100 lines of the file "logs.txt":
-        ![img_5.png](Assignment1/Images/linux%20task%20pt2/img_5.png)
+        ![img_5.png](Images/linux%20task%20pt2/img_5.png)
    19. Create a new file "logs_top_100.txt" containing the top 100 lines using I/O redirection:
-         ![img_6.png](Assignment1/Images/linux%20task%20pt2/img_6.png)
+         ![img_6.png](Images/linux%20task%20pt2/img_6.png)
    20. Create a new file "logs_bottom_100.txt" containing the bottom 100 lines using I/O redirection:
-          ![img_7.png](Assignment1/Images/linux%20task%20pt2/img_7.png)
+          ![img_7.png](Images/linux%20task%20pt2/img_7.png)
    21. Create a new file "logs_snapshot.txt" by concatenating "logs_top_100.txt" and "logs_bottom_100.txt":
-          ![img_8.png](Assignment1/Images/linux%20task%20pt2/img_8.png)
+          ![img_8.png](Images/linux%20task%20pt2/img_8.png)
    22. Append "asurite: This is a great assignment" and the current date to "logs_snapshot.txt":
-          ![img_9.png](Assignment1/Images/linux%20task%20pt2/img_9.png)
+          ![img_9.png](Images/linux%20task%20pt2/img_9.png)
    23. Read the file "logs.txt" using the less command:
-          ![img_10.png](Assignment1/Images/linux%20task%20pt2/img_10.png)
+          ![img_10.png](Images/linux%20task%20pt2/img_10.png)
    24. Print the column "student_names" from "marks.csv" without the header:
-          ![img_11.png](Assignment1/Images/linux%20task%20pt2/img_11.png)
-          ![img_12.png](Assignment1/Images/linux%20task%20pt2/img_12.png)
-          ![img_13.png](Assignment1/Images/linux%20task%20pt2/img_13.png)
+          ![img_11.png](Images/linux%20task%20pt2/img_11.png)
+          ![img_12.png](Images/linux%20task%20pt2/img_12.png)
+          ![img_13.png](Images/linux%20task%20pt2/img_13.png)
    25. Print the sorted list of marks in "subject_3":
-           ![img_14.png](Assignment1/Images/linux%20task%20pt2/img_14.png)
+           ![img_14.png](Images/linux%20task%20pt2/img_14.png)
    26. Print the average marks for "subject_2":
-           ![img_15.png](Assignment1/Images/linux%20task%20pt2/img_15.png)
+           ![img_15.png](Images/linux%20task%20pt2/img_15.png)
    27. Save the average into a new file "done.txt":
-            ![img_16.png](Assignment1/Images/linux%20task%20pt2/img_16.png)
+            ![img_16.png](Images/linux%20task%20pt2/img_16.png)
    28. Move "done.txt" into your "final" directory":
-            ![img_17.png](Assignment1/Images/linux%20task%20pt2/img_17.png)
+            ![img_17.png](Images/linux%20task%20pt2/img_17.png)
    29. Rename the "done.txt" file to "average.txt":
-        ![img_18.png](Assignment1/Images/linux%20task%20pt2/img_18.png)
+        ![img_18.png](Images/linux%20task%20pt2/img_18.png)
 
 
 ### Video URL
@@ -122,9 +122,9 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
 1. Example 1: What is the name of the example? 
  > Example name : JavaSimpleSock
    - **Screenshot:** Provide a screenshot showing the example execution.
-    ![img.png](Assignment1/Images/Example1/img.png)
-   - ![img_1.png](Assignment1/Images/Example1/img_1.png)
-   - ![img_2.png](Assignment1/Images/Example1/img_2.png)
+    ![img.png](Images/Example1/img.png)
+   - ![img_1.png](Images/Example1/img_1.png)
+   - ![img_2.png](Images/Example1/img_2.png)
    - **Explanation:** Briefly explain what this example does.
  > In this Example we use AWS to host a server in which we connected to throgh our local client. 
  >  We use our client to send a message to the server in a form of a string.
@@ -133,9 +133,9 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
 2. Example 2: What is the name of the example?
     > Example name : JavaSimpleSock2
    - **Screenshot:** Provide a screenshot showing the example execution.
-     ![img_1.png](Assignment1/Images/Example2/img_1.png)
-   - ![img_2.png](Assignment1/Images/Example2/img_2.png)
-   - ![img_3.png](Assignment1/Images/Example2/img_3.png)
+     ![img_1.png](Images/Example2/img_1.png)
+   - ![img_2.png](Images/Example2/img_2.png)
+   - ![img_3.png](Images/Example2/img_3.png)
  
    - **Explanation:** Briefly explain what this example does.
 > In this example, the server runs and waits for three clients before terminating. Once all three clients
@@ -189,8 +189,8 @@ URL :  https://youtu.be/TCTh6g-HU-Q
 3. How did you import this data into a graphing tool?
     > i wrote anotehr cript to take the text data and convert it to a CSV file and from there 
       I imported it in to excel  and turn it in to a line chart
-![img.png](Assignment1/Images/Understanding%20TCP%20Network%20Sockets/img.png)
-![img_1.png](Assignment1/Images/Understanding%20TCP%20Network%20Sockets/img_1.png)
+![img.png](Images/Understanding%20TCP%20Network%20Sockets/img.png)
+![img_1.png](Images/Understanding%20TCP%20Network%20Sockets/img_1.png)
 
 - **Command/Script Used:**
 ```bash
@@ -263,7 +263,7 @@ echo "Data successfully organized into $output_file"
 ```
 
 - **Socket States Graph:** Provide a screenshot or graph.
-  ![img_2.png](Assignment1/Images/Understanding%20TCP%20Network%20Sockets/img_2.png)
+  ![img_2.png](Images/Understanding%20TCP%20Network%20Sockets/img_2.png)
 ---
 
 ### 3.2. Sniffing TCP/UDP Traffic (15 points)
@@ -271,9 +271,9 @@ echo "Data successfully organized into $output_file"
 #### TCP
 1. **Wireshark Screenshot:**  
    Provide a screenshot of the Wireshark capture with appropriate filters.
-![img.png](Assignment1/Images/TCP/img.png)
-![img_1.png](Assignment1/Images/TCP/img_1.png)
-![img_2.png](Assignment1/Images/TCP/img_2.png)
+![img.png](Images/TCP/img.png)
+![img_1.png](Images/TCP/img_1.png)
+![img_2.png](Images/TCP/img_2.png)
 2. 
 3. **Questions:**
 
@@ -306,9 +306,9 @@ that leave me with 133 -24 = 109 byte of over head
 #### UDP
 1. **Wireshark Screenshot:**  
    Provide a screenshot of the Wireshark capture with appropriate filters.
-![img.png](Assignment1/Images/UDP/img.png)
-![img_1.png](Assignment1/Images/UDP/img_1.png)
-![img_2.png](Assignment1/Images/UDP/img_2.png)
+![img.png](Images/UDP/img.png)
+![img_1.png](Images/UDP/img_1.png)
+![img_2.png](Images/UDP/img_2.png)
 2. **Questions:**
 a. Explain the commands used in detail. What did they do?
 > Command : nc -k -l -u 3333 -> Start the UDP server and list on port 3333. -k is a 
@@ -369,8 +369,8 @@ Received the String Message to Port 8082
 Received the Integer 3
 
 #### 3.3.2. Server on AWS (5 points)
-![img.png](Assignment1/Images/AWS/img.png)
-![img_1.png](Assignment1/Images/AWS/img_1.png)
+![img.png](Images/AWS/img.png)
+![img_1.png](Images/AWS/img_1.png)
 - What changes were required to run the server on AWS and the client locally?
  > I changed the IP and port in the Java file. I believe my Gradle configuration remained the 
 > same since I had already added the Gradle task in the last part of the assignment 
