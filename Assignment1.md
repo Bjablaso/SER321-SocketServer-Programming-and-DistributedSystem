@@ -32,6 +32,42 @@
    13. List all the files and sub-directories in "cli_assignment" and their permissions:
         ![img_14.png](Assignment1/Images/Linux%20Task/img_14.png)
         ![img_15.png](Assignment1/Images/Linux%20Task/img_15.png)
+   14. List the contents of the given file "NASA_access_log_Aug95.gz" without extracting it:
+       ![img.png](Assignment1/Images/linux%20task%20pt2/img.png)
+        ![img_1.png](Assignment1/Images/linux%20task%20pt2/img_1.png)
+   15.  Extract the given file "NASA_access_log_Aug95.gz":
+       ![img_2.png](Assignment1/Images/linux%20task%20pt2/img_2.png)
+   16. Rename the extracted file to "logs.txt":
+        ![img_3.png](Assignment1/Images/linux%20task%20pt2/img_3.png)
+   17. Move the file "logs.txt" to the "cli_assignment" directory:
+        > Already in cli_assignment
+        ![img_4.png](Assignment1/Images/linux%20task%20pt2/img_4.png)
+   18. Read the top 100 lines of the file "logs.txt":
+        ![img_5.png](Assignment1/Images/linux%20task%20pt2/img_5.png)
+   19. Create a new file "logs_top_100.txt" containing the top 100 lines using I/O redirection:
+         ![img_6.png](Assignment1/Images/linux%20task%20pt2/img_6.png)
+   20. Create a new file "logs_bottom_100.txt" containing the bottom 100 lines using I/O redirection:
+          ![img_7.png](Assignment1/Images/linux%20task%20pt2/img_7.png)
+   21. Create a new file "logs_snapshot.txt" by concatenating "logs_top_100.txt" and "logs_bottom_100.txt":
+          ![img_8.png](Assignment1/Images/linux%20task%20pt2/img_8.png)
+   22. Append "asurite: This is a great assignment" and the current date to "logs_snapshot.txt":
+          ![img_9.png](Assignment1/Images/linux%20task%20pt2/img_9.png)
+   23. Read the file "logs.txt" using the less command:
+          ![img_10.png](Assignment1/Images/linux%20task%20pt2/img_10.png)
+   24. Print the column "student_names" from "marks.csv" without the header:
+          ![img_11.png](Assignment1/Images/linux%20task%20pt2/img_11.png)
+          ![img_12.png](Assignment1/Images/linux%20task%20pt2/img_12.png)
+          ![img_13.png](Assignment1/Images/linux%20task%20pt2/img_13.png)
+   25. Print the sorted list of marks in "subject_3":
+           ![img_14.png](Assignment1/Images/linux%20task%20pt2/img_14.png)
+   26. Print the average marks for "subject_2":
+           ![img_15.png](Assignment1/Images/linux%20task%20pt2/img_15.png)
+   27. Save the average into a new file "done.txt":
+            ![img_16.png](Assignment1/Images/linux%20task%20pt2/img_16.png)
+   28. Move "done.txt" into your "final" directory":
+            ![img_17.png](Assignment1/Images/linux%20task%20pt2/img_17.png)
+   29. Rename the "done.txt" file to "average.txt":
+        ![img_18.png](Assignment1/Images/linux%20task%20pt2/img_18.png)
 
 
 ### Video URL
