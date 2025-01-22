@@ -141,9 +141,17 @@ MyGitHub Link : https://github.com/Bjablaso/ser321-spring25-A-Bjablaso
 > In this example, the server runs and waits for three clients before terminating. Once all three clients
 > connect and messages are sent to the server, it automatically disconnects.
 >
-3. Example 3: What is the name of the example?
+3. Example 3: What is the name of the example? 
+> Peer To Peer
    - **Screenshot:** Provide a screenshot showing the example execution.
+   ![img.png](Images/peertopeer/img.png)
+   - ![img_1.png](Images/peertopeer/img_1.png)
+   - ![img.png](Images/peertopeer/img3.png)
    - **Explanation:** Briefly explain what this example does.
+     > The Peer to Peer example showcases a simple peer-to-peer (P2P) chat system where peers can send and receive 
+     > messages. A leader peer manages the network, while other peers (pawns) connect to it to join the chat. Each 
+     > peer operates as both a client and a server, enabling direct communication between peers. Multithreading is
+     > used to handle connections and messages concurrently, ensuring real-time interaction.
 
 ---
 
