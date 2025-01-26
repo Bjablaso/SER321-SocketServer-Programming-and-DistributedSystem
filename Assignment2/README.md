@@ -1,7 +1,8 @@
-# Assignment 2: Upper Layers of the OSI Model
+# **Assignment 2: Upper Layers of the OSI Model**
 
 ## Overview
 This README documents my findings and results for **Assignment 2: Upper Layers of the OSI Model**. The assignment focuses on understanding HTTP requests, exploring the GitHub API, and observing network traffic through tools like Wireshark.
+
 
 ## Prerequisites
 Before starting, ensure the following are completed:
@@ -66,7 +67,7 @@ https://api.github.com/repos/Bjablaso/Calculator/commits
 **Deliverable:**
 - URL: [List Commits](https://api.github.com/repos/Bjablaso/Calculator/commits)
 - **Screenshot:** [Insert your screenshot here]
-![img_2.png](UnderstandingHttp/img_2.png)
+> ![img_2.png](UnderstandingHttp/img_2.png)
 ---
 
 ### 1.4 Specify a Branch and Page Limit
@@ -81,7 +82,7 @@ https://api.github.com/repos/Bjablaso/Bjablason_SiliconVSim/commits?sha=BattleAd
 **Deliverable:**
 - URL: [Branch Commits](https://api.github.com/repos/Bjablaso/Bjablason_SiliconVSim/commits?sha=BattleAdvantage&per_page=40)
 - **Screenshot:** [Insert your screenshot here]
-![img.png](UnderstandingHttp/img3.png)
+> ![img.png](UnderstandingHttp/img3.png)
 ---
 
 ### 1.5 Additional API Call with Query Parameters
@@ -96,7 +97,7 @@ https://api.github.com/repos/Bjablaso/Bjablason_SiliconVSim/contributors
 **Deliverable:**
 - URL: [List Contributors](https://api.github.com/repos/Bjablaso/Bjablason_SiliconVSim/contributors)
 - **Screenshot:** [Insert your screenshot here]
-![img.png](UnderstandingHttp/img4.png)
+> ![img.png](UnderstandingHttp/img4.png)
 ---
 
 ## Part 2: Explanation Questions
@@ -177,5 +178,92 @@ https://api.github.com/repos/Bjablaso/Bjablason_SiliconVSim/contributors
 
 **8. Which local port is used when sending different requests to the WebServer?**
 > The local port use when sending HTTP/HTTP(S) request to a WebServer is `13119` or `4500`
+
+
+## Part 4: Setting Up a "Real" Web Server
+1. **Install Nginx on the Second Machine:**
+   ```bash -> using mac
+   brew install nginx
+   sudo  nginx 
+   ```
+
+2. **Modify the Nginx Configuration:**
+    - Open the Nginx configuration file:
+      ```bash
+         sudo nano /opt/homebrew/etc/nginx/nginx.conf
+
+      ```
+    - Update the `server` block to forward traffic from port `80` to your Java web server:
+      ```nginx
+        server {
+            listen       80;
+          server_name  localhost;
+
+             #charset koi8-r;
+
+            #access_log  logs/host.access.log  main;
+    
+              location / {
+                 proxy_pass http://51.20.144.68:9000;
+              }
+    
+              #error_page  404              /404.html;
+
+              # redirect server error pages to the static page /50x.html
+              #error_page   500 502 503 504  /50x.html;
+      
+              location = /50x.html {
+                 root   html;
+              }
+
+      ```
+    - Save and exit the file.
+
+3. **Restart Nginx to Apply Changes:**
+   ```bash
+   sudo service nginx restart
+   ```
+
+### 5.2 Testing the Nginx Setup
+
+1. **Start the Java Web Server:**
+   ```bash
+   cd ~/Assignment2/WebServer
+   gradle FunWebServer
+   ```
+
+2. **Access the New URL:**
+    - Open a browser and access the main page using the new URL:
+      ```
+      http://<publicIPOfYourSecondMachine>
+      ```
+
+3. **Monitor Traffic Using Wireshark:**
+    - Apply the filter:
+      ```
+      http && tcp.port == 80
+      ```
+    - This will capture HTTP traffic routed through port `80`.
+
+**1. What is the URL that you can now use to reach the main page?**
+>The new URL is `http://localhost` (or `http://192.168.1.1` if accessed remotely).
+
+**2. Check the traffic to your WebServer. What port is the traffic going to now? Is it the same as before, or is it (and should it) be different?**
+> Traffic now flow through port `80`. It was flowing through  `9000`. Port `80` is the standard port for HTTP traffic.
+
+**3. Is it still using HTTP, or is it now using HTTPS? Why?**
+>We are using HTTP because SSL/TLS is not configure for HTTPS. Configuring HTTPS would require additional steps, such as installing a certificate.
+
+**4. Could you change your security settings on AWS now?**
+> Yes, port `9000` can be removed from the AWS security group since traffic is now routed through Nginx on port `80`.
+
+**5. Take a screenshot of your web browser, your second machine, and the port number on Wireshark.**
+- Include a screenshot showing:
+   1. The browser with the new URL (`http://<publicIPOfYourSecondMachine>`) and the loaded page.
+ > ![img_3.png](img_3.png)
+   2. The terminal on the AWS machine showing both Nginx and the Java web server running.
+> ![img_4.png](img_4.png)
+   3. Wireshark showing traffic captured on port `80`.
+> ![img_5.png](img_5.png)
 
 
