@@ -2,7 +2,7 @@
 apply plugin: 'application'
 
 //define main class
-mainClassName = 'SimpleServer'
+mainClassName = 'funHttpServer.WebServer'
 
 task SimpleWebServer(type: JavaExec) {
   group 'http'
