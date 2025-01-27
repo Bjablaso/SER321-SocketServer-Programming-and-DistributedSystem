@@ -198,24 +198,50 @@ class WebServer {
           // wrong data is given this just crashes
 
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-          // extract path parameters
-          query_pairs = splitQuery(request.replace("multiply?", ""));
 
-          // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+          try{
 
-          // do math
-          Integer result = num1 * num2;
+            // extract path parameters
+            query_pairs = splitQuery(request.replace("multiply?", ""));
 
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
+            if (!query_pairs.containsKey("num1") || !query_pairs.containsKey("num2")){
+              // Missing parameters
+              builder.append("HTTP/1.1 400 Bad Request\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Error: Missing required parameters 'num1' and/or 'num2'.");
+            }else {
+              // extract required fields from parameters
+              Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+              Integer num2 = Integer.parseInt(query_pairs.get("num2"));
 
-          // TODO: Include error handling here with a correct error code and
-          // a response that makes sense
+              // do math
+              Integer result = num1 * num2;
+
+              // Generate successful response
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Result is: " + result);
+            }
+
+
+          }catch (NumberFormatException e){
+            // Handle invalid number format
+            builder.append("HTTP/1.1 406 Not Acceptable\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Error: Parameters 'num1' and 'num2' must be integers.");
+
+          }catch (Exception e) {
+            // Catch-all for unexpected errors
+            builder.append("HTTP/1.1 500 Internal Server Error\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Error: An unexpected error occurred.");
+            e.printStackTrace(); // Log the error to the console for debugging
+          }
+
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API

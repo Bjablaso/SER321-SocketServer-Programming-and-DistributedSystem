@@ -1,0 +1,27 @@
+# Compiled class files
+*.class
+
+# Build directories
+build/
+
+# Gradle wrapper files
+gradle/
+gradlew
+gradlew.bat
+
+# Gradle configuration files (keep build.gradle.kts and settings.gradle.kts if needed)
+*.gradle.kts
+!build.gradle.kts
+!settings.gradle.kts
+
+# IDE-specific files
+*.iml
+.idea/
+*.vscode/
+
+# macOS files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.log
