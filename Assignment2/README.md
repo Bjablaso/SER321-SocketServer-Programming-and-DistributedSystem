@@ -427,17 +427,5 @@ Test two other servers posted in the #servers Slack channel and provide valuable
 - **Git Hub** :  [Bjablaso](https://github.com/Bjablaso/ser321-spring25-A-Bjablaso/tree/main/Assignment2)
                 [Bjablaso-Assignment2](https://github.com/Bjablaso/ser321-spring25-A-Bjablaso/tree/main/Assignment2)
 > In case the link above don't work :  https://github.com/Bjablaso/ser321-spring25-A-Bjablaso/tree/main/Assignment2
-###### Submission Checklist
-1. **GitHub Repository:** Submit the link to your private GitHub repo containing:
-    - The `Assignment2` folder.
-    - The `WebServer` directory with all necessary files.
-    - A `README.md` file documenting the implementation.
 
-2. **Canvas Submission:**
-    - Upload a zip file containing your `Assignment2` folder.
-    - Include the PDF `UpperLayers_asurite.pdf` with all answers, explanations, and screenshots.
-
-3. **Slack Submission:**
-    - Post your WebServer link in the #servers channel.
-    - Add the Slack link to your Canvas submission comment.
 
