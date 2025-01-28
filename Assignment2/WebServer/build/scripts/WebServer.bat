@@ -70,7 +70,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\WebServer.jar
+set CLASSPATH=%APP_HOME%\lib\WebServer.jar;%APP_HOME%\lib\json-20230227.jar
 
 
 @rem Execute WebServer

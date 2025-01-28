@@ -25,6 +25,10 @@ import java.util.Random;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.nio.charset.Charset;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
 
 class WebServer {
   public static void main(String args[]) {
@@ -33,6 +37,7 @@ class WebServer {
 
   /**
    * Main thread
+   *
    * @param port to listen on
    */
   public WebServer(int port) {
@@ -82,6 +87,7 @@ class WebServer {
 
   /**
    * Reads in socket stream and generates a response
+   *
    * @param inStream HTTP input stream from socket
    * @return the byte encoded HTTP response
    */
@@ -110,7 +116,7 @@ class WebServer {
         // find end of header("\n\n")
         if (line == null || line.equals(""))
           done = true;
-        // parse GET format ("GET <path> HTTP/1.1")
+          // parse GET format ("GET <path> HTTP/1.1")
         else if (line.startsWith("GET")) {
           int firstSpace = line.indexOf(" ");
           int secondSpace = line.indexOf(" ", firstSpace + 1);
@@ -199,18 +205,18 @@ class WebServer {
 
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
 
-          try{
+          try {
 
             // extract path parameters
             query_pairs = splitQuery(request.replace("multiply?", ""));
 
-            if (!query_pairs.containsKey("num1") || !query_pairs.containsKey("num2")){
+            if (!query_pairs.containsKey("num1") || !query_pairs.containsKey("num2")) {
               // Missing parameters
               builder.append("HTTP/1.1 400 Bad Request\n");
               builder.append("Content-Type: text/html; charset=utf-8\n");
               builder.append("\n");
               builder.append("Error: Missing required parameters 'num1' and/or 'num2'.");
-            }else {
+            } else {
               // extract required fields from parameters
               Integer num1 = Integer.parseInt(query_pairs.get("num1"));
               Integer num2 = Integer.parseInt(query_pairs.get("num2"));
@@ -226,14 +232,14 @@ class WebServer {
             }
 
 
-          }catch (NumberFormatException e){
+          } catch (NumberFormatException e) {
             // Handle invalid number format
             builder.append("HTTP/1.1 406 Not Acceptable\n");
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
             builder.append("Error: Parameters 'num1' and 'num2' must be integers.");
 
-          }catch (Exception e) {
+          } catch (Exception e) {
             // Catch-all for unexpected errors
             builder.append("HTTP/1.1 500 Internal Server Error\n");
             builder.append("Content-Type: text/html; charset=utf-8\n");
@@ -253,19 +259,203 @@ class WebServer {
           //     "/repos/OWNERNAME/REPONAME/contributors"
 
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-          query_pairs = splitQuery(request.replace("github?", ""));
-          String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
-          System.out.println(json);
 
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Check the todos mentioned in the Java source file");
-          // TODO: Parse the JSON returned by your fetch and create an appropriate
-          // response based on what the assignment document asks for
 
+          try {
+            query_pairs = splitQuery(request.replace("github?", ""));
+
+            if (!query_pairs.containsKey("query")) {
+              builder.append("HTTP/1.1 400 Bad Request\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Error: Missing 'query' parameter.");
+
+            } else {
+              String apiUrl = "https://api.github.com/" + query_pairs.get("query");
+
+              String jsonResponse = fetchURL(apiUrl);
+
+              if (jsonResponse == null || jsonResponse.isEmpty()) {
+                builder.append("HTTP/1.1 502 Bad Gateway\n");
+                builder.append("Content-Type: text/html; charset=utf-8\n");
+                builder.append("\n");
+                builder.append("Error: Failed to fetch data from GitHub API.");
+              } else {
+
+                System.out.println(jsonResponse);
+                builder.append("HTTP/1.1 200 OK\n");
+                builder.append("Content-Type: text/html; charset=utf-8\n");
+                builder.append("\n");
+                builder.append("Check the todos mentioned in the Java source file");
+
+
+                try {
+                  // Parse JSON array
+                  JSONArray repos = new JSONArray(jsonResponse);
+                  for (int i = 0; i < repos.length(); i++) {
+                    JSONObject repo = repos.getJSONObject(i);
+                    String fullName = repo.getString("full_name");
+                    int id = repo.getInt("id");
+                    String ownerLogin = repo.getJSONObject("owner").getString("login");
+
+                    // Append repo details to the response content
+                    builder.append("<li>")
+                            .append("Full Name: ").append(fullName).append("<br>")
+                            .append("ID: ").append(id).append("<br>")
+                            .append("Owner: ").append(ownerLogin)
+                            .append("</li><br>");
+                  }
+
+                } catch (Exception e) {
+                  builder.append("<p>Error: Failed to parse JSON response.</p>");
+                  e.printStackTrace(); // Log error for debugging
+
+                }
+                builder.append("</ul>");
+                builder.append("</body></html>");
+
+              }
+
+            }
+          } catch (Exception e) {
+            // Handle unexpected errors
+            builder.append("HTTP/1.1 500 Internal Server Error\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Error: An unexpected error occurred.");
+            e.printStackTrace(); // Log error for debugging
+
+          }
+
+
+        } else if (request.contains("weather?")) {
+          Map<String, String> queryPairs = splitQuery(request.replace("weather?", ""));
+          try {
+            if (!queryPairs.containsKey("city") || !queryPairs.containsKey("unit")) {
+              builder.append("HTTP/1.1 400 Bad Request\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Error: Missing required parameters 'city' and/or 'unit'.");
+            } else {
+              String cities = queryPairs.get("city");
+              String unit = queryPairs.get("unit");
+              String[] cityList = cities.split(",");
+
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("<html><body>");
+              builder.append("<h1>Weather Information</h1>");
+              builder.append("<ul>");
+
+              for (String city : cityList) {
+                city = city.trim();
+                String apiUrl = "https://wttr.in/" + city + "?format=%C+%t&u=" + ("metric".equals(unit) ? "m" : "u");
+                String apiResponse = fetchURL(apiUrl);
+
+                if (apiResponse == null || apiResponse.isEmpty()) {
+                  builder.append("<li>").append(city).append(": Failed to fetch weather data.</li>");
+                } else {
+                  builder.append("<li>").append(city).append(": ").append(apiResponse).append("</li>");
+                }
+              }
+
+              builder.append("</ul>");
+              builder.append("</body></html>");
+            }
+          } catch (Exception e) {
+            builder.append("HTTP/1.1 500 Internal Server Error\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Error: An unexpected error occurred.");
+            e.printStackTrace();
+          }
+
+        } else if (request.contains("countries")) {
+          Map<String, String> queryPairs = new LinkedHashMap<>();
+
+          try {
+
+            queryPairs = splitQuery(request.replace("countries?", ""));
+
+
+            String baseApiUrl = "https://restcountries.com/v3.1/independent?status=true&fields=name,capital,languages,flags";
+
+
+            String apiResponse = fetchURL(baseApiUrl);
+
+            if (apiResponse == null || apiResponse.isEmpty()) {
+              builder.append("HTTP/1.1 502 Bad Gateway\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("<html><body>");
+              builder.append("<h1>Error</h1>");
+              builder.append("<p>Failed to fetch data from the REST Countries API.</p>");
+              builder.append("</body></html>");
+            } else {
+
+              JSONArray jsonResponse = new JSONArray(apiResponse);
+
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("<html><body>");
+              builder.append("<h1>Filtered Independent Countries</h1>");
+              builder.append("<ul>");
+
+
+              for (int i = 0; i < jsonResponse.length(); i++) {
+                JSONObject country = jsonResponse.getJSONObject(i);
+                String countryName = country.getJSONObject("name").getString("common");
+                String capital = country.has("capital") ? country.getJSONArray("capital").getString(0) : "N/A";
+                JSONObject languages = country.optJSONObject("languages");
+                String flagUrl = country.getJSONObject("flags").getString("svg");
+
+
+                String languageList = "N/A";
+                if (languages != null) {
+                  languageList = String.join(", ",
+                          languages.toMap().values().stream()
+                                  .map(Object::toString)
+                                  .toList()
+                  );
+                }
+
+
+                if (queryPairs.containsKey("name") && !countryName.toLowerCase().contains(queryPairs.get("name").toLowerCase())) {
+                  continue;
+                }
+
+                if (queryPairs.containsKey("capital") && !capital.toLowerCase().contains(queryPairs.get("capital").toLowerCase())) {
+                  continue;
+                }
+
+                builder.append("<li>");
+                builder.append("<strong>").append(countryName).append("</strong><br>");
+                builder.append("Capital: ").append(capital).append("<br>");
+                builder.append("Languages: ").append(languageList).append("<br>");
+                builder.append("<img src='").append(flagUrl).append("' alt='Flag of ").append(countryName).append("' style='width:100px;height:auto;'><br>");
+                builder.append("</li><br>");
+              }
+
+              builder.append("</ul>");
+              builder.append("</body></html>");
+            }
+
+          } catch (Exception e) {
+
+            builder.append("HTTP/1.1 500 Internal Server Error\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("<html><body>");
+            builder.append("<h1>Error</h1>");
+            builder.append("<p>An unexpected error occurred.</p>");
+            builder.append("</body></html>");
+            e.printStackTrace();
+
+          }
         } else {
-          // if the request is not recognized at all
+
 
           builder.append("HTTP/1.1 400 Bad Request\n");
           builder.append("Content-Type: text/html; charset=utf-8\n");
@@ -273,7 +463,6 @@ class WebServer {
           builder.append("I am not sure what you want me to do...");
         }
 
-        // Output
         response = builder.toString().getBytes();
       }
     } catch (IOException e) {
@@ -286,6 +475,7 @@ class WebServer {
 
   /**
    * Method to read in a query and split it up correctly
+   *
    * @param query parameters on path
    * @return Map of all parameters and their specific values
    * @throws UnsupportedEncodingException If the URLs aren't encoded with UTF-8
@@ -298,7 +488,7 @@ class WebServer {
     for (String pair : pairs) {
       int idx = pair.indexOf("=");
       query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"),
-          URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+              URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
     }
     // {{"q", "hello world/me"}, {"bob","5"}}
     return query_pairs;
@@ -306,6 +496,7 @@ class WebServer {
 
   /**
    * Builds an HTML file list from the www directory
+   *
    * @return HTML string output of file list
    */
   public static String buildFileList() {
@@ -327,6 +518,30 @@ class WebServer {
       return "No files in directory";
     }
   }
+
+  /**
+   * Builds a complete HTML document from a given body content.
+   *
+   * @param title       The title of the HTML document.
+   * @param bodyContent The body content as a string.
+   * @return A complete HTML document as a string.
+   */
+  private String buildHtmlDocument(String title, String bodyContent) {
+    StringBuilder htmlBuilder = new StringBuilder();
+    htmlBuilder.append("<!DOCTYPE html>");
+    htmlBuilder.append("<html lang=\"en\">");
+    htmlBuilder.append("<head>");
+    htmlBuilder.append("<meta charset=\"UTF-8\">");
+    htmlBuilder.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+    htmlBuilder.append("<title>").append(title).append("</title>");
+    htmlBuilder.append("</head>");
+    htmlBuilder.append("<body>");
+    htmlBuilder.append(bodyContent);
+    htmlBuilder.append("</body>");
+    htmlBuilder.append("</html>");
+    return htmlBuilder.toString();
+  }
+
 
   /**
    * Read bytes from a file and return them in the byte array. We read in blocks
@@ -352,14 +567,12 @@ class WebServer {
   }
 
   /**
-   *
    * a method to make a web request. Note that this method will block execution
    * for up to 20 seconds while the request is being satisfied. Better to use a
    * non-blocking request.
-   * 
+   *
    * @param aUrl the String indicating the query url for the OMDb api search
    * @return the String result of the http request.
-   *
    **/
   public String fetchURL(String aUrl) {
     StringBuilder sb = new StringBuilder();
@@ -388,4 +601,5 @@ class WebServer {
     }
     return sb.toString();
   }
+
 }

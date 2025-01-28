@@ -4,6 +4,17 @@ apply plugin: 'application'
 //define main class
 mainClassName = 'funHttpServer.WebServer'
 
+// Add repositories
+repositories {
+  mavenCentral() // Ensure Maven Central is used
+}
+
+// Add dependencies
+dependencies {
+  // Add the org.json library for JSON parsing
+  implementation 'org.json:json:20230227'
+}
+
 task SimpleWebServer(type: JavaExec) {
   group 'http'
   description 'Simple Http Demo'
