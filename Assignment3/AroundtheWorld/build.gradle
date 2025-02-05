@@ -91,12 +91,12 @@ tasks.register('runServer', JavaExec) {
     description = 'Starts the Socket Server and listens on a specified port'
 
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'travelaround.aroundtheworld.SocketServer'  // Ensure this matches the actual server class
+    mainClass = 'travelaround.aroundtheworld.SocketServer'
 
-    // Dynamically pass port using system properties (default to 8080)
-    def port = System.getProperty("port") ?: "8080"
 
-    args port  // Pass the port as an argument to the server
+    def port = System.getProperty("port") ?: "8889"
+
+    args port
 
     standardInput = System.in
     standardOutput = System.out
@@ -114,13 +114,13 @@ tasks.register('startClient', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'travelaround.aroundtheworld'
 
-    def defaultIp = 'localhost'
-    def defaultPort = '8080'
+    def defaultIp = '51.20.144.68'
+    def defaultPort = '8089'
 
     def ip = project.hasProperty('ip') ? project.getProperty('ip') : defaultIp
     def port = project.hasProperty('port') ? project.getProperty('port') : defaultPort
 
-    args ip, port  // Pass IP and port as arguments to the client
+    args ip, port
 
     standardInput = System.in
     standardOutput = System.out
