@@ -1,0 +1,84 @@
+
+.landingPage
+{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%,
+     #7b2cbf 10%,
+    #5a189a 30%,
+    #3c096c 50%,
+    #240046 70%,
+    #10002b 90%);
+}
+
+.playbutton{
+    -fx-background-color: linear-gradient(to right,  #7b2cbf, #5a189a,  #3c096c, #10002b, #240046
+    );
+    -fx-background-radius: 50px; /* Makes it oval */
+    -fx-border-radius: 50px;
+    -fx-text-fill: white; /* Text color */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(211, 211, 211, 0.7), 10, 0.5, 2, 2); /* Grayish white shadow */
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-transition: all 0.3s;
+}
+
+.table-view{
+
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%,
+    #7b2cbf 10%,
+    #5a189a 30%,
+    #3c096c 50%,
+    #240046 70%,
+    #10002b 90%);
+    -fx-border-color: #1b1bef;  /* Blue outline */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(211, 211, 211, 0.7), 10, 0.5, 3, 3); /* White-gray shadow */
+      -fx-text-fill: white;
+}
+
+.table-view .column-header,
+.table-view .cell {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+
+}
+
+.table-view table-row-cell {
+    -fx-border-color: #1b1bef;
+    -fx-border-width: 0.5px;
+    -fx-text-fill: white;
+}
+
+.table-view.column-header-background {
+    -fx-background-color: #1b1bef;
+    -fx-text-fill: white;
+}
+
+
+.table-view column-header {
+    -fx-background-color: #1b1bef;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.card {
+    -fx-alignment: center;
+}
+
+.card-background {
+    -fx-fill: #0a2b56; /* Dark blue */
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.6), 10, 0.5, 2, 2);
+}
+
+.question-mark {
+    -fx-font-size: 48px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+

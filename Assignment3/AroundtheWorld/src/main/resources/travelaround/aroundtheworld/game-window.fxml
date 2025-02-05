@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.CardPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<StackPane prefHeight="544.0" prefWidth="807.0" xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="travelaround.aroundtheworld.GameWindowController">
+    <children>
+        <AnchorPane prefHeight="531.0" prefWidth="738.0"
+                    style="-fx-background-color: linear-gradient(to right,  #7b2cbf, #5a189a,  #3c096c, #10002b, #240046    );">
+            <children>
+                <Pane id="guessOption" layoutX="508.0" layoutY="20.0" prefHeight="266.0" prefWidth="285.0"
+                      style="-fx-background-color: green;">
+                    <children>
+                        <CardPane layoutX="-2.0" layoutY="-6.0" prefHeight="278.0" prefWidth="290.0"
+                                  style="-fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);">
+                            <items>
+                                <Label fx:id="answerKey1" alignment="CENTER" prefHeight="38.0" prefWidth="288.0"
+                                       style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
+                                       text="label1"/>
+                                <Label fx:id="answerKey2" alignment="CENTER" prefHeight="38.0" prefWidth="281.0"
+                                       style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
+                                       text="label1"/>
+                                <Label fx:id="answerKey3" alignment="BOTTOM_CENTER" prefHeight="38.0" prefWidth="276.0"
+                                       style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
+                                       text="label1"/>
+                            </items>
+                        </CardPane>
+                    </children>
+                </Pane>
+                <Pane layoutX="6.0" layoutY="12.0" prefHeight="356.0" prefWidth="479.0"
+                      style="-fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);">
+                    <children>
+                        <WebView fx:id="imageDisplay" layoutX="-2.0" layoutY="-2.0" prefHeight="360.0"
+                                 prefWidth="482.0"/>
+                    </children>
+                </Pane>
+                <Pane id="timer" layoutX="598.0" layoutY="394.0" prefHeight="129.0" prefWidth="184.0"
+                      style="-fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);">
+                    <children>
+                        <HBox layoutX="53.0" layoutY="36.0" prefHeight="58.0" prefWidth="79.0">
+                            <children>
+                                <Label fx:id="labelCount1" alignment="CENTER" prefHeight="59.0" prefWidth="57.0"
+                                       style="-fx-text-fill: white; -fx-alignment: ceneter;" textFill="WHITE">
+                                    <font>
+                                        <Font name="Microsoft Sans Serif" size="36.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="labelCount2" prefHeight="58.0" prefWidth="56.0"
+                                       style="-fx-text-fill: white; -fx-alignment: center;" textFill="#f5f0f0">
+                                    <font>
+                                        <Font name="Microsoft Sans Serif" size="36.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </Pane>
+                <Pane layoutX="48.0" layoutY="378.0" prefHeight="159.0" prefWidth="422.0"
+                      style="-fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);">
+                    <children>
+                        <HBox prefHeight="159.0" prefWidth="423.0">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <AnchorPane prefHeight="159.0" prefWidth="203.0">
+                                            <children>
+                                                <Rectangle id="card" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE"
+                                                           height="119.0" layoutX="53.0" layoutY="20.0" stroke="BLACK"
+                                                           strokeType="INSIDE"
+                                                           style="-fx-fill: #0a2b56; -fx-stroke: white; -fx-stroke-width: 2; -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.6), 10, 0.5, 2, 2);"
+                                                           styleClass="styleClass=&quot;card-background&quot;"
+                                                           width="101.0"/>
+                                                <HBox layoutX="88.0" layoutY="49.0">
+                                                    <children>
+                                                        <Label fx:id="totalHint"
+                                                               style="-fx-font-size: 48px; -fx-text-fill: white; -fx-font-weight: bold;"
+                                                               text="?"/>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="159.0" prefWidth="223.0">
+                                    <children>
+                                        <VBox prefHeight="159.0" prefWidth="228.0">
+                                            <children>
+                                                <CardPane>
+                                                    <Label fx:id="hint1" alignment="CENTER" prefHeight="38.0"
+                                                           prefWidth="210.0"
+                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           text="label1"/>
+                                                    <Label fx:id="hint2" alignment="CENTER" prefHeight="38.0"
+                                                           prefWidth="210.0"
+                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           text="label2">
+                                                        <font>
+                                                            <Font name="Microsoft Sans Serif" size="14.0"/>
+                                                        </font>
+                                                    </Label>
+                                                    <Label fx:id="hint3" alignment="CENTER" prefHeight="38.0"
+                                                           prefWidth="221.0"
+                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           text="label3">
+                                                        <font>
+                                                            <Font name="System Bold" size="14.0"/>
+                                                        </font>
+                                                    </Label>
+                                                </CardPane>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </Pane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

@@ -1,0 +1,72 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane fx:id="winScreen" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color:
+linear-gradient(to bottom, #F6B441, #C58940); -fx-padding: 20; -fx-border-radius: 20%;"
+           xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="travelaround.aroundtheworld.WinScreenController">
+
+    <VBox alignment="CENTER" opacity="0.57" spacing="10" style="-fx-border-radius: 20%;">
+        <AnchorPane prefHeight="87.0" prefWidth="360.0">
+            <children>
+                <Group>
+                    <SVGPath content="M50,5 L61,35 H95 L67,50 L78,80 L50,60 L22,80 L33,50 L5,35 H39 Z" layoutX="24.0"
+                             layoutY="-5.0" scaleX="0.7" scaleY="0.7"
+                             style="-fx-fill: yellow; -fx-stroke: #C58940; -fx-stroke-width: 2; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 2, 2);"
+                             translateX="10"/>
+                </Group>
+                <Group/>
+                <Group/>
+                <SVGPath content="M50,5 L61,35 H95 L67,50 L78,80 L50,60 L22,80 L33,50 L5,35 H39 Z" layoutX="233.0"
+                         layoutY="-1.0" scaleX="0.7" scaleY="0.7"
+                         style="-fx-fill: yellow; -fx-stroke: #C58940; -fx-stroke-width: 2; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 2, 2);"/>
+                <SVGPath content="M50,5 L61,35 H95 L67,50 L78,80 L50,60 L22,80 L33,50 L5,35 H39 Z" layoutX="129.0"
+                         layoutY="-2.0"
+                         style="-fx-fill: yellow; -fx-stroke: #C58940; -fx-stroke-width: 2; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 2, 2);"/>
+            </children>
+        </AnchorPane>
+
+        <!-- Win Banner -->
+        <Label prefHeight="68.0" prefWidth="177.0"
+               style="-fx-font-size: 36px; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #C1272D; -fx-padding: 10; -fx-background-radius: 10;"
+               text="YOU WIN!"/>
+
+        <!-- Score Panel -->
+        <Pane prefHeight="100.0" prefWidth="330.0"
+              style="-fx-background-color: #8B5E3B; -fx-background-radius: 10; -fx-padding: 15;">
+            <AnchorPane layoutX="1.0" prefHeight="67.0" prefWidth="360.0">
+                <children>
+                    <Label layoutX="116.0" layoutY="43.0" prefHeight="29.0" prefWidth="143.0"
+                           style="-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;"
+                           text="TILES:     0/6"/>
+                    <Label layoutX="116.0" prefHeight="29.0" prefWidth="143.0"
+                           style="-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;"
+                           text="SCORE:     0"/>
+                </children>
+            </AnchorPane>
+        </Pane>
+
+        <!-- Buttons -->
+        <HBox alignment="CENTER" prefHeight="80.0" prefWidth="360.0" spacing="15">
+            <children>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <Button layoutX="32.0" layoutY="1.0" mnemonicParsing="false" text="Button"/>
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="52.0" prefWidth="174.0">
+                    <children>
+                        <Button layoutX="25.0" layoutY="30.0" mnemonicParsing="false" text="Button"/>
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <Button layoutX="40.0" layoutY="1.0" mnemonicParsing="false" text="Button"/>
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+
+    </VBox>
+
+</StackPane>

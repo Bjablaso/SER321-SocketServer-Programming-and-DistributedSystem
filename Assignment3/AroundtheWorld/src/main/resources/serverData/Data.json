@@ -1,0 +1,71 @@
+
+{
+  "gamedata": [
+    {
+      "title": "Taj Mahal",
+      "url": "https://i0.wp.com/www.worldwanderingkiwi.com/wp-content/uploads/2012/08/Taj-Mahal-gardens-Agra-India.jpg?w=1024&ssl=1" ,
+      "doc": "<!doctype html><html class='no-js' lang=''><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title></title><link rel='stylesheet' href='css/style.css'><meta name='description' content=''><meta property='og:title' content=''><meta property='og:type' content=''><meta property='og:url' content=''><meta property='og:image' content=''><meta property='og:image:alt' content=''><link rel='icon' href='/favicon.ico' sizes='any'><link rel='icon' href='/icon.svg' type='image/svg+xml'><link rel='apple-touch-icon' href='icon.png'><link rel='manifest' href='site.webmanifest'><meta name='theme-color' content='#fafafa'></head><body><img src='https://i0.wp.com/www.worldwanderingkiwi.com/wp-content/uploads/2012/08/Taj-Mahal-gardens-Agra-India.jpg?w=1024&ssl=1' width='100%'></body></html>",
+      "answer": "Agra, India",
+      "choice": {
+        "first": "Agra, India",
+        "second": "Istanbul, Turkey",
+        "third": "Cairo, Egypt"
+      },
+      "hint": {
+        "hint1": "Built by Mughal emperor Shah Jahan.",
+        "hint2": "Located in Uttar Pradesh.",
+        "hint3": "Famous white marble structure."
+      }
+    },
+    {
+      "title": "Great Wall of China",
+      "url": "https://static.wikia.nocookie.net/the-landmark/images/6/65/The_Great_Wall_of_China.jpg/revision/latest?cb=20220429010757",
+      "doc": "<!doctype html><html class='no-js' lang=''><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title></title><link rel='stylesheet' href='css/style.css'><meta name='description' content=''><meta property='og:title' content=''><meta property='og:type' content=''><meta property='og:url' content=''><meta property='og:image' content=''><meta property='og:image:alt' content=''><link rel='icon' href='/favicon.ico' sizes='any'><link rel='icon' href='/icon.svg' type='image/svg+xml'><link rel='apple-touch-icon' href='icon.png'><link rel='manifest' href='site.webmanifest'><meta name='theme-color' content='#fafafa'></head><body><img src='https://static.wikia.nocookie.net/the-landmark/images/6/65/The_Great_Wall_of_China.jpg/revision/latest?cb=20220429010757' width='100%'></body></html>",
+      "answer": "Beijing, China",
+      "choice": {
+        "first": "Beijing, China",
+        "second": "Kyoto, Japan",
+        "third": "Seoul, South Korea"
+      },
+      "hint": {
+        "hint1": "Built for defense purposes.",
+        "hint2": "Visible from space.",
+        "hint3": "Longest structure ever built."
+      }
+    },
+    {
+      "title": "Statue of Liberty",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Liberty-statue-with-manhattan.jpg",
+      "doc": "<!doctype html><html class='no-js' lang=''><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title></title><link rel='stylesheet' href='css/style.css'><meta name='description' content=''><meta property='og:title' content=''><meta property='og:type' content=''><meta property='og:url' content=''><meta property='og:image' content=''><meta property='og:image:alt' content=''><link rel='icon' href='/favicon.ico' sizes='any'><link rel='icon' href='/icon.svg' type='image/svg+xml'><link rel='apple-touch-icon' href='icon.png'><link rel='manifest' href='site.webmanifest'><meta name='theme-color' content='#fafafa'></head><body><img src='https://upload.wikimedia.org/wikipedia/commons/e/e4/Liberty-statue-with-manhattan.jpg' width='100%'></body></html>",
+      "answer": "New York, USA",
+      "choice": {
+        "first": "New York, USA",
+        "second": "London, UK",
+        "third": "Sydney, Australia"
+      },
+      "hint": {
+        "hint1": "Gift from France.",
+        "hint2": "Located on Liberty Island.",
+        "hint3": "Symbolizes freedom."
+      }
+    },
+    {
+      "title": "Golden Gate Bridge",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Golden_Gate_Bridge_by_night.jpg",
+      "doc": "<!doctype html><html class='no-js' lang=''><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title></title><link rel='stylesheet' href='css/style.css'><meta name='description' content=''><meta property='og:title' content=''><meta property='og:type' content=''><meta property='og:url' content=''><meta property='og:image' content=''><meta property='og:image:alt' content=''><link rel='icon' href='/favicon.ico' sizes='any'><link rel='icon' href='/icon.svg' type='image/svg+xml'><link rel='apple-touch-icon' href='icon.png'><link rel='manifest' href='site.webmanifest'><meta name='theme-color' content='#fafafa'></head><body><img src='https://upload.wikimedia.org/wikipedia/commons/c/c2/Golden_Gate_Bridge_by_night.jpg' width='100%'></body></html>",
+      "answer": "San Francisco, USA",
+      "choice": {
+        "first": "San Francisco, USA",
+        "second": "Vancouver, Canada",
+        "third": "Sydney, Australia"
+      },
+      "hint": {
+        "hint1": "Famous red suspension bridge.",
+        "hint2": "Often covered in fog.",
+        "hint3": "Crosses the Golden Gate Strait."
+      }
+    }
+
+  ]
+}
+
