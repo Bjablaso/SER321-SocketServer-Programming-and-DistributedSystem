@@ -39,6 +39,7 @@ Success response:
         "echo" : <String> -- the echoed string
     }
 
+
 Error response:
 
     {
@@ -46,6 +47,7 @@ Error response:
         "ok" : false,
         "message" : <String> -- what went wrong
     }
+
 
 ### Add: ### 
 Request:
@@ -64,6 +66,7 @@ General response
         "result" : <int>,  -- result if ok true
         "message" : <String>,  -- error message if ok false
     }
+
 
 Success response:
 
@@ -112,6 +115,7 @@ General response
         "result" : <int>,  -- result if ok true - number of the given character or overall characters in the String 
         "message" : <String>  -- error message if ok false
     }
+
 
 Success response:
 
@@ -234,3 +238,49 @@ Error response: When the "type" is not supported, so an unsupported request
         "ok" : false
         "message" : "req not JSON"
     }
+
+### Completion of All test Written by you and me 
+
+###### server is running on amazon AWS no need to run local 
+> [ec2-user@ip-172-31-21-82 Starter3-1]$ gradle Server -Pport=8888
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Task :Server
+Server ready for connections
+Server waiting for a connection
+Client connected
+Echo request: {"data":"Hello","type":"echo"}
+Add request: {"num1":"4","type":"add","num2":"5"}
+Add many request: {"type":"addmany","nums":["444544545","","","5","4"]}
+Add many request: {"type":"addmany","nums":["4","4","4","4","4","4"]}
+Character count request: {"findchar":false,"count":"String inpust","type":"charcount"}
+Character count request: {"findchar":false,"count":"Input","type":"charcount"
+Character count request: {"findchar":true,"find":"i","count":"String","type":"charcount"}
+Client disconnect
+Server waiting for a connection
+Client connected
+Add many request: {"type":"addmany","nums":["12","15","111","42"]}
+Add many request: {"type":"addmany","nums":["two","15","111","42"]}
+Client disconnect
+Server waiting for a connection
+Client connected
+Add request: {"num1":"1","type":"add","num2":"2"}
+Add request: {"num1":"1","type":"add"}
+Add request: {"type":"add","num2":"1"}
+Add request: {"type":"add"}
+Add request: {"num1":"hello","type":"add","num2":"2"}
+Client disconnect
+Server waiting for a connection
+Client connected
+Echo request: {"data":"gimme this back!","type":"echo"}
+Echo request: {"type":"echo"}
+Client disconnect
+Server waiting for a connection
+Client connected
+Add request: {"num1":"1","type":"add","num2":"2"}
+Add request: {"num1":"1","type":"add"}
+Add request: {"type":"add","num2":"1"}
+Add request: {"type":"add"}
+Add request: {"num1":"hello","type":"add","num2":"2"}
+Client disconnect
+Server waiting for a connection

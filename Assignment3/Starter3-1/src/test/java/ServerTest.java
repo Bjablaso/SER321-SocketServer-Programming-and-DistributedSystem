@@ -21,7 +21,7 @@ public class ServerTest {
     @org.junit.Before
     public void setUp() throws Exception {
         // Establish connection to server and create in/out streams
-        sock = new Socket("localhost", 8888); // connect to host and socket
+        sock = new Socket("51.20.144.68", 8888); // connect to host and socket
 
         // get output channel
         out = sock.getOutputStream();

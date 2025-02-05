@@ -9,6 +9,8 @@ repositories {
 dependencies{
   implementation "junit:junit:4.12"
   implementation 'org.json:json:20171018' // org.json
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+
 }
 
 // Client and Server socket, socket can serve up to three clients
@@ -24,7 +26,7 @@ task Server(type: JavaExec) {
   args 8888
 }
 
-task Client(type: JavaExec) {
+tasks.register('Client', JavaExec) {
   group 'TCP Server/Client'
   description 'Creates client socket sends a message and number to server'
 
@@ -32,6 +34,12 @@ task Client(type: JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
 
   main = 'SockClient'
-  args "localhost"
-  args 8888
+
+  def defualtip =  "51.20.144.68"
+  def defualtport = 8888
+
+  def ip = project.project.hasProperty('ip') ? project.getProperty('ip') : defualtip
+  def port = project.project.hasProperty('ip') ? project.getProperty('ip') : defualtport
+
+  args ip, port
 }

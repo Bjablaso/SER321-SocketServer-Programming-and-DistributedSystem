@@ -178,7 +178,7 @@ public class SockServer {
     if (!validate.getBoolean("ok")) {
       JSONObject errorResponse = new JSONObject();
       errorResponse.put("ok", false);
-      errorResponse.put("type", "inventory")
+      errorResponse.put("type", "inventory");
       errorResponse.put("message", "Invalid task");
 
     }
@@ -187,7 +187,7 @@ public class SockServer {
 
     switch (tasktype){
       case "add":
-          res = updateInventory(JSONObject req);
+          res = updateInventory( req);
         break;
       case "view":
 
