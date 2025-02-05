@@ -121,20 +121,41 @@ class SockClient {
               case "+":
                 json.put("task", "add");
 
-                System.out.println("Enter product name to add:");
-                String product = scanner.nextLine();
-                json.put("productName", product);
+                // Create an inventory array
+                JSONArray inventoryArray = new JSONArray();
 
-                System.out.println("Enter quantity to add:");
+                boolean addingProducts = true;
 
+                while (addingProducts) {
+                  JSONObject productEntry = new JSONObject();
 
-                while (!scanner.hasNextInt()) {
-                  System.out.println("Invalid input. Please enter a valid integer for quantity:");
-                  scanner.next();
+                  System.out.println("Enter product name to add:");
+                  String product = scanner.nextLine();
+                  productEntry.put("product", product);
+
+                  System.out.println("Enter quantity to add:");
+
+                  while (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a valid integer for quantity:");
+                    scanner.next();
+                  }
+                  int addQuantity = scanner.nextInt();
+                  scanner.nextLine(); // Consume newline
+                  productEntry.put("quantity", addQuantity);
+
+                  // Add product entry to inventory array
+                  inventoryArray.put(productEntry);
+
+                  // Ask if the user wants to add another product
+                  System.out.println("Would you like to add another product? (yes/no)");
+                  String response = scanner.nextLine().trim().toLowerCase();
+                  if (!response.equals("yes")) {
+                    addingProducts = false;
+                  }
                 }
-                int addQuantity = scanner.nextInt();
-                scanner.nextLine();
-                json.put("quantity", addQuantity);
+
+                // Attach inventory array to JSON object
+                json.put("inventory", inventoryArray);
                 break;
 
               case "-v":

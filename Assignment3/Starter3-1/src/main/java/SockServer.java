@@ -2,6 +2,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import java.net.*;
 import java.io.*;
 
@@ -169,7 +173,30 @@ public class SockServer {
   static JSONObject inventory(JSONObject req) {
     JSONObject res = new JSONObject();
     System.out.println("inventory request: " + req.toString());
-    return new JSONObject();
+
+    JSONObject validate = testField(req, "task");
+    if (!validate.getBoolean("ok")) {
+      JSONObject errorResponse = new JSONObject();
+      errorResponse.put("ok", false);
+      errorResponse.put("type", "inventory")
+      errorResponse.put("message", "Invalid task");
+
+    }
+
+    String tasktype = validate.getString("task").toLowerCase();// ensure that all sting is lower case
+
+    switch (tasktype){
+      case "add":
+          res = updateInventory(JSONObject req);
+        break;
+      case "view":
+
+        break;
+      case "buy":
+        break;
+    }
+
+    return res;
   }
 
   // implement me in assignment 3
@@ -323,4 +350,107 @@ public class SockServer {
     } catch(Exception e) {e.printStackTrace();}
 
   }
+
+  static JSONObject updateInventory(JSONObject req) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    File file = new File("resources/inventory.json");
+    JSONObject response = new JSONObject(); // Response JSON object
+
+    response.put("type", "inventory");
+
+    try {
+      JsonNode root;
+      ArrayNode inventory;
+
+      // Check if file exists and read it, otherwise create new structure
+      if (file.exists()) {
+        root = objectMapper.readTree(file);
+        inventory = (ArrayNode) root.get("inventory");
+      } else {
+        root = objectMapper.createObjectNode();
+        inventory = objectMapper.createArrayNode();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) root).set("inventory", inventory);
+      }
+
+      // Check if the request contains "inventory" array
+      if (!req.has("inventory")) {
+        response.put("ok", false);
+        response.put("message", "Missing 'inventory' field in request.");
+        return response;
+      }
+
+      // Extract inventory array from request
+      JSONArray inventoryArray = req.getJSONArray("inventory");
+
+      // Append each item from request to the inventory list
+      for (int i = 0; i < inventoryArray.length(); i++) {
+        JSONObject item = inventoryArray.getJSONObject(i);
+
+        // Validate required fields
+        if (!item.has("product") || !item.has("quantity")) {
+          response.put("ok", false);
+          response.put("message", "Each inventory item must have 'product' and 'quantity'.");
+          return response;
+        }
+
+        // Convert JSONObject to Jackson JsonNode
+        JsonNode newItem = objectMapper.readTree(item.toString());
+
+        // Add new item to inventory
+        inventory.add(newItem);
+      }
+
+      // Write updated JSON back to file
+      objectMapper.writeValue(file, root);
+      response.put("ok", true);
+      response.put("message", "Inventory updated successfully!");
+
+    } catch (IOException e) {
+      response.put("ok", false);
+      response.put("message", "Error writing to file: inventory.json.");
+      e.printStackTrace();
+    }
+
+    return response;
+  }
+
+  public static JSONObject viewInventory() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    File file = new File("resources/inventory.json");
+    JSONObject response = new JSONObject(); // Response JSON object
+
+    response.put("type", "inventory");
+
+    try {
+      // Check if the file exists
+      if (!file.exists()) {
+        response.put("ok", false);
+        response.put("message", "Inventory file not found.");
+        return response;
+      }
+
+      // Read the JSON file
+      JsonNode root = objectMapper.readTree(file);
+      ArrayNode inventory = (ArrayNode) root.get("inventory");
+
+      // Check if inventory exists and is not empty
+      if (inventory == null || inventory.isEmpty()) {
+        response.put("ok", false);
+        response.put("message", "Inventory is empty.");
+        return response;
+      }
+
+      // Add inventory data to the response
+      response.put("ok", true);
+      response.put("inventory", inventory.toString()); // Convert ArrayNode to JSON String
+
+    } catch (IOException e) {
+      response.put("ok", false);
+      response.put("message", "Error reading inventory file.");
+      e.printStackTrace();
+    }
+
+    return response;
+  }
+
 }
