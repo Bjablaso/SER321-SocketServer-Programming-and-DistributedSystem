@@ -54,8 +54,7 @@ public class Player {
 
         if (timeComplete > 15) {
             point += PointScale.MAXPOINT.getValue();
-
-
+            System.out.println("Point: " + point);
 
         } else if (timeComplete > 0 && timeComplete <= 15) {
             point += PointScale.MINPOINT.getValue();

@@ -1,33 +1,125 @@
-# Assignment 3 (Guess Around the world)
+# Assignment 3: Guess Around the World
 
-## HTML Image User
+## Overview
+**Guess Around the World** is an interactive game where users guess
+locations based on displayed images. The game runs on a client-server
+architecture, where the server manages game data and client interactions.
 
-### Terminal Usage
+## Features
+- Theoretical multiplayer support
+- Timer-based scoring system
+- Sequential question progression
+- Pop-up UI for correct answers
+- Command-line and GUI support
 
-## GUI Usage (Starting Up Program)
+---
 
-1. Create an Instance of the Langing Page
+## **Running the Application**
 
-> In the Landing Page User prompt to enter a port number.
-> By doing this the server instance will automatically start running.
+### **1. Server Setup**
+Before starting the game, you must start the server.
 
-LandingPage (entry point ot our program : house main function) - load a blank pane on to the scene and from there
-the scene switcher load program starter window which is found in the ` startupwindow.fxml`.
+#### **Terminal Command to Start Server**
+Run the following command inside the project directory:
+```sh
+./gradlew startServer -Pport=8889
+```
+- `-Pport=8889` specifies the server port (default: 8889).
+- The server must be running before starting the client.
+- The server can be started locally or on **AWS**.
+- The current **AWS-hosted server** is available, but users can choose to **run it locally** if needed.
 
-#### Server Start UP
+### **2. Client Setup**
+Once the server is running, launch the client.
 
-    - Server can be start up by specifying the port number on the landing page or by 
-       pressing ok and accepting the defualt port number. 
+#### **Terminal Command to Start Client**
+```sh
+./gradlew startSudoClient Pip="51.20.144.68"-Pport=8889 //-> gradle haing cache issue run via application code umtil it resolve
+```
+- The client will automatically connect to the running server.
 
-#### Client will
+### **3. GUI Usage (Starting the Program)**
+1. **Launch the Game**
+   - Start the **Landing Page**, which is the entry point for the application.
+   - This page prompts users to enter a **port number**.
+   - Pressing `OK` without a number will accept the **default port (8080)**.
 
-    - Client is program to automatically connect to whatever port number the server is on
+2. **Server Auto-Start**
+   - If the server is not already running, it will **start automatically** when a port is entered.
+   - If the server is not available, the program **will not start**.
 
-## Command Line usage
+3. **Gameplay**
+   - The game starts in `startupwindow.fxml`.
+   - Players will see an image and select the correct answer from multiple choices.
+   - The **countdown timer** determines the final score:
+      - **> 15 sec:** Full points (100)
+      - **1-15 sec:** Minimum points (50)
+      - **0 sec:** No points (0)
+   - If the player selects the **correct answer**, a **Win Screen popup** appears, and the game progresses to the next round.
 
-    - Server must be running befor program can start. if server is not running program will not start.
+---
 
-1. Server Command
-   `./gradlew startServer -Pport=8080` -> run command in the program folder
-2. Client
-   `./gradlew startSudoClient -Pport=8080` -> run command in the program folder 
+## **Technical Implementation**
+
+### **Main Classes & Responsibilities**
+| Class | Responsibility |
+|-----------------|--------------------------------------------------|
+| `LandingPage.java` | Entry point, initializes server and UI setup |
+| `ViewSwitcher.java` | Handles scene transitions between UI screens |
+| `GameWindowController.java` | Manages game logic, timer, and answer validation |
+| `LoadData.java` | Loads and manages game data sequentially |
+| `CountDown.java` | Manages countdown timer and score allocation |
+| `SocketServer.java` | Manages server-side logic |
+| `Client.java` | Handles client-server communication |
+
+### **File Structure**
+```
+/GuessAroundTheWorld
+│── src/main/java
+│   │── AppLogic/
+│   │   │── LoadData.java
+│   │   │── CountDown.java
+│   │── Server/
+│   │   │── SocketServer.java
+│   │── Client/
+│   │   │── Client.java
+│   │── UI/
+│   │   │── GameWindowController.java
+│   │   │── LandingPage.java
+│   │   │── ViewSwitcher.java
+│── resources/
+│   │── fxml/
+│   │   │── startupwindow.fxml
+│   │   │── winScreen.fxml
+│   │── css/style.css
+│── build.gradle
+│── README.md
+```
+
+---
+
+## **Defects & Known Issues**
+- **Terminal Execution Issue:**
+   - The application cannot currently be executed **directly from the terminal** due to a **caching issue**.
+   - This will be **completed in the next few hours**.
+
+- **Scoring System Not Yet Implemented:**
+   - The scoring system has **not yet been fully implemented** due to time constraints.
+   - This will be **completed in the next few hours**.
+
+- **Personal Time Constraints:**
+   - Due to **work-related issues** and **military exercises**, I had to dedicate less time to class this week.
+   - I attempted to optimize and learn new things with **JavaFX and FXML**, but in the future, I will **stick to the required approach** to ensure efficiency.
+
+---
+
+## **Additional Notes**
+- Ensure **JavaFX is installed** before running the game if depedency dont work.
+- The application is built using **Gradle**, so all dependencies should resolve automatically.
+
+
+### **Support & Troubleshooting**
+If you encounter any issues, check the console logs for error messages and
+verify that the **server is running** before starting the client.
+
+[Github](https://github.com/Bjablaso/ser321-spring25-A-Bjablaso/tree/main/Assignment3/AroundtheWorld)
