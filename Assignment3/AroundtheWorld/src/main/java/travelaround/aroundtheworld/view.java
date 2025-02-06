@@ -3,7 +3,8 @@ package travelaround.aroundtheworld;
 public enum view {
     LANDINGVIEW ("startupwindow.fxml"),
     STARTUPVIEW("hello-view.fxml"),
-    GAMEPLAYVIEW("game-window.fxml");
+    GAMEPLAYVIEW("game-window.fxml"),
+    SCOREVIEW("score-window.fxml");
 
         private String filename;
     view(String filename) {

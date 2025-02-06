@@ -3,6 +3,7 @@ package travelaround.aroundtheworld;
 
 import AppLogic.ImportantFolder;
 import AppLogic.LoadData;
+import AppLogic.countDown;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -51,11 +52,11 @@ public class StartupwindowController {
     public void switchNow(){
         boolean isInt = isInterger(portEntry.getText());
         if(isInt) {
+
+            ViewSwitcher.switchTo(view.GAMEPLAYVIEW);
             retrieveCustomPort();
-           // startServerTask(cusPort);
-            ViewSwitcher.switchTo(view.STARTUPVIEW);
-            var load = new LoadData();
-            load.loadData();
+            var countdown = new countDown();
+            countdown.startCountdown();
 
         }else {
             Alert alreat = new Alert(Alert.AlertType.WARNING);

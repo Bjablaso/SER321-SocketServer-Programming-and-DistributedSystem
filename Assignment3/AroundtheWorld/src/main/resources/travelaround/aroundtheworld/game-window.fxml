@@ -24,12 +24,15 @@
                                   style="-fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);">
                             <items>
                                 <Label fx:id="answerKey1" alignment="CENTER" prefHeight="38.0" prefWidth="288.0"
+                                       onMouseClicked="#handleAnswerSelection"
                                        style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
                                        text="label1"/>
                                 <Label fx:id="answerKey2" alignment="CENTER" prefHeight="38.0" prefWidth="281.0"
+                                       onMouseClicked="#handleAnswerSelection"
                                        style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
                                        text="label1"/>
                                 <Label fx:id="answerKey3" alignment="BOTTOM_CENTER" prefHeight="38.0" prefWidth="276.0"
+                                       onMouseClicked="#handleAnswerSelection"
                                        style="-fx-padding: 20; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);"
                                        text="label1"/>
                             </items>
@@ -81,7 +84,7 @@
                                                            width="101.0"/>
                                                 <HBox layoutX="88.0" layoutY="49.0">
                                                     <children>
-                                                        <Label fx:id="totalHint"
+                                                        <Label fx:id="totalHint" onMouseClicked="#showhit"
                                                                style="-fx-font-size: 48px; -fx-text-fill: white; -fx-font-weight: bold;"
                                                                text="?"/>
                                                     </children>
@@ -96,20 +99,26 @@
                                             <children>
                                                 <CardPane>
                                                     <Label fx:id="hint1" alignment="CENTER" prefHeight="38.0"
-                                                           prefWidth="210.0"
-                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           prefWidth="210.0" wrapText="true"
+                                                           style="-fx-padding: 10; -fx-background-color:
+                                                           linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);
+                                                           -fx-text-fill: white; -fx-font-size: 10px;"
                                                            text="label1"/>
                                                     <Label fx:id="hint2" alignment="CENTER" prefHeight="38.0"
-                                                           prefWidth="210.0"
-                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           prefWidth="210.0" wrapText="false"
+                                                           style="-fx-padding: 10; -fx-background-color:
+                                                           linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);
+                                                           -fx-text-fill: white; -fx-font-size: 10px;"
                                                            text="label2">
                                                         <font>
                                                             <Font name="Microsoft Sans Serif" size="14.0"/>
                                                         </font>
                                                     </Label>
                                                     <Label fx:id="hint3" alignment="CENTER" prefHeight="38.0"
-                                                           prefWidth="221.0"
-                                                           style="-fx-padding: 10; -fx-background-color: linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635); -fx-text-fill: white;"
+                                                           prefWidth="221.0" wrapText="true"
+                                                           style="-fx-padding: 10; -fx-background-color:
+                                                            linear-gradient(to right top, #0A2D5D, #1E6D96, #3A9FC8, #7ACB82, #A3E635);
+                                                             -fx-text-fill: white; -fx-font-size: 10px;"
                                                            text="label3">
                                                         <font>
                                                             <Font name="System Bold" size="14.0"/>

@@ -11,30 +11,31 @@
 <StackPane id="landingPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="450.0" prefWidth="610.0" styleClass="landingPage" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="travelaround.aroundtheworld.LandingController">
-    <children>
-        <AnchorPane prefHeight="433.0" prefWidth="610.0">
-            <children>
-                <HBox id="gamePlayAreal" layoutX="122.0" layoutY="300.0" prefHeight="45.0" prefWidth="389.0">
-                    <children>
-                        <HBox prefHeight="45.0" prefWidth="410.0" style="-fx-alignment: center;">
-                            <children>
-                                <Button id="playbutton" fx:id="playbutton" mnemonicParsing="false" onAction="#switchNow" prefHeight="33.0" prefWidth="198.0" styleClass="playbutton" stylesheets="@style.css" text="Play" />
-                            </children>
-                        </HBox>
-                    </children>
-                </HBox>
-                <Pane id="playerRanking" layoutX="326.0" layoutY="37.0" prefHeight="246.0" prefWidth="260.0">
-                    <children>
-                        <TableView id="ranktable" prefHeight="246.0" prefWidth="266.0" stylesheets="@style.css">
-                            <columns>
-                                <TableColumn fx:id="rankColumn" prefWidth="50.0" text="Rank" />
-                                <TableColumn fx:id="nameColumn" prefWidth="120.0" text="Game Name" />
-                                <TableColumn fx:id="searchVolumeColumn" prefWidth="100.0" text="Score" />
-                            </columns>
-                        </TableView>
-                    </children>
-                </Pane>
-            </children>
-        </AnchorPane>
-    </children>
+  <children>
+    <AnchorPane prefHeight="433.0" prefWidth="610.0">
+      <children>
+        <HBox id="gamePlayAreal" layoutX="122.0" layoutY="300.0" prefHeight="45.0" prefWidth="389.0">
+          <children>
+            <HBox prefHeight="45.0" prefWidth="410.0" style="-fx-alignment: center;">
+              <children>
+                <Button id="playbutton" fx:id="playbutton" mnemonicParsing="false" onAction="#switchNow" prefHeight="33.0"
+                        prefWidth="198.0" styleClass="playbutton" stylesheets="@style.css" text="Play" />
+              </children>
+            </HBox>
+          </children>
+        </HBox>
+        <Pane id="playerRanking" layoutX="326.0" layoutY="37.0" prefHeight="246.0" prefWidth="260.0">
+          <children>
+            <TableView id="ranktable" prefHeight="246.0" prefWidth="266.0" stylesheets="@style.css">
+              <columns>
+                <TableColumn fx:id="rankColumn" prefWidth="50.0" text="Rank" />
+                <TableColumn fx:id="nameColumn" prefWidth="120.0" text="Game Name" />
+                <TableColumn fx:id="searchVolumeColumn" prefWidth="100.0" text="Score" />
+              </columns>
+            </TableView>
+          </children>
+        </Pane>
+      </children>
+    </AnchorPane>
+  </children>
 </StackPane>

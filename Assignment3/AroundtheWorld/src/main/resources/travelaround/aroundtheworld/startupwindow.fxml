@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<DialogPane fx:id="dailogwindow" prefHeight="320.0" prefWidth="530.0" style="-fx-background-color: lightgray;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="travelaround.aroundtheworld.StartupwindowController">
+    <header>
+        <AnchorPane id="headerbar" prefHeight="53.0" prefWidth="530.0"
+                    style="-fx-background-color: lightgray; -fx-border-color: black; -fx-border-width: 0 0 2px 0;">
+            <children>
+                <Label fx:id="headerLabe" layoutX="57.0" layoutY="8.0" prefHeight="38.0" prefWidth="341.0"
+                       style="-fx-border: transparent transparent #3c3939 transparent; -fx-border-width: 0 0 2px 0;"
+                       text="🚀 You are now running the 'Around the World' guessing game." wrapText="true"/>
+            </children>
+        </AnchorPane>
+    </header>
+    <content>
+        <AnchorPane prefHeight="215.0" prefWidth="528.0">
+            <children>
+                <Pane id="portchangeview" layoutX="12.0" layoutY="109.0" prefHeight="50.0" prefWidth="494.0">
+                    <children>
+                        <AnchorPane layoutX="358.0" prefHeight="51.0" prefWidth="122.0">
+                            <children>
+                                <Button id="startButton" fx:id="StartButton" layoutX="47.0" layoutY="11.0"
+                                        mnemonicParsing="false" onAction="#switchNow" prefHeight="30.0" prefWidth="60.0"
+                                        style="-fx-background-color: #276ccd;" text="Start" textFill="WHITE"/>
+                            </children>
+                        </AnchorPane>
+                        <TextField id="portArea" fx:id="portEntry" layoutX="13.0" layoutY="5.0" prefHeight="42.0"
+                                   prefWidth="363.0" promptText="Please Enter Prefered Port Number.."/>
+                    </children>
+                </Pane>
+                <Pane layoutX="12.0" layoutY="159.0" prefHeight="68.0" prefWidth="494.0">
+                    <children>
+                        <Label id="warningArea" fx:id="warningLabel" layoutX="14.0" layoutY="9.0" prefHeight="50.0"
+                               prefWidth="375.0"
+                               text="⚠️ Warning: The custom server will automatically run on port 8080. To change that, please specify a different port above."
+                               textFill="#222103" wrapText="true"/>
+                        <Button id="acceptButton" fx:id="defultOkButton" layoutX="406.0" layoutY="14.0"
+                                mnemonicParsing="false" onAction="#switchNowThan" prefHeight="30.0" prefWidth="60.0"
+                                style="-fx-background-color: #276ccd;" text="OK" textFill="WHITE"/>
+                    </children>
+                </Pane>
+                <Pane id="imageArea" layoutX="20.0">
+                    <children>
+                        <ImageView id="dialogImage" fx:id="displayDialogImage" fitHeight="114.0" fitWidth="488.0"
+                                   layoutX="-7.0" pickOnBounds="true" preserveRatio="true"/>
+                    </children>
+                </Pane>
+            </children>
+        </AnchorPane>
+    </content>
+</DialogPane>

@@ -1,133 +1,124 @@
 plugins {
-    id 'java'
-    id 'application'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+  id 'java'
+  id 'application'
+  id 'org.javamodularity.moduleplugin' version '1.8.12'
+  id 'org.openjfx.javafxplugin' version '0.0.13'
+  id 'org.beryx.jlink' version '2.25.0'
 }
 
 group 'travelaround'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral()
-    maven { url 'https://nexus.gluonhq.com/nexus/content/repositories/releases/' }
-    jcenter()
+  mavenCentral()
+  maven { url 'https://nexus.gluonhq.com/nexus/content/repositories/releases/' }
 }
 
+
 ext {
-    junitVersion = '5.10.0'
+  junitVersion = '5.10.0'
 }
 
 sourceCompatibility = '21'
 targetCompatibility = '21'
 
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+  options.encoding = 'UTF-8'
 }
 
 application {
-    mainModule = 'travelaround.aroundtheworld'
-    mainClass = 'travelaround.aroundtheworld.LandingPage'
+  mainModule = 'travelaround.aroundtheworld'
+  mainClass = 'travelaround.aroundtheworld.LandingPage'
 }
 
 javafx {
-    version = '21'
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
+  version = '21'
+  modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
 }
 
 sourceSets {
-    main {
-        resources.srcDirs = ["src/main/resources"]
-    }
+  main {
+    resources.srcDirs = ["src/main/resources"]
+  }
 }
 
 dependencies {
-    implementation("org.json:json:20231013")
+  implementation("org.json:json:20231013")
 }
 dependencies {
-    implementation('org.controlsfx:controlsfx:11.1.2')
-    implementation('com.dlsc.formsfx:formsfx-core:11.6.0') {
-        exclude(group: 'org.openjfx')
-    }
-    implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
+  implementation('org.controlsfx:controlsfx:11.1.2')
+  implementation('com.dlsc.formsfx:formsfx-core:11.6.0') {
+    exclude(group: 'org.openjfx')
+  }
+  implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
 
-    implementation 'org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0'
+  implementation 'org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0'
 
-    implementation 'com.dlsc.formsfx:formsfx-core:11.6.0'
+  implementation 'com.dlsc.formsfx:formsfx-core:11.6.0'
 
-    implementation 'com.gluonhq:charm-glisten:6.2.3'
+  implementation 'com.gluonhq:charm-glisten:6.2.3'
 
 
-    implementation 'com.gluonhq.attach:util:4.0.9'
+  implementation 'com.gluonhq.attach:util:4.0.9'
 
-    implementation group: 'org.json', name: 'json', version: '20200518'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0'
+  implementation group: 'org.json', name: 'json', version: '20200518'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'
+  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0'
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
 test {
-    useJUnitPlatform()}
+useJUnitPlatform()}
 
 jlink {
-    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'app'
-    }
+  imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+  options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+  launcher {
+    name = 'app'
+  }
 }
 
 jlinkZip {
-    group = 'distribution'
+  group = 'distribution'
 }
 
 
 tasks.register('runServer', JavaExec) {
-    group = 'network'
-    description = 'Starts the Socket Server and listens on a specified port'
+  group = 'network'
+  description = 'Starts the Socket Server and listens on a specified port'
 
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'travelaround.aroundtheworld.SocketServer'
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'travelaround.aroundtheworld.SocketServer'
 
 
-    def port = System.getProperty("port") ?: "8889"
+  def port = System.getProperty("port") ?: "8889"
 
-    args port
+  args port
 
-    standardInput = System.in
-    standardOutput = System.out
-    errorOutput = System.err
+  standardInput = System.in
+  standardOutput = System.out
+  errorOutput = System.err
 
-    doFirst {
-        println "🚀 Starting Server on port $port..."
-    }
+
 }
 
-tasks.register('startClient', JavaExec) {
-    group = 'network'
-    description = 'Starts the Client and connects to the Server'
+tasks.register('Client', JavaExec) {
+  group = 'network'
+  description = 'Starts the Socket Server and listens on a specified port'
 
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'travelaround.aroundtheworld'
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'travelaround.aroundtheworld.LandingPage'
 
-    def defaultIp = '51.20.144.68'
-    def defaultPort = '8089'
+  def ip = System.getProperty("ip") ?: "51.20.144.68"
+  def port = System.getProperty("port") ?: "8889"
+  args ip, port
 
-    def ip = project.hasProperty('ip') ? project.getProperty('ip') : defaultIp
-    def port = project.hasProperty('port') ? project.getProperty('port') : defaultPort
-
-    args ip, port
-
-    standardInput = System.in
-    standardOutput = System.out
-    errorOutput = System.err
+  standardInput = System.in
+  standardOutput = System.out
+  errorOutput = System.err
 
 
-    doFirst {
-        println "🚀 Starting Client on $ip:$port..."
-    }
 }

@@ -1,84 +1,83 @@
 package travelaround.aroundtheworld;
 
 import AppLogic.LoadData;
-import AppLogic.countDown;
+import enitityfolder.Player;
+import enitityfolder.PlayerIDGenerator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import org.json.JSONObject;
+
 
 public class LandingController {
-    @FXML private HBox gamePlayAreal;
     @FXML private Button playbutton;
-    @FXML private Pane playerRanking;
-    @FXML private TableView<?> ranktable;
-    @FXML private TableColumn<?, ?> rankColumn;
-    @FXML private TableColumn<?, ?> nameColumn;
-    @FXML private TableColumn<?, ?> searchVolumeColumn;
-    @FXML private StackPane landingPage;
 
-
-
+    private static JSONObject cachedGameData = null;
+    private static boolean isDataLoaded = false;
 
     @FXML
     public void initialize() {
-
-
+        playbutton.setDisable(true);
+        new Thread(() -> {
+            preloadGameData();
+            Platform.runLater(() -> playbutton.setDisable(false));
+        }).start();
     }
 
-
-
-    public void switchNow(){
-        LoadData loading = new LoadData();
-        if(SocketServer.isRunning()){
-            int port = SocketServer.getCurrentport();
-            if (port < 0){
-                throw new RuntimeException("Can't find port");
-            }
-         //  startClient(port);
-            var counter = new countDown();
-            counter.startCountdown();
-            LoadData load = new LoadData();
-            load.loadData();
-
-            ViewSwitcher.switchTo(view.GAMEPLAYVIEW);
-            loading.loadData();
-        }else{
-            // create a window that warn the user to run server
-            // if it is not already running or server fials
-            System.out.println("Server is not running");
+    private void preloadGameData() {
+        System.out.println("Preloading game data...");
+        try {
+            Client.run("localhost", 8080);
+            cachedGameData = Client.getCachedData();
+            isDataLoaded = (cachedGameData != null);
+        } catch (Exception e) {
+            System.err.println("Failed to preload game data: " + e.getMessage());
         }
-        System.out.println("Is Server Runnning " + SocketServer.isRunning());
-
     }
-//    public void startClient(int port) {
-//        ProcessBuilder processBuilder = new ProcessBuilder(
-//                "java", "-jar", "build/libs/client.jar", "localhost", String.valueOf(port)
-//        );
-//        processBuilder.redirectErrorStream(true); // Combine stdout & stderr
-//
-//        try {
-//            Process process = processBuilder.start();
-//            new Thread(() -> {
-//                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-//                    String line;
-//                    while ((line = reader.readLine()) != null) {
-//                        System.out.println(line); // Log client output in real-time
-//                    }
-//                } catch (IOException e) {
-//                    System.out.println("Error reading client process output: " + e.getMessage());
-//                }
-//            }).start();
-//
-//            System.out.println("✅ Client started on port " + port);
-//        } catch (IOException e) {
-//            System.err.println("❌ Failed to start client: " + e.getMessage());
-//        }
-//    }
+
+    @FXML
+    public void switchNow() {
+        if (!SocketServer.isRunning()) {
+            System.out.println("Server is not running");
+            return;
+        }
+
+        if (!isDataLoaded) {
+            System.out.println("Game data is not loaded yet!");
+            return;
+        }
+
+        Platform.runLater(() -> {
+            initializePlayer();
+            ViewSwitcher.switchTo(view.GAMEPLAYVIEW);
+            initializeGameUI();
+        });
+    }
 
 
 
+    private void initializeGameUI() {
+        GameWindowController controller = ViewSwitcher.getGameWindowController();
+        if (controller == null) {
+            System.out.println("Error: GameWindowController is not available.");
+            return;
+        }
+
+        if (cachedGameData != null) {
+            LoadData loader = LoadData.getInstance();
+            loader.setController(controller);
+            loader.setFullData(cachedGameData);
+        }
+    }
+
+    private void initializePlayer() {
+        Player playerInstance = Player.getInstance();
+
+        int playerID = Integer.parseInt(PlayerIDGenerator.generateRandomId());
+        playerInstance.setId(playerID);
+        playerInstance.setPoint(0);
+        playerInstance.setTimeComplete(0);
+
+        System.out.println("Player Initialized: " + playerInstance.getId());
+    }
 }

@@ -1,5 +1,6 @@
 package AppLogic;
 
+import enitityfolder.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -9,13 +10,18 @@ import travelaround.aroundtheworld.ViewSwitcher;
 
 
 public class countDown {
-    static int initcount = 40;
+    private static countDown instance;
+    static int initcount =  25;
     static int counter1;
     static int counter2;
     static int counterValue = 1;
     static int resetValue = 9;
     private static GameWindowController gameWindowController;
-    Timeline timeline;
+    static Timeline timeline;
+    private String currentCount = " ";
+
+    private int numberx;
+    private int numbery;
 
     public countDown(){
         gameWindowController = ViewSwitcher.getGameWindowController();
@@ -28,8 +34,8 @@ public class countDown {
 
         Integer integer = initcount;
        String number = integer.toString();
-      int numberx = (int) Integer.parseInt(String.valueOf(number.charAt(0)));
-      int numbery = (int) Integer.parseInt(String.valueOf(number.charAt(1)));
+       numberx = (int) Integer.parseInt(String.valueOf(number.charAt(0)));
+       numbery = (int) Integer.parseInt(String.valueOf(number.charAt(1)));
       counter1 = numberx;
       counter2 = numbery;
         System.out.println("incount down method - number being added to label is " + numberx);
@@ -39,10 +45,14 @@ public class countDown {
 
     }
 
+    public static countDown getInstance() {
+        if (instance == null) {
+            instance = new countDown();
+        }
+        return instance;
+    }
 
-
-
-    public void startCountdown() {
+    public  void startCountdown() {
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), event -> {
             updateCountdown();
         }));
@@ -50,12 +60,15 @@ public class countDown {
         timeline.play();
     }
 
-    private void updateCountdown() {
+    private   void updateCountdown() {
         if (counter2 > 0) {
             counter2 -= counterValue;
+          currentCount = String.valueOf(counter2) + String.valueOf(counterValue);
+
         } else if (counter1 > 0) {
             counter1--;
             counter2 = resetValue;
+            currentCount = String.valueOf(counter2) + String.valueOf(counterValue);
         } else {
             timeline.stop();
         }
@@ -65,5 +78,20 @@ public class countDown {
             gameWindowController.updateCount1(counter1);
             gameWindowController.updateCount2(counter2);
         });
+    }
+
+    public  void StopCountdown() {
+        timeline.stop();
+    }
+
+    public void resetCountdown(){
+        counter1 = numberx;
+        counter2 = numbery;
+        gameWindowController.updateLabels(counter1, counter2);
+    }
+
+
+    public String getCurrentCount() {
+        return currentCount;
     }
 }

@@ -66,7 +66,7 @@ public class SocketServer {
                 }
             }));
 
-           // JSONObject response = new JSONObject();
+
 
             while (isRunning) {
                 try {
@@ -183,7 +183,7 @@ public class SocketServer {
         try {
             os.writeUTF(res.toString());
             os.flush();
-            System.out.println("✅ Sent data to client: " + res);
+            System.out.println(" Sent data to client: " + res);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,11 +196,7 @@ public class SocketServer {
        response.put("request","invalid");
        response.put("ispremetted", false);
        errorMessages.put(response);
-        //{
-//  "type" : "response",
-//  "request" : "invalid",
-//  "ispremited" : false
-//}
+
         return response;
     }
 

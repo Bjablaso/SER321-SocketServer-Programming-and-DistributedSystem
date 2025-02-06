@@ -1,15 +1,11 @@
 package travelaround.aroundtheworld;
 
-import AppLogic.LoadData;
-
-import javafx.application.Platform;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Random;
+
 class Client {
     private static Socket clientSocket;
     private static ObjectOutputStream obj;
@@ -34,8 +30,9 @@ class Client {
             String response = in.readUTF();
             JSONObject jsonResponse = new JSONObject(response);
 
-            if (jsonResponse.getJSONObject("header").getBoolean("permission")) {
-                cachedGameData = jsonResponse; // Store response in memory
+            if (jsonResponse.getJSONObject("header").getBoolean("permission") ||
+                    jsonResponse.getJSONObject("gamedata").getBoolean("answer")) {
+                cachedGameData = jsonResponse;
             } else {
                 System.out.println("Server denied access.");
             }

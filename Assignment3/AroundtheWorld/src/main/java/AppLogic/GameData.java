@@ -20,19 +20,12 @@ public class GameData {
         return gameData;
     }
 
-    /**
-     * Retrieves the game data associated with a specific game ID.
-     * @param gameId The ID of the game data to retrieve.
-     * @return The JSONObject containing the game data, or null if not found.
-     */
+
     public JSONObject getGameDataById(Integer gameId) {
         return gameData.get(gameId);
     }
 
-    /**
-     * Loads JSON data into the gameData map.
-     * @param jsonData The full JSON object containing all game data.
-     */
+
     public void loadFromJson(JSONObject jsonData) {
         if (jsonData.has("gamedata")) {
             JSONArray gameArray = jsonData.getJSONArray("gamedata");

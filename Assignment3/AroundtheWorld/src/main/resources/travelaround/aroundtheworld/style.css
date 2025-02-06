@@ -1,16 +1,15 @@
 
-.landingPage
-{
+.landingPage {
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%,
-     #7b2cbf 10%,
+    #7b2cbf 10%,
     #5a189a 30%,
     #3c096c 50%,
     #240046 70%,
     #10002b 90%);
 }
 
-.playbutton{
-    -fx-background-color: linear-gradient(to right,  #7b2cbf, #5a189a,  #3c096c, #10002b, #240046
+.playbutton {
+    -fx-background-color: linear-gradient(to right, #7b2cbf, #5a189a, #3c096c, #10002b, #240046
     );
     -fx-background-radius: 50px; /* Makes it oval */
     -fx-border-radius: 50px;
@@ -24,7 +23,7 @@
     -fx-transition: all 0.3s;
 }
 
-.table-view{
+.table-view {
 
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%,
     #7b2cbf 10%,
@@ -32,11 +31,11 @@
     #3c096c 50%,
     #240046 70%,
     #10002b 90%);
-    -fx-border-color: #1b1bef;  /* Blue outline */
+    -fx-border-color: #1b1bef; /* Blue outline */
     -fx-border-width: 2px;
     -fx-border-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(211, 211, 211, 0.7), 10, 0.5, 3, 3); /* White-gray shadow */
-      -fx-text-fill: white;
+    -fx-text-fill: white;
 }
 
 .table-view .column-header,
