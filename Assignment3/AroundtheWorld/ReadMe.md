@@ -114,7 +114,7 @@ Once the server is running, launch the client.
 ---
 
 ## **Additional Notes**
-- Ensure **JavaFX is installed** before running the game if depedency dont work.
+-  if depedency don't work (big if) please download  **JavaFX is installed** before running the game
 - The application is built using **Gradle**, so all dependencies should resolve automatically.
 
 
