@@ -52,9 +52,30 @@ public class Client {
      * Function JSONObject display().
      */
     public static JSONObject display() {
+        int index = -1;
+
         JSONObject request = new JSONObject();
+        System.out.print("Please enter the index of the string you would like to retrieve: ");
+
+        while (index < 0){
+            try{
+                String input = stdin.readLine();
+                index = Integer.parseInt(input.trim());
+
+                if (index < 0) {
+                    System.out.println("Index cannot be negative. Please try again.");
+                }
+
+            }catch (NullPointerException e){
+                System.out.println("Invalid input. Please enter a valid integer index.");
+                System.out.println(e.getMessage());
+            }catch (IOException e){
+                System.out.println("Error reading input. Please try again.");
+                System.out.println(e.getMessage());
+            }
+        }
         request.put("selected", 2);
-        request.put("data", "");
+        request.put("data", index);
         return request;
     }
 
@@ -83,6 +104,7 @@ public class Client {
      * Function main().
      */
     public static void main(String[] args) throws IOException {
+
         String host;
         int port;
         Socket sock;
@@ -124,6 +146,8 @@ public class Client {
                         request = add();
                         break;
                     case (2):
+                        input.nextLine();
+
                         request = display();
                         break;
                     case (3):
