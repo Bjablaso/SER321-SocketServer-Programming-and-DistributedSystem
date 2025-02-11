@@ -20,6 +20,7 @@ public class JsonUtils {
     }
 
     public static byte[] toByteArray(JSONObject object) {
+
         return object.toString().getBytes();
     }
 }

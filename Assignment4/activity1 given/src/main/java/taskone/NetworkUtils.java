@@ -13,6 +13,7 @@ import java.io.OutputStream;
 /**
  * Class: NetworkUtils 
  * Description: NetworkUtils for send/read/receive.
+ * ?
  */
 public class NetworkUtils {
     // https://mkyong.com/java/java-convert-byte-to-int-and-vice-versa/
