@@ -45,7 +45,7 @@ class Performer {
         return json;
     }
 
-    public static JSONObject error(String err) {
+    public  JSONObject error(String err) {
         JSONObject json = new JSONObject();
         json.put("type", "error");
         json.put("message", err);
