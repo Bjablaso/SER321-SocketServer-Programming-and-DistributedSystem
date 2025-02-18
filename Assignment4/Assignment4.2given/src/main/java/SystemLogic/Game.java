@@ -1,5 +1,4 @@
 package SystemLogic;
-import Entity.Level;
 
 import java.util.*;
 
@@ -33,7 +32,7 @@ public class Game {
     private int points = 0;// if player win game they get point
 
     private boolean won; // if the game is won or not
-  //  private Level currentLevel = new Level;
+
 
     public Game(){
         // you can of course add more or change this setup completely. You are totally free to also use just Strings in your Server class instead of this class

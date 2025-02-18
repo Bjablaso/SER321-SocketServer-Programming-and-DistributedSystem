@@ -59,6 +59,11 @@ message Response {
 ```
 
 ### How to Run the Game
+> run using gradle see build.gradle 
+>
+### Update
+>Request.proto file add line
+> optional int32 type = 7; // determine the type of the Update (0 - 5) because we need to determine the type of update we want to make 
 
 #### Prerequisites
 - Java Development Kit (JDK 8 or later)
