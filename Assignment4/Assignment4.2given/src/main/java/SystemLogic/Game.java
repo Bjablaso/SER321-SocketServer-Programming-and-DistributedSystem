@@ -244,7 +244,7 @@ public class Game {
                     resultType = 1; // Cannot modify preset values
                 } else {
                     playerBoard[row][column] = (char) (value + '0');
-                    referenceBoard[row][column] = (char) (value + '0'); // ✅ Update referenceBoard
+                    referenceBoard[row][column] = (char) (value + '0'); //  Update referenceBoard
 
                     int moveOK = checkMove(row, column);
                     if (moveOK == 0) { // Move is valid
@@ -259,7 +259,7 @@ public class Game {
 
             case 1: // Clear a single cell
                 if (referenceBoard[row][column] != 'X') {
-                    playerBoard[row][column] = 'X';  // ✅ Clear the cell
+                    playerBoard[row][column] = 'X';  //  Clear the cell
                 } else {
                     resultType = 1; // Cannot clear preset values
                 }
