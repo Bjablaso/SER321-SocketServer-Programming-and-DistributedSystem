@@ -148,6 +148,7 @@ RequestType: CLEAR
 Required Fields: row = -1,
 				 column = -1,
 				 value = 6
+				 tyepe = 5 // need a type beacuse game boar epect one and we cannot sed the type unless we send it as a message
 ```
 
 SV Response

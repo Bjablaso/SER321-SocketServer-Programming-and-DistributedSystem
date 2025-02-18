@@ -22,6 +22,7 @@ message Request {
     optional int32 column = 4;        // column field for the UPDATE and CLEAR request
     optional int32 value = 5;         // numeric value for the UPDATE and CLEAR request
     optional int32 difficulty = 6;    // sets the difficulty of the game
+    optional int32 type = 7; // determine the type of the Update (0 - 5)
 }
 
 // see the starter code on how to use this, e.g. writeToLog("Mehlhase", Message.CONNECT) would write a log for connecting to your server for me into your log file
@@ -29,7 +30,7 @@ enum Message {
     CONNECT = 0;        // when client connects to your server
     START = 1;          // when client starts a game
     WIN = 2;            // when client wins
-//    LOST = 3;           // when client loses
+//   LOST = 3;           // when client loses -> implement LOST message
 }
 
 message Logs {

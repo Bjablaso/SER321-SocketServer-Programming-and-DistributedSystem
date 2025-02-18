@@ -233,64 +233,85 @@ public class Game {
      * 4 - number was already in grid so cannot be added
      */
     public int updateBoard(int row, int column, int value, int type) {
-        // Log the initial state of the request
-        System.out.println("updateBoard: row=" + row + ", column=" + column + ", value=" + value + ", type=" + type);
+        System.out.println("Game Class: updateBoard - row=" + row + ", column=" + column + ", value=" + value + ", type=" + type);
 
         int resultType = 0;
 
-        if (type == 0) {
-            // Check if the cell is editable
-            if (referenceBoard[row][column] != 'X') {
-                System.out.println("Cannot modify a preset value at row=" + row + ", column=" + column);
-                resultType = 1; // Preset value, cannot replace
-            } else {
-                // Attempt to update the board
-                playerBoard[row][column] = (char) (value + '0');
-                int moveOK = checkMove(row, column);
-
-                if (moveOK == 0) { // Valid move
-                    won = checkWon(); // Check if the game is won
-                    resultType = 0; // Success
+        switch (type) {
+            case 0:  // Regular move (placing a value)
+                if (referenceBoard[row][column] != 'X') {
+                    System.out.println("Cannot modify a preset value at row=" + row + ", column=" + column);
+                    resultType = 1; // Cannot modify preset values
                 } else {
-                    // Invalid move: revert the board to the previous state
-                    playerBoard[row][column] = referenceBoard[row][column];
-                    resultType = moveOK; // Return the type of conflict
-                }
-            }
-        } else if (type == 1) {
-            // Clear a single cell
-            playerBoard[row][column] = referenceBoard[row][column];
-        } else if (type == 2) {
-            // Clear an entire row
-            if (size >= 0) System.arraycopy(referenceBoard[row], 0, playerBoard[row], 0, size);
-        } else if (type == 3) {
-            // Clear an entire column
-            for (int i = 0; i < size; i++) {
-                playerBoard[i][column] = referenceBoard[i][column];
-            }
-        } else if (type == 4) {
-            // Clear a 3x3 grid
-            int startRow = (row / 3) * 3;
-            int startCol = (column / 3) * 3;
+                    playerBoard[row][column] = (char) (value + '0');
+                    referenceBoard[row][column] = (char) (value + '0'); // ✅ Update referenceBoard
 
-            for (int i = startRow; i < startRow + 3; i++) {
-                System.arraycopy(referenceBoard[i], startCol, playerBoard[i], startCol, 3);
-            }
-        } else if (type == 5) {
-            // Clear the entire board
-            for (int i = 0; i < 9; i++) {
-                System.arraycopy(referenceBoard[i], 0, playerBoard[i], 0, 9);
-            }
-        } else {
-            System.out.println("Unknown type: " + type);
-            playerBoard[row][column] = referenceBoard[row][column];
-            resultType = 5; // Unknown error
+                    int moveOK = checkMove(row, column);
+                    if (moveOK == 0) { // Move is valid
+                        won = checkWon();
+                    } else { // Invalid move: revert change
+                        playerBoard[row][column] = 'X';
+                        referenceBoard[row][column] = 'X';
+                        resultType = moveOK;
+                    }
+                }
+                break;
+
+            case 1: // Clear a single cell
+                if (referenceBoard[row][column] != 'X') {
+                    playerBoard[row][column] = 'X';  // ✅ Clear the cell
+                } else {
+                    resultType = 1; // Cannot clear preset values
+                }
+                break;
+
+            case 2: // Clear an entire row
+                for (int i = 0; i < size; i++) {
+                    if (referenceBoard[row][i] != 'X') {
+                        playerBoard[row][i] = 'X';
+                    }
+                }
+                resultType = 2;
+                break;
+
+            case 3: // Clear an entire column
+                for (int i = 0; i < size; i++) {
+                    if (referenceBoard[i][column] != 'X') {
+                        playerBoard[i][column] = 'X';
+                    }
+                }
+                resultType = 3;
+                break;
+
+            case 4: // Clear a 3x3 grid
+                int startRow = (row / 3) * 3;
+                int startCol = (column / 3) * 3;
+
+                for (int i = startRow; i < startRow + 3; i++) {
+                    for (int j = startCol; j < startCol + 3; j++) {
+                        if (referenceBoard[i][j] != 'X') {
+                            playerBoard[i][j] = 'X';
+                        }
+                    }
+                }
+                resultType = 4;
+                break;
+
+            case 5: // Reset the board (new game)
+                prepareForPlay();
+                resultType = 5;
+                break;
+
+            default:
+                System.out.println("Unknown clear type: " + type);
+                resultType = 5; // Unknown error
+                break;
         }
 
-        // Log the result of the update operation
         System.out.println("Result Type: " + resultType);
         return resultType;
     }
+
 
 
 

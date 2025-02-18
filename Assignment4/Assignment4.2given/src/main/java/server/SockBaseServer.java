@@ -18,9 +18,9 @@ class SockBaseServer implements Runnable {
 
     // Please use these as given so it works with our test cases
     static String menuOptions = "\nWhat would you like to do? \n 1 - to see the leader board \n 2 - to enter a game \n 3 - quit the game";
-    static String gameOptions = "\nChoose an action: \n (1-9) - Enter an int to specify the row you want to update \n c - Clear number \n r - New Board";
-    static String gameOption2 = "Choose an action: \n (1-9) - Enter an int to specify the column you want to update \n c - Clear number \n r - New Board ";
-    static  String gameOption3 = "Choose an action: \n (1-9) - Enter an int to specify the value you want to update \n c - Clear number \n r - New Board";
+    static String gameOptions = "\nChoose an action: \n (1-9) - Enter an int to specify the row you want to update ";
+    static String gameOption2 = "Choose an action: \n (1-9) - Enter an int to specify the column you want to update ";
+    static  String gameOption3 = "Choose an action: \n (1-9) - Enter an int to specify the value you want to update ";
 
     ServerSocket serv = null;
     InputStream in = null;
@@ -193,7 +193,7 @@ class SockBaseServer implements Runnable {
             // Start a new game with the given difficulty
             game.newGame(grading, difficulty);
 
-        String gameMenu = gameOptions + "\n\n" + gameOption2 + "\n\n" + gameOption3;
+        String gameMenu =  gameOptions + "\n\n" + gameOption2 + "\n\n" + gameOption3;
 
             System.out.println("New game started with difficulty: " + difficulty);
             System.out.println(game.getDisplayBoard()); // Print the current board for debugging
@@ -410,33 +410,74 @@ private Response updateRequest(Request op) throws IOException {
         }
 
     }
-
-
     private Response clearRequest(Request op) throws IOException {
-        int row = op.getRow();
-        int col = op.getColumn();
+        int row = op.getRow() - 1; // Adjust from 1-based to 0-based index
+        int col = op.getColumn() - 1;
         int value = op.getValue();
+        int type = op.getType();  // Type determines what to clear
 
-        // Use the updateBoard method to handle clearing logic
-        int resultType = game.updateBoard(row, col, value, value); // `value` specifies the type of clear operation
+        // Log the incoming request
+        System.out.println("Clear Request: row=" + (row + 1) + ", col=" + (col + 1) + ", value=" + value + ", type=" + type);
 
-        if (resultType == 0) {
-            return Response.newBuilder()
-                    .setResponseType(Response.ResponseType.PLAY)
-                    .setBoard(game.getDisplayBoard())
-                    .setPoints(game.getPoints())
-                    .setMenuoptions(gameOptions)
-                    .setNext(3)
-                    .build();
-        } else {
-            return Response.newBuilder()
-                    .setResponseType(Response.ResponseType.ERROR)
-                    .setErrorType(resultType)
-                    .setMessage("Error while clearing the board.")
-                    .setBoard(game.getDisplayBoard())
-                    .setMenuoptions(gameOptions)
-                    .setNext(3)
-                    .build();
+        // Call updateBoard with the provided type
+        int resultType;
+        if(type==0){
+             resultType = game.updateBoard(row, col, value, type);
+
+        }else {
+            resultType = game.updateBoard(row, col, 0, type);
+        }
+
+
+        // Log result type
+        System.out.println("Clear Request Result Type: " + resultType);
+        System.out.println("Updated Board:\n" + game.getDisplayBoard());
+
+        String gameMenu = gameOptions + "\n\n" + gameOption2 + "\n\n" + gameOption3;
+
+        switch (resultType) {
+            case 0: // Successfully cleared
+                return Response.newBuilder()
+                        .setResponseType(Response.ResponseType.PLAY)
+                        .setBoard(game.getDisplayBoard()) // Updated board
+                        .setPoints(game.getPoints())
+                        .setMessage("Clear operation successful!")
+                        .setMenuoptions(gameMenu)
+                        .setNext(3) // Stay in game menu
+                        .build();
+
+            case 1: // Error: Cannot clear preset values
+                return Response.newBuilder()
+                        .setResponseType(Response.ResponseType.ERROR)
+                        .setErrorType(1)
+                        .setMessage("Cannot clear preset values.")
+                        .setBoard(game.getDisplayBoard()) // Keep board visible
+                        .setMenuoptions(gameMenu)
+                        .setNext(3)
+                        .build();
+
+            case 2: // Successfully cleared a row
+            case 3: // Successfully cleared a column
+            case 4: // Successfully cleared a grid
+            case 5: // Successfully reset the board
+                return Response.newBuilder()
+                        .setResponseType(Response.ResponseType.PLAY)
+                        .setBoard(game.getDisplayBoard()) // Updated board
+                        .setPoints(game.getPoints())
+                        .setMessage("Successfully cleared section.")
+                        .setMenuoptions(gameMenu)
+                        .setNext(3) // Stay in game menu
+                        .build();
+
+            default: // Unknown error
+                return Response.newBuilder()
+                        .setResponseType(Response.ResponseType.ERROR)
+                        .setErrorType(5)
+                        .setMessage("Unexpected error while clearing.")
+                        .setBoard(game.getDisplayBoard())
+                        .setMenuoptions(gameOptions)
+                        .setNext(3)
+                        .build();
         }
     }
 

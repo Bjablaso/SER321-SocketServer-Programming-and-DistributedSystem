@@ -11,6 +11,11 @@ import java.util.Scanner;
 
 //import static server.SockBaseServer.menuOptions;
 
+/**
+ * Socket Base Client class check send request to the server to enter the Sudoku game and perform
+ * task such as Start (to start game, Play (to play game), LeadershipBoard (to view the board of all current player)
+ * This class hand Server Error and among Other thingg
+ */
 class SockBaseClient {
     public static void main (String[] args) throws Exception {
         Socket serverSock = null;
@@ -93,6 +98,12 @@ class SockBaseClient {
                         req = chooseMenu(Request.newBuilder(), response); // Back to main menu
                         break;
 
+//                    case LOST:
+//                        System.out.println("Sorry : You lost!");
+//                        System.out.println(response.getBoard());
+//                        System.out.println("Final Points: " + response.getPoints());
+//                        req = chooseMenu(Request.newBuilder(), response);
+
                     case ERROR:
                         System.out.println("Error: " + response.getMessage() + " Type: " + response.getErrorType());
                         if (response.getNext() == 1) {
@@ -100,9 +111,10 @@ class SockBaseClient {
                         } else if (response.getNext() == 2) {
                             req = chooseMenu(Request.newBuilder(), response); // Back to main menu
                         } else if (response.getNext() == 3) {
-                            req = gameMenu(Request.newBuilder(), response); // Back to game menu
+                            req = gamePlay(Request.newBuilder(), response); // send client back to game play because error took place in game play
                         } else {
                             System.out.println("Unhandled error type.");
+                            System.out.println(response.getBoard());
                             req = chooseMenu(Request.newBuilder(), response); // Default to main menu
                         }
                         break;
@@ -143,8 +155,9 @@ class SockBaseClient {
      */
     static Request.Builder chooseMenu(Request.Builder req, Response response) throws IOException {
         while (true) {
+
             System.out.println(response.getMenuoptions());
-            System.out.print("Enter a number 1-3: ");
+//            System.out.print("Enter a number 1-3: ");
             BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
             String menu_select = stdin.readLine();
             System.out.println(menu_select);
@@ -206,7 +219,11 @@ class SockBaseClient {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Choose what kind of clear by entering an integer (1 - 5)");
-        System.out.print(" 1 - Clear value \n 2 - Clear row \n 3 - Clear column \n 4 - Clear Grid \n 5 - Clear Board \n");
+        System.out.print(" 1 - Clear value" +
+                " \n 2 - Clear row " +
+                "\n 3 - Clear column " +
+                "\n 4 - Clear Grid" +
+                " \n 5 - Clear Board \n");
 
         String selection = stdin.readLine();
 
@@ -268,11 +285,12 @@ class SockBaseClient {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Choose coordinates of the value you want to clear");
-        System.out.print("Enter the row as an integer (1 - 9): ");
+        System.out.print("Enter the row as an integer (1 - 9):  - type 'exit' to quite ");
         String row = stdin.readLine();
 
         while (true) {
             if (row.equalsIgnoreCase("exit")) {
+                // return us to game manu not this //
                 return new int[]{Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE};
             }
             try {
@@ -305,7 +323,10 @@ class SockBaseClient {
         }
 
         coordinates[1] = Integer.parseInt(col);
+
         coordinates[2] = 1;
+        // need to add a type so that we can handle this appropriately
+
 
         return coordinates;
     }
@@ -334,8 +355,11 @@ class SockBaseClient {
         }
 
         coordinates[0] = Integer.parseInt(row);
+
+
         coordinates[1] = -1;
         coordinates[2] = 2;
+
 
         return coordinates;
     }
@@ -366,6 +390,7 @@ class SockBaseClient {
         coordinates[0] = -1;
         coordinates[1] = Integer.parseInt(col);
         coordinates[2] = 3;
+
         return coordinates;
     }
 
@@ -396,6 +421,7 @@ class SockBaseClient {
         coordinates[0] = Integer.parseInt(grid);
         coordinates[1] = -1;
         coordinates[2] = 4;
+
 
         return coordinates;
     }
@@ -442,7 +468,59 @@ class SockBaseClient {
         }
     }
 
-    static Request.Builder gamePlay(Request.Builder req, Response response) {
+    static Request.Builder gamePlay(Request.Builder req, Response response) throws Exception {
+
+        do {
+            System.out.println(" What action would you like to perform " +
+                    "\n m (Make Move) " +
+                    "\n c - clear number " +
+                    "\n r - New Board ?");
+            BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+            String command = stdin.readLine();
+
+            switch (command){
+                case "m":
+                    return req = makeMove(req, response);
+
+                case "c":
+                    int[] coordinat = boardSelectionClear();
+                    int row = coordinat[0];
+                    int col = coordinat[1];
+                    int clearType = coordinat[2];
+                    return req.setOperationType(Request.OperationType.CLEAR)
+                            .setRow(row)
+                            .setColumn(col)
+                            .setType(clearType);
+                case "r":
+                    return req = newGame(req);
+
+
+            }
+
+        }while (true);
+
+    }
+
+
+    static Request.Builder newGame(Request.Builder req) throws Exception {
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+
+        while (true) {
+            System.out.print("Enter difficulty (1-20): ");
+            String difficulty = stdin.readLine();
+            try {
+                int diff = Integer.parseInt(difficulty);
+                if (diff < 1 || diff > 20) throw new NumberFormatException();
+                req.setOperationType(Request.OperationType.START).setDifficulty(diff);
+                return req;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid difficulty. Please enter a number between 1 and 20.");
+            }
+            return req;
+        }
+    }
+
+    static  Request.Builder makeMove( Request.Builder req, Response response) {
         Scanner scanner = new Scanner(System.in);
 
         // Parse the menu options
@@ -503,9 +581,6 @@ class SockBaseClient {
                 .setValue(value);
     }
 
-
-
-
     static int[] boardSelectionUpdate() throws IOException {
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         int[] coordinates = new int[3];
@@ -551,49 +626,49 @@ class SockBaseClient {
 //        }
 //    }
 
-    static void handleGamePlay(InputStream in, OutputStream out) throws Exception {
-        Response response;
-        Request.Builder req = Request.newBuilder();
-
-        while (true) {
-            response = Response.parseDelimitedFrom(in);
-            System.out.println("Response: " + response);
-
-            switch (response.getResponseType()) {
-                case PLAY:
-                    System.out.println("Current Board:");
-                    System.out.println(response.getBoard());
-                    System.out.println("Points: " + response.getPoints());
-                    req = gameMenu(Request.newBuilder(), response);
-                    break;
-
-                case WON:
-                    System.out.println("Congratulations! You won the game!");
-                    System.out.println(response.getBoard());
-                    System.out.println("Final Points: " + response.getPoints());
-                    return;
-
-                case ERROR:
-                    System.out.println("Error: " + response.getMessage());
-                    if (response.getNext() == 2) { // Back to main menu
-                        req = chooseMenu(Request.newBuilder(), response);
-                    } else if (response.getNext() == 3) { // Back to game menu
-                        req = gameMenu(Request.newBuilder(), response);
-                    }
-                    break;
-
-                case BYE:
-                    System.out.println(response.getMessage());
-                    return;
-
-                default:
-                    System.out.println("Unhandled response type: " + response.getResponseType());
-                    break;
-            }
-
-            req.build().writeDelimitedTo(out);
-        }
-    }
+//    static void handleGamePlay(InputStream in, OutputStream out) throws Exception {
+//        Response response;
+//        Request.Builder req = Request.newBuilder();
+//
+//        while (true) {
+//            response = Response.parseDelimitedFrom(in);
+//            System.out.println("Response: " + response);
+//
+//            switch (response.getResponseType()) {
+//                case PLAY:
+//                    System.out.println("Current Board:");
+//                    System.out.println(response.getBoard());
+//                    System.out.println("Points: " + response.getPoints());
+//                    req = gameMenu(Request.newBuilder(), response);
+//                    break;
+//
+//                case WON:
+//                    System.out.println("Congratulations! You won the game!");
+//                    System.out.println(response.getBoard());
+//                    System.out.println("Final Points: " + response.getPoints());
+//                    return;
+//
+//                case ERROR:
+//                    System.out.println("Error: " + response.getMessage());
+//                    if (response.getNext() == 2) { // Back to main menu
+//                        req = chooseMenu(Request.newBuilder(), response);
+//                    } else if (response.getNext() == 3) { // Back to game menu
+//                        req = gameMenu(Request.newBuilder(), response);
+//                    }
+//                    break;
+//
+//                case BYE:
+//                    System.out.println(response.getMessage());
+//                    return;
+//
+//                default:
+//                    System.out.println("Unhandled response type: " + response.getResponseType());
+//                    break;
+//            }
+//
+//            req.build().writeDelimitedTo(out);
+//        }
+//    }
 
 
 

@@ -48,7 +48,8 @@ message Response {
     optional string message = 7; // error or other messages
     optional int32 errorType = 9; // type of error see PROTOCOL.md
     optional int32 points = 8; // points
-    optional int32 next = 10; // Tells the client what it wants next 1 - name request, 2 - main menu, 3 - game menu
+    optional int32 next = 10; // Tells the client what it wants next 1 -
+    // name request, 2 - main menu, 3 - game menu
 
 
 
