@@ -1,5 +1,8 @@
 package Client;
 
+import buffers.RequestProtos.*;
+import buffers.ResponseProtos.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,7 +30,8 @@ public class ClientComputer {
             System.exit(1);
         }
 
-//        Request op;  // request
+      Request op; //  = inital().build(); // inial request
+       Response response;
 
         try{
             serverSocket = new Socket(host, port);
@@ -38,6 +42,20 @@ public class ClientComputer {
             readInput = serverSocket.getInputStream();
 
             while(true){
+
+                response = Response.parseDelimitedFrom(readInput);
+
+                System.out.println("Server Responded with " + response.toString());
+
+                Request.Builder req = Request.newBuilder();
+
+                switch (response.getResponseType()){
+                    case GREATING :
+                        System.out.println(response.toString());
+                        //sent request back to server
+                        break;
+                        
+                }
 
 
             }

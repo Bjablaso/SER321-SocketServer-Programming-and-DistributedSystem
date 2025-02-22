@@ -7,11 +7,12 @@ option java_outer_classname = "ResponseProtos";
 
 message Response{
   enum ResponseType {
-    PARTIAL_SUM = 0;      // Node sends computed sum to Leader
-    VERIFY_RESULT = 1;    // Node checks and agrees/disagrees on another node's sum
-    FINAL_SUM = 2;        // Leader sends final sum to Client (only if all Nodes agree)
-    CONSENSUS_RESULT = 3; // Leader informs Nodes about final sum agreement status
-    ERROR = 4;            // Leader or Node sends an error message
+    GREATING = 0;
+    PARTIAL_SUM = 1;      // Node sends computed sum to Leader
+    VERIFY_RESULT = 2;    // Node checks and agrees/disagrees on another node's sum
+    FINAL_SUM = 3;        // Leader sends final sum to Client (only if all Nodes agree)
+    CONSENSUS_RESULT = 4; // Leader informs Nodes about final sum agreement status
+    ERROR = 5;            // Leader or Node sends an error message
   }
 
   optional ResponseType responseType = 1 [default = PARTIAL_SUM];
