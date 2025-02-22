@@ -3,9 +3,7 @@ package Client;
 import buffers.RequestProtos.*;
 import buffers.ResponseProtos.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientComputer {
@@ -30,7 +28,7 @@ public class ClientComputer {
             System.exit(1);
         }
 
-      Request op; //  = inital().build(); // inial request
+      Request op =   initalRequest().build(); // inial request
        Response response;
 
         try{
@@ -54,7 +52,7 @@ public class ClientComputer {
                         System.out.println(response.toString());
                         //sent request back to server
                         break;
-                        
+
                 }
 
 
@@ -65,6 +63,17 @@ public class ClientComputer {
             System.exit(1);
         }
 
+    }
+
+    static Request.Builder initalRequest() throws IOException{
+        System.out.println("Please provide name to Server : ");
+
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String strToSend = stdin.readLine();
+
+        return Request.newBuilder()
+                .setOperationType(Request.OperationType.CLIENTNAME)
+                .setSenderId(strToSend);
     }
 
 
