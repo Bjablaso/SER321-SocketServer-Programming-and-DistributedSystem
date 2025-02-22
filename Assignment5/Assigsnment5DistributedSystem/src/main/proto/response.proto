@@ -1,0 +1,26 @@
+syntax = "proto2";
+
+package operation;
+
+option java_package = "buffers";
+option java_outer_classname = "ResponseProtos";
+
+message Response{
+  enum ResponseType {
+    PARTIAL_SUM = 0;      // Node sends computed sum to Leader
+    VERIFY_RESULT = 1;    // Node checks and agrees/disagrees on another node's sum
+    FINAL_SUM = 2;        // Leader sends final sum to Client (only if all Nodes agree)
+    CONSENSUS_RESULT = 3; // Leader informs Nodes about final sum agreement status
+    ERROR = 4;            // Leader or Node sends an error message
+  }
+
+  optional ResponseType responseType = 1 [default = PARTIAL_SUM];
+  optional string senderId = 2;         // Who sent the response (Node, Leader)
+  optional int32 partialSum = 3;        // Computed sum from a Node
+  optional int32 finalSum = 4;          // Final sum calculated by Leader
+  optional bool consensusPassed = 5;    // Whether all Nodes agreed on the final sum
+  optional bool verificationStatus = 6; // A Node's agreement (true = yes, false = no)
+  optional int64 timeTaken = 7;         // Computation time in milliseconds
+  optional string errorMessage = 8;     // Error details if something fails
+
+}
