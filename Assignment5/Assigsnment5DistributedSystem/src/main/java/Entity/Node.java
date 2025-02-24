@@ -1,5 +1,10 @@
 package Entity;
 
+import Control.Leader;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Node {
@@ -8,47 +13,40 @@ public class Node {
     private int sum;
     private int checksum = 0;
     private int runningState;
-    private int[] data;
-    private long delay;
+    private Map<Integer, List<Integer>> historyCache;
+    private Map<Integer, Integer>  finalSum;
+
+    private long delay = 0;
     boolean fault = false;
     boolean dataConsensus = false;
 //    boolean leaderConsensus = false;
 
 
-    private Map<Node, Integer> otherResult; // checksum property
+//    private Map<Node, Integer> otherResult; // checksum property
 
-    public Node( String id, int[] data, long delay) {
-        this.data = data;
-        this.delay = delay;
+    public Node(String id) {
         this.id = id;
         this.sum = 0;
         this.checksum = 0;
         this.runningState = 0;
+        this.historyCache = new HashMap<>();
+        this.finalSum = new HashMap<>();
     }
 
-
-    public int getSum() {
-        return sum;
+    public void datahistory(Integer term, List<Integer> data) {
+        historyCache.put(term, data);
     }
 
-    public int[] getData() {
-        return data;
+    public void finalSum(Integer term, Integer sum) {
+        finalSum.put(term, sum);
+
     }
 
-    public long getDelay() {
-        return delay;
-    }
-
-    public boolean isFault() {
-        return fault;
-    }
-
-    public boolean isDataConsensus() {
-        return dataConsensus;
+    public List<Integer> finddatahistory(Integer term) {
+        return historyCache.get(term);
     }
 
     public String getId() {
         return id;
     }
-
 }

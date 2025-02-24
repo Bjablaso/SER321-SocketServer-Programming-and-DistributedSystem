@@ -13,6 +13,9 @@ message Response{
     FINAL_SUM = 3;        // Leader sends final sum to Client (only if all Nodes agree)
     CONSENSUS_RESULT = 4; // Leader informs Nodes about final sum agreement status
     ERROR = 5;            // Leader or Node sends an error message
+    DISCONNECT = 6;
+    ACKNOWLEDGE = 7;
+    RESULT = 8;
   }
 
   optional ResponseType responseType = 1 [default = PARTIAL_SUM];
@@ -23,5 +26,9 @@ message Response{
   optional bool verificationStatus = 6; // A Node's agreement (true = yes, false = no)
   optional int64 timeTaken = 7;         // Computation time in milliseconds
   optional string errorMessage = 8;     // Error details if something fails
+  optional int32 errorType = 9; // type of error see PROTOCOL.md
+  optional string disconnectSafely = 10;
+  optional bool accepted = 11;
+  repeated  int32  portion = 12;
 
 }

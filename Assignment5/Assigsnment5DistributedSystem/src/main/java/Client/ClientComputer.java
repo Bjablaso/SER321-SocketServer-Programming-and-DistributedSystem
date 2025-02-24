@@ -5,6 +5,8 @@ import buffers.ResponseProtos.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ClientComputer {
     public static void main(String[] args) throws Exception {
@@ -48,9 +50,27 @@ public class ClientComputer {
                 Request.Builder req = Request.newBuilder();
 
                 switch (response.getResponseType()){
-                    case GREATING :
-                        System.out.println(response.toString());
-                        //sent request back to server
+                    case ACKNOWLEDGE:
+                        if(!response.getAccepted()){
+                            System.out.println(response.getErrorMessage().toString());
+                            req = dataMessanger();
+
+                        }else {
+                            req = initalRequest();
+                        }
+
+                        break;
+
+                    case RESULT:
+
+                        break;
+
+                    case DISCONNECT:
+
+                        break;
+
+
+                    case ERROR:
                         break;
 
                 }
@@ -61,12 +81,14 @@ public class ClientComputer {
         }catch (IOException e){
             System.out.println("[Server connection failed [Server-Offline]");
             System.exit(1);
+        }finally {
+            exitAndClose(readInput, writeOutput, serverSocket);
         }
 
     }
 
     static Request.Builder initalRequest() throws IOException{
-        System.out.println("Please provide name to Server : ");
+        System.out.println("Please provide your name to Server : ");
 
         BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
         String strToSend = stdin.readLine();
@@ -74,6 +96,48 @@ public class ClientComputer {
         return Request.newBuilder()
                 .setOperationType(Request.OperationType.CLIENTNAME)
                 .setSenderId(strToSend);
+    }
+
+    static Request.Builder dataMessanger() throws IOException{
+
+        System.out.println("Please provide a list of number for the server : ");
+
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String strToSend = stdin.readLine();
+
+        Request.Builder req = Request.newBuilder()
+                .setOperationType(Request.OperationType.DATA)
+                .setNumbers(strToSend);
+
+        return  req;
+    }
+
+    static Request.Builder  disconnectResponse(Response response){
+
+
+        return null;
+    }
+
+
+    static void exitAndClose(InputStream in, OutputStream out, Socket serverSock){
+        try {
+            if (in != null) in.close();
+        } catch (IOException e) {
+            System.out.println("Failed to close input stream: " + e.getMessage());
+        }
+
+        try {
+            if (out != null) out.close();
+        } catch (IOException e) {
+            System.out.println("Failed to close output stream: " + e.getMessage());
+        }
+        try {
+            if (serverSock != null) serverSock.close();
+        } catch (IOException e) {
+            System.out.println("Failed to close socket: " + e.getMessage());
+        }
+        System.exit(0);
+
     }
 
 

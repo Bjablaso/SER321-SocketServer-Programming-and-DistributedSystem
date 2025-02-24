@@ -19,7 +19,7 @@ message Request {
 
   optional OperationType operationType = 1 [default = CLIENTNAME];
   optional string senderId = 2;         // Unique identifier for Client, Leader, or Node
-  repeated int32 numbers = 3;           // List of numbers assigned to a Node
+  optional string numbers = 3;           // what send to leader
   optional int64 delay = 4;             // Delay in milliseconds before each sum operation
   optional int32 partialSum = 5;        // Nodes send computed sum result back to Leader
   optional bool faulty = 6;             // If true, the node simulates a fault (incorrect sum)
@@ -28,8 +28,11 @@ message Request {
   optional string originalNodeId = 9;   // The Node that originally computed the sum (for verification)
   repeated int32 originalNumbers = 10;  // The numbers originally assigned to the other Node
   optional int32 reportedSum = 11;      // The sum reported by the original Node
+  repeated int32 portion = 13; // what send to each node
 
+  optional Connection connectiontType = 12 [default = CONNECT];
 }
+
 
 enum Connection {
   CONNECT = 0;      // When Client connects to Server
@@ -37,7 +40,6 @@ enum Connection {
   CHECK = 2;        // When Server (Leader) checks if a Node is alive (heartbeat)
   LOST = 3;         // When a Leader or Node disconnects
 }
-
 
 
 message LogMessage {
