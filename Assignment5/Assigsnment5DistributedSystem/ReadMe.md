@@ -1,39 +1,46 @@
-# Distributed Calculation 
+# Distributed Sum 
 
-### **Overview of the Distributed System**
+### **Overview of the Distributed Sum**
 
-This system demonstrates a **distributed computing model** designed to efficiently divide and 
-process a list of integers across multiple computing nodes. The primary objective is to perform
-a **simple addition operation** in parallel while ensuring accuracy and fault tolerance through 
-a **leader election and consensus mechanism**. The system follows a structured workflow where
-tasks are distributed, computations are verified, and results are returned to the client only
-when all nodes agree on the correctness of the calculations.
+This project demonstrates a distributed computing model designed to efficiently divide 
+and process a list of integers across multiple computing nodes. The primary objective 
+is to perform parallel addition operations while ensuring accuracy and fault tolerance 
+through task distribution and consensus validation.
 
-The process begins with the **client**, which provides an input list of integers and a delay time 
-for processing. This data is sent to the **leader**, a node that is elected dynamically through
-a **consensus algorithm** among all available nodes. The leader is responsible for dividing the 
-input list into equal subsets and distributing them among the nodes for independent computation.
-Each **node** then performs an **addition operation** on its assigned subset and returns the **partial 
-sum** to the leader.
+The system follows a structured workflow where:
 
-Once all partial sums are received, the leader initiates a **cross-verification process**, 
-where each node is assigned the dataset and computed sum of another node. The nodes independently 
-recompute the sums and return a **verification response** indicating whether the original result
-was correct. If all nodes confirm the accuracy of the computations, the leader **aggregates the 
-partial sums** to produce the **final sum**, which is then sent back to the client along with the 
-computation time. However, if any node detects an inconsistency in the sum verification process, 
-the leader **rejects the result** and informs the client that consensus was not achieved.
+- Tasks are distributed among multiple computing nodes.
+- Computations are verified independently by each node.
+- Results are only returned to the client when all nodes agree on correctness.
 
-To maintain system reliability, the system implements **fault tolerance mechanisms**. Nodes 
-regularly exchange **heartbeat messages** to check each other’s availability. If a node fails,
-the leader can **redistribute tasks** to maintain execution. Additionally, if the **leader node fails**,
-the remaining nodes initiate a **new leader election process**, ensuring continuous system operation
-without manual intervention.
+#### System Components & Workflow
 
-This system effectively demonstrates key principles of **distributed computing, parallel processing, 
-leader election, and consensus validation**. By distributing computational tasks among multiple nodes,
-it optimizes processing efficiency, reduces the time required for computation, and ensures **accuracy 
-and fault resilience** through a collaborative verification mechanism.
+1) Client: Provides an input list of integers and a delay time for processing. 
+This data is sent to the Leader
+
+##### Leader:
+
+- Receives the list and divides it into equal subsets.
+- Distributes these subsets among nodes for parallel computation.
+- Performs a cross-verification process after collecting results.
+
+##### Nodes:
+
+- Perform addition operations on assigned subsets.
+- Return partial sums to the leader.
+- Recompute sums from another node to verify correctness.
+
+##### Reliability & Fault Tolerance
+
+- Heartbeat messages: Nodes periodically check each other’s availability.
+- Task redistribution: If a node fails, the leader reassigns tasks.
+
+This system effectively demonstrates key principles of distributed computing, 
+parallel processing, and consensus validation. By distributing computational 
+tasks among multiple nodes, it optimizes processing efficiency, reduces computation 
+time, and ensures accuracy and fault resilience through a collaborative verification 
+mechanism.
+
 
 ### **How This Works in the System**
 
