@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 
 import java.util.Scanner;
+
+
 public class ClientComputer {
     public static void main(String[] args) {
         Socket serverSocket = null;
@@ -37,16 +39,13 @@ public class ClientComputer {
             writeOutput = serverSocket.getOutputStream();
             readInput = serverSocket.getInputStream();
 
+            // Send initial name request
+            Request op = initialRequest().build();
+            op.writeDelimitedTo(writeOutput);
+            writeOutput.flush();
+            System.out.println("Debug: Sending request: " + op.toString());
+
             while (true) {
-
-                Request op = initialRequest().build();
-                System.out.println("Debug: Sending request: " + op.toString());
-
-
-                op.writeDelimitedTo(writeOutput);
-                writeOutput.flush();
-
-
                 System.out.println("Waiting for server response...");
                 Response response = Response.parseDelimitedFrom(readInput);
 
@@ -57,29 +56,25 @@ public class ClientComputer {
 
                 System.out.println("Server Responded: " + response.toString());
 
-                Request.Builder request = Request.newBuilder();
-
+                Request.Builder request = null; 
                 switch (response.getResponseType()) {
                     case ACKNOWLEDGE:
                         if (!response.getAccepted()) {
                             System.out.println(response.getErrorMessage());
-                            request = initialRequest(); // Ask user for name again if rejected
+                            request = initialRequest();
                         } else {
-                            request = dataMessenger(); // Move to next step
+                            request = dataMessenger();
                         }
                         break;
 
                     case FINAL_SUM:
-                        System.out.println("Final Computation Result: " + response.getPartialSum());
+                        System.out.println( "The Sum of all the number you inputted is : " + response.getFinalSum());
 
-//                        if (!askToContinue(scanner)) {
-//                            System.out.println("Closing connection...");
-//                            exitAndClose(readInput, writeOutput, serverSocket);
-//                            return;
-//                        } else {
-//                            request = initialRequest(scanner);
-//                        }
-                        break;
+                        if(!askToContinue()){
+                            exitAndClose(readInput, writeOutput, serverSocket);
+                        }
+                        request = dataMessenger();
+                        return;
 
                     case DISCONNECT:
                         System.out.println("Server has disconnected. Closing connection...");
@@ -88,10 +83,7 @@ public class ClientComputer {
 
                     case ERROR:
                         System.out.println("Error received from server: " + response.getErrorMessage());
-
-                        if(response.getErrorType() == 0){
-                            request = initialRequest();
-                        }
+                        request = initialRequest(); // Restart properly
                         break;
 
                     default:
@@ -99,13 +91,14 @@ public class ClientComputer {
                         break;
                 }
 
-
                 request.build().writeDelimitedTo(writeOutput);
-                writeOutput.flush(); // Ensure the request is fully sent
+                writeOutput.flush();
             }
         } catch (IOException e) {
             System.out.println("[Server connection failed - Server might be offline]: " + e.getMessage());
             System.exit(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             exitAndClose(readInput, writeOutput, serverSocket);
         }
@@ -137,15 +130,20 @@ public class ClientComputer {
                 .setNumbers(numericValue);
     }
 
-    static boolean askToContinue(Scanner scanner) {
+    static boolean askToContinue() throws InterruptedException, IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String answer;
-        do {
-            System.out.print("Do you want to continue? (yes/no): ");
-            answer = scanner.nextLine().trim().toLowerCase();
-            if (!answer.equals("yes") && !answer.equals("no")) {
-                System.out.println("Invalid input. Type 'yes' to continue or 'no' to exit.");
-            }
-        } while (!answer.equals("yes") && !answer.equals("no"));
+
+
+            do {
+                System.out.print("Do you want to continue? (yes/no): ");
+                answer = reader.readLine();
+                if (!answer.equals("yes") && !answer.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Type 'yes' to continue or 'no' to exit.");
+                    Thread.sleep(500);
+                }
+            } while (!answer.equalsIgnoreCase("yes") && !answer.equalsIgnoreCase("no"));
+
 
         return answer.equals("yes");
     }

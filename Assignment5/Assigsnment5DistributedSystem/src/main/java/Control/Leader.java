@@ -12,17 +12,17 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Leader implements Runnable {
-    private List<NodeComputer> activeNodes; // List of active nodes
-    private Map<NodeComputer, List<Integer>> assignedTasks; // Tracks node-task mapping
-    private Map<NodeComputer, Integer> pendingResults; // Stores partial sums
-    private Map<NodeComputer, Boolean> consensusResults; // Stores verification results
+    private List<NodeComputer> activeNodes;
+    private Map<NodeComputer, List<Integer>> assignedTasks;
+    private Map<NodeComputer, Integer> pendingResults;
+    private Map<NodeComputer, Boolean> consensusResults;
     private ExecutorService threadPool;
     private Socket clientSocket;
     private InputStream in;
     private OutputStream out;
     private String currentUserid = null;
     private int divisiblePart = 3;
-    private long nodeDelay = 3000;
+    private long nodeDelay = 1000;
 
     public Leader(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -54,13 +54,21 @@ public class Leader implements Runnable {
         try {
             while (true) {
                 Request op = Request.parseDelimitedFrom(in);
-                System.out.println("Got request: " + op.toString());
+                if (op == null) {
+                    System.out.println("Received null request, closing connection...");
+                    break;
+                }
 
+                System.out.println("Got request: " + op.toString());
                 Response response;
+
                 switch (op.getOperationType()) {
                     case CLIENTNAME:
                         response = nameRequest(op);
+                        response.writeDelimitedTo(out);
+                        System.out.println("Client acknowledged, waiting for data...");
                         break;
+
                     case DATA:
                         if (!op.hasNumbers()) {
                             response = error(0, "Try again");
@@ -68,18 +76,20 @@ public class Leader implements Runnable {
                             startThread(op);
                             response = finalizeComputation();
                         }
-                        break;
+                        response.writeDelimitedTo(out);
+                        return;  // Exit after processing data
                     default:
                         response = error(2, "Unsupported request");
+                        response.writeDelimitedTo(out);
                         break;
                 }
-                response.writeDelimitedTo(out);
             }
         } catch (Exception e) {
             Response error = error(0, "Unexpected server error: " + e.getMessage());
             error.writeDelimitedTo(out);
         } finally {
             System.out.println("Client ID " + currentUserid + " disconnected.");
+            exitAndClose(in, out, clientSocket);
         }
     }
 
@@ -133,7 +143,8 @@ public class Leader implements Runnable {
         );
 
         try {
-            List<Future<Response>> results = threadPool.invokeAll(tasks);
+            List<Future<Response>> results = threadPool.invokeAll(tasks, 10, TimeUnit.SECONDS);
+
             for (int i = 0; i < results.size(); i++) {
                 Response response = results.get(i).get();
                 pendingResults.put(activeNodes.get(i), response.getPartialSum());
@@ -183,7 +194,7 @@ public class Leader implements Runnable {
         return Response.newBuilder()
                 .setResponseType(Response.ResponseType.FINAL_SUM)
                 .setAccepted(allVerified)
-                .setPartialSum(finalSum)
+                .setFinalSum(finalSum)
                 .build();
     }
 
