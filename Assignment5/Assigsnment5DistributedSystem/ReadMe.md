@@ -76,7 +76,7 @@ mechanism.
 ````
 - Nodes → Leader (Agree or Disagree with Sum)
 
-✅  If correct:
+ If correct:
 ````json
 {
   "responseType": "VERIFY_RESULT",
@@ -85,7 +85,7 @@ mechanism.
 }
 
 ````
-❌ If incorrect:
+ If incorrect:
 
 ````json
 {
@@ -98,7 +98,7 @@ mechanism.
 
 - Leader → Client
 
-✅  If all Nodes agree (Consensus Passed):
+  If all Nodes agree (Consensus Passed):
 ````json
 {
   "responseType": "FINAL_SUM",
@@ -110,7 +110,7 @@ mechanism.
 
 ````
 
-❌ If even one Node disagrees:
+ If even one Node disagrees:
 
 ````json
 {
