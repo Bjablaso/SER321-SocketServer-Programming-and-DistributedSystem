@@ -4,140 +4,81 @@ import Entity.Node;
 import buffers.RequestProtos.*;
 import buffers.ResponseProtos.*;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class NodeComputer extends Thread {
+public class NodeComputer implements Callable<Response> {
     private Node newNode;
     private Leader leaderComputer;
-    private BlockingQueue<Request> taskQueue;
-    private int counter;
+    private Request assignedTask;
+    private long delay;
+    private int processCounter = 0;
 
-
-    public NodeComputer( Node newNode,  Leader leaderComputer) {
+    public NodeComputer(Node newNode, Leader leaderComputer) {
         this.newNode = newNode;
         this.leaderComputer = leaderComputer;
-        this.taskQueue = new LinkedBlockingQueue<>();
-        this.counter = 0;
     }
 
     @Override
-    public void run() {
-        while (true) {
-            try{
-
-                Request request = taskQueue.take();// take from queue
-
-                if(request.getOperationType() == Request.OperationType.INFORM){// check if task is completed
-                    newNode.finalSum(counter, request.getFinalSum());// log thread running state
-                    break; // exit loop when task is complete
-                }
-
-                Response.Builder response = taskProcesser(request); //build response
-                leaderComputer.receiveNodeResponse(response); // reply back to leader
-
-
-
-
-
-            }catch (InterruptedException e){
-                System.out.println(newNode.getId() + " was interrupted.");
-                break;
-            }
-
-        }
+    public Response call() throws Exception {
+        return taskProcessor();
     }
 
-    public Response.Builder taskProcesser(Request req)  {
+    public Response taskProcessor() throws InterruptedException {
         Response.Builder respond = Response.newBuilder();
-        List<Integer> recievingData;
+        List<Integer> receivingData;
         List<Integer> sendingData;
 
-        switch (req.getOperationType()){
-            case CALCULATE :
-                   recievingData =req.getPortionList();
-                    int partialSum = calculation(recievingData);
-
-                     sendingData = newNode.finddatahistory(counter);
-
-                    respond.setResponseType(Response.ResponseType.PARTIAL_SUM)
-                            .setSenderId(newNode.getId())
-                            .addAllPortion(sendingData)
-                            .setPartialSum(partialSum);
+        switch (assignedTask.getOperationType()) {
+            case CALCULATE:
+                receivingData = assignedTask.getPortionList();
+                int partialSum = calculateSum(receivingData);
+                delay = assignedTask.getDelay();
+                Thread.sleep(delay);
+                sendingData = newNode.findDataHistory(processCounter);
+                processCounter++;
+                respond.setResponseType(Response.ResponseType.PARTIAL_SUM)
+                        .setSenderId(newNode.getId())
+                        .addAllPortion(sendingData)
+                        .setPartialSum(partialSum);
                 break;
             case VERIFY_SUM:
-                    recievingData = req.getPortionList();
-                    int nummber = req.getPartialSum();
-
-                    if(!verifySum(recievingData, nummber )){
-                        respond.setResponseType(Response.ResponseType.CONSENSUS_RESULT)
-                                .setSenderId(newNode.getId())
-                                .setAccepted(false)
-                                .setErrorMessage("Result doesn't match");
-                    }
-
-                    respond.setResponseType(Response.ResponseType.VERIFY_RESULT)
-                            .setSenderId(newNode.getId())
-                            .setAccepted(true);
-
-            default :
-                System.out.println("Error Here");
+                receivingData = assignedTask.getPortionList();
+                int number = assignedTask.getPartialSum();
+                Thread.sleep(delay);
+                boolean isValid = verifySum(receivingData, number);
+                respond.setResponseType(Response.ResponseType.VERIFY_RESULT)
+                        .setSenderId(newNode.getId())
+                        .setAccepted(isValid);
+                break;
+            case INFORM:
+                int sum = assignedTask.getFinalSum();
+                Thread.sleep(delay);
+                newNode.finalSum(processCounter, sum);
+                break;
+            default:
+                respond.setResponseType(Response.ResponseType.ERROR)
+                        .setErrorMessage("Invalid request");
         }
-
-        return respond;
+        return respond.build();
     }
 
-    public int calculation(List<Integer> array){
-        int sum = 0;
-
-
-        newNode.datahistory(counter, array);
-        counter++;
-
-        if(array.size() == 1){
-            sum = array.getFirst();
-
-            return sum;
-        }
-
-        for (Integer integer : array) {
-            sum += integer;
-        }
-
-        return sum;
+    public int calculateSum(List<Integer> array) {
+        newNode.dataHistory(processCounter, array);
+        return array.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public boolean verifySum(List<Integer> array, int sum){
-        int mySum = 0;
-
-        if(array.size() == 1){
-            mySum = array.getFirst();
-        }else {
-            for (Integer integer : array) {
-                mySum += integer;
-            }
-        }
-
-        return mySum == sum;
+    public boolean verifySum(List<Integer> array, int sum) {
+        return array.stream().mapToInt(Integer::intValue).sum() == sum;
     }
 
-    public void assignTask(Request request) {
-        try {
-            taskQueue.put(request);
-        } catch (InterruptedException e) {
-            System.out.println(newNode.getId() + " failed to receive task.");
-        }
+    public void assignTask(Request task) {
+        this.assignedTask = task;
     }
-
 
     public Node getNewNode() {
         return newNode;
     }
-
-
 }

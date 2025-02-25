@@ -9,48 +9,28 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.*;
 
-import static buffers.ResponseProtos.Response.ResponseType.FINAL_SUM;
-
-public class Leader implements Runnable{
-
-
-    private String leaderId;                     // Unique identifier for the leader
-    private List<NodeComputer> activeNodes;              // List of active nodes
-    private Map<NodeComputer, int[]> assignedTasks;      // Tracks which node gets which data
-    private Map<NodeComputer, Integer> pendingResults;   // Stores partial sums from nodes
-    private Map<NodeComputer, Boolean> consensusResults; // Stores consensus verification results
-    private long heartbeatInterval = 5000;  // Check every 5 seconds
-    private long timeoutThreshold = 10000; // Mark as lost if no response in 10 sec
-    private boolean faultToleranceEnabled;       // Whether fault handling is enabled
-    private long nodeDelay = 8000;
-    private String currentUserid = null;
-    private  int currentState = 0;
-    private int divisiblePart = 3;
-
+public class Leader implements Runnable {
+    private List<NodeComputer> activeNodes; // List of active nodes
+    private Map<NodeComputer, List<Integer>> assignedTasks; // Tracks node-task mapping
+    private Map<NodeComputer, Integer> pendingResults; // Stores partial sums
+    private Map<NodeComputer, Boolean> consensusResults; // Stores verification results
     private ExecutorService threadPool;
+    private Socket clientSocket;
+    private InputStream in;
+    private OutputStream out;
+    private String currentUserid = null;
+    private int divisiblePart = 3;
+    private long nodeDelay = 3000;
 
-
-    Socket clientSocket = null;
-    InputStream in = null;
-    OutputStream out = null;
-
-
-    private static Leader instance;
-
-    // Constructor
-    public Leader( Socket clientSocket ) {
+    public Leader(Socket clientSocket) {
         this.clientSocket = clientSocket;
         this.assignedTasks = new HashMap<>();
         this.pendingResults = new HashMap<>();
         this.consensusResults = new HashMap<>();
         this.activeNodes = new ArrayList<>();
-        this.threadPool = Executors.newFixedThreadPool(3); // Pool of 3 worker threads
-        this.clientSocket = clientSocket;
-
+        this.threadPool = Executors.newFixedThreadPool(3); // 3 worker nodes
 
         try {
             this.in = clientSocket.getInputStream();
@@ -60,139 +40,74 @@ public class Leader implements Runnable{
         }
     }
 
-
-
     @Override
     public void run() {
         try {
             spawnInstance();
         } catch (IOException e) {
-            System.out.println("Client " + currentUserid + " could not connect to server: " + "\n\n"+ e.getMessage());
-            exitAndClose(in,out,clientSocket);
+            System.out.println("Client " + currentUserid + " could not connect to server: " + e.getMessage());
+            exitAndClose(in, out, clientSocket);
         }
     }
 
     public void spawnInstance() throws IOException {
-        try{
-           while(true){
-                 Response response;
-//               String prompt;
-//                do{
-//                    System.out.println("Would you like to stay connected ? (yes/no)");
-//                    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//                    prompt = in.readLine();
-//
-//                }while (prompt.equalsIgnoreCase("yes") || prompt.equalsIgnoreCase("no"));
-//
-//                if(prompt.equalsIgnoreCase("no")){
-//                    // disconnect use while continuing the brogram
-//                    // call disconnect sefely method
-//                    response = disconnectMe("Server Terminating Your connection..");
-//                    response.writeDelimitedTo(out);
-//                    break;
-//                }
+        try {
+            while (true) {
+                Request op = Request.parseDelimitedFrom(in);
+                System.out.println("Got request: " + op.toString());
 
-                // communication with clean
-               Request op = Request.parseDelimitedFrom(in);
-               System.out.println("Got request: " + op.toString());
-
-
-               switch (op.getOperationType()){
-                   case CLIENTNAME :
-                           response = nameRequest(op);
-                       break;
-                   case DATA:
-                       if(!op.hasNumbers()){
-                           response = error(0, "Try again");
-                       }
-                       startThread(op);
-                      response = processData();
-
-                       break;
-               }
-
+                Response response;
+                switch (op.getOperationType()) {
+                    case CLIENTNAME:
+                        response = nameRequest(op);
+                        break;
+                    case DATA:
+                        if (!op.hasNumbers()) {
+                            response = error(0, "Try again");
+                        } else {
+                            startThread(op);
+                            response = finalizeComputation();
+                        }
+                        break;
+                    default:
+                        response = error(2, "Unsupported request");
+                        break;
+                }
+                response.writeDelimitedTo(out);
             }
-
-        }catch (SocketException se){
-            System.out.println("Error Early  disconnection");
-
-        }catch(Exception e){
-           Response error = error(0, "Unexpected server error: " + e.getMessage());
+        } catch (Exception e) {
+            Response error = error(0, "Unexpected server error: " + e.getMessage());
             error.writeDelimitedTo(out);
-        }finally {
+        } finally {
             System.out.println("Client ID " + currentUserid + " disconnected.");
         }
     }
 
-    private Response error(int err, String field) throws IOException {
-        String message = field;
-        int type = err;
-
+    private Response nameRequest(Request req) {
         Response.Builder resp = Response.newBuilder();
-
-        switch (type){
-            case 1:
-                message = message + "\nError: required field missing or empty";
-                break;
-            case 2:
-                message = message + "\nError: request not supported";
-                break;
-            default:
-                message = message + "\nError: cannot process your request";
-                type = 0;
-                break;
-
-        }
-        resp
-                .setResponseType(Response.ResponseType.ERROR)
-                .setErrorType(type)
-                .setErrorMessage(message);
-
-
-        return  resp.build();
-    }
-
-//    private Response disconnectMe(String message){
-//        Response.Builder resp = Response.newBuilder();
-//        resp.setResponseType(Response.ResponseType.DISCONNECT)
-//                .setDisconnectSafely(message);
-//
-//        return resp.build();
-//    }
-
-    private Response nameRequest(Request req){
-        Response.Builder resp = Response.newBuilder();
-
-        if(req.getSenderId().isBlank()){
+        if (req.getSenderId().isBlank()) {
             resp.setResponseType(Response.ResponseType.ACKNOWLEDGE)
                     .setAccepted(false)
-                    .setErrorMessage("Client name missing in fields");
-        }else {
+                    .setErrorMessage("Client name missing");
+        } else {
             this.currentUserid = req.getSenderId();
             resp.setResponseType(Response.ResponseType.ACKNOWLEDGE)
                     .setAccepted(true);
         }
-
-       return resp.build();
+        return resp.build();
     }
 
-    private void startThread(Request req){
+    private void startThread(Request req) {
+        List<Integer> dataList = toDigitList(Integer.parseInt(req.getNumbers()));
 
+        int size = dataList.size();
+        int part1Size = size / divisiblePart;
+        int part2Size = size / divisiblePart;
+        int part3Size = size - (part1Size + part2Size);
 
-        String data = req.getNumbers();
-        int number = Integer.parseInt(data);
-        int[] dataArray = toDigitArray(number);
-
-        int len = dataArray.length;
-        int part1Size = len / divisiblePart;
-        int part2Size = len / divisiblePart;
-        int part3Size = len - (part1Size + part2Size);
-
-        int[] firstPart = Arrays.copyOfRange(dataArray, 0, part1Size);
-        int[] secondPart = Arrays.copyOfRange(dataArray, part1Size, part1Size + part2Size);
-        int[] thirdPart = Arrays.copyOfRange(dataArray, part1Size + part2Size, len);
-
-        int delay = (int) nodeDelay;
+        List<Integer> firstPart = new ArrayList<>(dataList.subList(0, part1Size));
+        List<Integer> secondPart = new ArrayList<>(dataList.subList(part1Size, part1Size + part2Size));
+        List<Integer> thirdPart = new ArrayList<>(dataList.subList(part1Size + part2Size, size));
 
         NodeComputer node1 = new NodeComputer(new Node("firstThread"), this);
         NodeComputer node2 = new NodeComputer(new Node("secondThread"), this);
@@ -202,65 +117,145 @@ public class Leader implements Runnable{
         activeNodes.add(node2);
         activeNodes.add(node3);
 
-        threadPool.submit(node1);
-        threadPool.submit(node2);
-        threadPool.submit(node3);
+        List<Callable<Response>> tasks = Arrays.asList(
+                () -> {
+                    node1.assignTask(threadTask(firstPart));
+                    return node1.call();
+                },
+                () -> {
+                    node2.assignTask(threadTask(secondPart));
+                    return node2.call();
+                },
+                () -> {
+                    node3.assignTask(threadTask(thirdPart));
+                    return node3.call();
+                }
+        );
+
+        try {
+            List<Future<Response>> results = threadPool.invokeAll(tasks);
+            for (int i = 0; i < results.size(); i++) {
+                Response response = results.get(i).get();
+                pendingResults.put(activeNodes.get(i), response.getPartialSum());
+            }
+        } catch (Exception e) {
+            System.err.println("Error processing tasks: " + e.getMessage());
+        }
+
+        startVerification();
     }
 
-    public Response processData(){
-        //start thread
-        // recieve thread data
-        // response to thread after consensus to stop
-        // strop the thread
-        // respond response to be send to client
-        return  null;
+    private void startVerification() {
+        List<Callable<Response>> verificationTasks = Arrays.asList(
+                () -> {
+                    activeNodes.get(1).assignTask(verifyTask(activeNodes.get(0), pendingResults.get(activeNodes.get(0))));
+                    return activeNodes.get(1).call();
+                },
+                () -> {
+                    activeNodes.get(2).assignTask(verifyTask(activeNodes.get(1), pendingResults.get(activeNodes.get(1))));
+                    return activeNodes.get(2).call();
+                },
+                () -> {
+                    activeNodes.get(0).assignTask(verifyTask(activeNodes.get(2), pendingResults.get(activeNodes.get(2))));
+                    return activeNodes.get(0).call();
+                }
+        );
+
+        try {
+            List<Future<Response>> results = threadPool.invokeAll(verificationTasks);
+            for (int i = 0; i < results.size(); i++) {
+                Response response = results.get(i).get();
+                consensusResults.put(activeNodes.get(i), response.getAccepted());
+            }
+        } catch (Exception e) {
+            System.err.println("Error processing verification tasks: " + e.getMessage());
+        }
     }
 
-    public synchronized void receiveNodeResponse(Response.Builder response){
+    private Response finalizeComputation() {
+        boolean allVerified = consensusResults.values().stream().allMatch(v -> v);
+        int finalSum = pendingResults.values().stream().mapToInt(Integer::intValue).sum();
 
-        switch(response.getResponseType()){
-            case PARTIAL_SUM:
+        for (NodeComputer node : activeNodes) {
+            node.assignTask(broadcastFinalResult(finalSum));
+        }
+
+        return Response.newBuilder()
+                .setResponseType(Response.ResponseType.FINAL_SUM)
+                .setAccepted(allVerified)
+                .setPartialSum(finalSum)
+                .build();
+    }
+
+    private Request threadTask(List<Integer> dataPortion) {
+        return Request.newBuilder()
+                .setOperationType(Request.OperationType.CALCULATE)
+                .setSenderId(this.currentUserid)
+                .addAllPortion(dataPortion)
+                .setDelay(nodeDelay)
+                .build();
+    }
+
+    private Request verifyTask(NodeComputer node, int partialSum) {
+        return Request.newBuilder()
+                .setOperationType(Request.OperationType.VERIFY_SUM)
+                .setSenderId(node.getNewNode().getId())
+                .addAllPortion(node.getNewNode().findDataHistory(0))
+                .setPartialSum(partialSum)
+                .setDelay(nodeDelay)
+                .build();
+    }
+
+    private Response error(int err, String field) {
+        String message = field;
+        int type = err;
+
+        Response.Builder resp = Response.newBuilder();
+
+        switch (type) {
+            case 1:
+                message += "\nError: required field missing or empty";
                 break;
-
-            case VERIFY_RESULT:
+            case 2:
+                message += "\nError: request not supported";
+                break;
+            default:
+                message += "\nError: cannot process your request";
+                type = 0;
                 break;
         }
 
+        resp.setResponseType(Response.ResponseType.ERROR)
+                .setErrorType(type)
+                .setErrorMessage(message);
 
+        return resp.build();
     }
 
 
-    public int[] toDigitArray(int num) {
-        String numStr = Integer.toString(num);
-        return numStr.chars().map(c -> c - '0').toArray();
+    private Request broadcastFinalResult(int finalSum) {
+        return Request.newBuilder()
+                .setOperationType(Request.OperationType.INFORM)
+                .setPartialSum(finalSum)
+                .build();
     }
 
+    private List<Integer> toDigitList(int number) {
+        List<Integer> digits = new ArrayList<>();
+        while (number > 0) {
+            digits.add(0, number % 10);
+            number /= 10;
+        }
+        return digits;
+    }
 
-    void exitAndClose(InputStream in, OutputStream out, Socket serverSock) {
+    private void exitAndClose(InputStream in, OutputStream out, Socket socket) {
         try {
             if (in != null) in.close();
-        } catch (IOException e) {
-            System.out.println("Failed to close input stream: " + e.getMessage());
-        }
-        try {
             if (out != null) out.close();
+            if (socket != null) socket.close();
         } catch (IOException e) {
-            System.out.println("Failed to close output stream: " + e.getMessage());
+            System.err.println("Error closing resources: " + e.getMessage());
         }
-        try {
-            if (serverSock != null) serverSock.close();
-        } catch (IOException e) {
-            System.out.println("Failed to close socket: " + e.getMessage());
-        }
-        System.exit(0);
     }
-
-    public static synchronized Leader getInstance(Socket clientSocket) {
-        if (instance == null) {
-            instance = new Leader(clientSocket);
-        }
-        return instance;
-    }
-
-
 }

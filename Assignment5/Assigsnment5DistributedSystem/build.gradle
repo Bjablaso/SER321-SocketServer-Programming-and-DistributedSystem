@@ -49,28 +49,27 @@ protobuf {
 //
 task runClient(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    description = "Run Client"
+    description = "Run the Client"
     main = 'Client.ClientComputer'
-    standardInput = System.in
 
-    // Default values if properties are not provided
     def host = project.hasProperty('host') ? project.property('host') : 'localhost'
-    def port = project.hasProperty('port') ? project.property('port') : '9099'
+    def port = project.hasProperty('port') ? project.property('port') : '8080'
 
-    args host
-    args port
+    args host, port
+
+    standardInput = System.in
 }
 
 
+
 //gradle runServer -Pport=9099
-task runServerGrading(type: JavaExec) {
+task runServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    description = "Run Server"
+    description = "Run the Server"
     main = 'Server.Server'
 
-    // Provide default values if properties are not passed
-    def port = project.hasProperty('port') ? project.property('port') : '9099'
+    // Provide a default port if none is passed
+    def port = project.hasProperty('port') ? project.property('port') : '8080'
 
     args port
-    args true
 }
