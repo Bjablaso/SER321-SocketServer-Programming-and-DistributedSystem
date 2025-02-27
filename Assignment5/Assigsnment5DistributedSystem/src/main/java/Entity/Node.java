@@ -10,6 +10,7 @@ public class Node {
     private String id;
     private Map<Integer, List<Integer>> historyCache;
     private Map<Integer, Integer> finalSum;
+    private boolean isfualty = false ;
 
     public Node(String id) {
         this.id = id;
@@ -31,5 +32,13 @@ public class Node {
 
     public String getId() {
         return id;
+    }
+
+    public void setIsfualty(boolean isfualty) {
+        this.isfualty = isfualty;
+    }
+
+    public boolean isIsfualty() {
+        return isfualty;
     }
 }

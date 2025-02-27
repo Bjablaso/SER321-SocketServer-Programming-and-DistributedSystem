@@ -45,10 +45,19 @@ public class NodeComputer implements Callable<Response> {
                         .setPartialSum(partialSum);
                 break;
             case VERIFY_SUM:
+                boolean isValid;
                 receivingData = assignedTask.getPortionList();
                 int number = assignedTask.getPartialSum();
                 Thread.sleep(delay);
-                boolean isValid = verifySum(receivingData, number);
+
+
+                if (newNode.isIsfualty()) {
+                    System.out.println("Node " + newNode.getId() + " is faulty, marking verification as failed.");
+                    isValid = false;
+                } else {
+                    isValid = verifySum(receivingData, number);
+                }
+
                 respond.setResponseType(Response.ResponseType.VERIFY_RESULT)
                         .setSenderId(newNode.getId())
                         .setAccepted(isValid);
@@ -80,5 +89,9 @@ public class NodeComputer implements Callable<Response> {
 
     public Node getNewNode() {
         return newNode;
+    }
+
+    public void setFualtyNode(boolean fualtyNode) {
+        this.newNode.setIsfualty(fualtyNode);
     }
 }

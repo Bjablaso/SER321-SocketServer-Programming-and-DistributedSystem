@@ -68,13 +68,18 @@ public class ClientComputer {
                         break;
 
                     case FINAL_SUM:
-                        System.out.println( "The Sum of all the number you inputted is : " + response.getFinalSum());
+                        if (!response.getAccepted()) {
+                            System.out.println(response.getErrorMessage());
+                            request = dataMessenger();
+                        }else {
+                            System.out.println( "The Sum of all the number you inputted is : " + response.getFinalSum());
+                        }
 
                         if(!askToContinue()){
                             exitAndClose(readInput, writeOutput, serverSocket);
                         }
                         request = dataMessenger();
-                        return;
+                        break;
 
                     case DISCONNECT:
                         System.out.println("Server has disconnected. Closing connection...");
@@ -125,10 +130,22 @@ public class ClientComputer {
         System.out.println("Please Enter a list of numeric value");
         String numericValue = reader.readLine();
 
+        System.out.println("Would you like to introduce a fualtynode : ( yes , no)");
+        String fualtynode = reader.readLine();
+
+        if(fualtynode.equalsIgnoreCase("yes")){
+            return Request.newBuilder()
+                    .setOperationType(Request.OperationType.DATA)
+                    .setNumbers(numericValue)
+                    .setIsfualty(true);
+
+        }
+
         return Request.newBuilder()
                 .setOperationType(Request.OperationType.DATA)
                 .setNumbers(numericValue);
     }
+
 
     static boolean askToContinue() throws InterruptedException, IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -170,3 +187,6 @@ public class ClientComputer {
         System.exit(0);
     }
 }
+
+
+

@@ -29,6 +29,7 @@ message Request {
   repeated int32 originalNumbers = 10;  // The numbers originally assigned to the other Node
   optional int32 reportedSum = 11;      // The sum reported by the original Node
   repeated int32 portion = 13; // what send to each node
+  optional bool isfualty = 14;
 
   optional Connection connectiontType = 12 [default = CONNECT];
 }

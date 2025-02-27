@@ -87,9 +87,6 @@ public class Leader implements Runnable {
         } catch (Exception e) {
             Response error = error(0, "Unexpected server error: " + e.getMessage());
             error.writeDelimitedTo(out);
-        } finally {
-            System.out.println("Client ID " + currentUserid + " disconnected.");
-            exitAndClose(in, out, clientSocket);
         }
     }
 
@@ -119,9 +116,24 @@ public class Leader implements Runnable {
         List<Integer> secondPart = new ArrayList<>(dataList.subList(part1Size, part1Size + part2Size));
         List<Integer> thirdPart = new ArrayList<>(dataList.subList(part1Size + part2Size, size));
 
-        NodeComputer node1 = new NodeComputer(new Node("firstThread"), this);
-        NodeComputer node2 = new NodeComputer(new Node("secondThread"), this);
-        NodeComputer node3 = new NodeComputer(new Node("thirdThread"), this);
+        NodeComputer node1;
+        NodeComputer node2;
+        NodeComputer node3;
+
+        if(req.getIsfualty()){
+             node1 = new NodeComputer(new Node("firstThread"), this);
+             node2 = new NodeComputer(new Node("secondThread"), this);
+            node3 = new NodeComputer(new Node("thirdThread"), this);
+            node3.setFualtyNode(true);
+
+            System.out.println(" node 3 is faulty : "+ node3.getNewNode().isIsfualty());
+        }else {
+           node1 = new NodeComputer(new Node("firstThread"), this);
+            node2 = new NodeComputer(new Node("secondThread"), this);
+          node3 = new NodeComputer(new Node("thirdThread"), this);
+        }
+
+
 
         activeNodes.add(node1);
         activeNodes.add(node2);
@@ -185,7 +197,19 @@ public class Leader implements Runnable {
 
     private Response finalizeComputation() {
         boolean allVerified = consensusResults.values().stream().allMatch(v -> v);
+
+        System.out.println("Consensus results: " + consensusResults);
+
+        if (!allVerified) {
+            return Response.newBuilder()
+                    .setResponseType(Response.ResponseType.FINAL_SUM)
+                    .setAccepted(false)  // <-- Ensure false is set when verification fails
+                    .setErrorMessage("Consensus could not be reached due to a faulty node. Some results may be incorrect.")
+                    .build();
+        }
+
         int finalSum = pendingResults.values().stream().mapToInt(Integer::intValue).sum();
+
 
         for (NodeComputer node : activeNodes) {
             node.assignTask(broadcastFinalResult(finalSum));
@@ -193,10 +217,11 @@ public class Leader implements Runnable {
 
         return Response.newBuilder()
                 .setResponseType(Response.ResponseType.FINAL_SUM)
-                .setAccepted(allVerified)
+                .setAccepted(true) // <-- Consensus is achieved
                 .setFinalSum(finalSum)
                 .build();
     }
+
 
     private Request threadTask(List<Integer> dataPortion) {
         return Request.newBuilder()
@@ -270,3 +295,8 @@ public class Leader implements Runnable {
         }
     }
 }
+
+// finally {
+//         System.out.println("Client ID " + currentUserid + " disconnected.");
+//exitAndClose(in, out, clientSocket);
+//        }
