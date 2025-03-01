@@ -19,6 +19,7 @@ public class Client {
   private final JokeGrpc.JokeBlockingStub blockingStub2;
   private final RegistryGrpc.RegistryBlockingStub blockingStub3;
   private final RegistryGrpc.RegistryBlockingStub blockingStub4;
+  private final FlowersGrpc.FlowersBlockingStub flowerStub;
 
   /** Construct client for accessing server using the existing channel. */
   public Client(Channel channel, Channel regChannel) {
@@ -32,6 +33,7 @@ public class Client {
     blockingStub2 = JokeGrpc.newBlockingStub(channel);
     blockingStub3 = RegistryGrpc.newBlockingStub(regChannel);
     blockingStub4 = RegistryGrpc.newBlockingStub(channel);
+    flowerStub = FlowersGrpc.newBlockingStub(channel);
   }
 
   /** Construct client for accessing server using the existing channel. */
@@ -46,6 +48,7 @@ public class Client {
     blockingStub2 = JokeGrpc.newBlockingStub(channel);
     blockingStub3 = null;
     blockingStub4 = null;
+    flowerStub = FlowersGrpc.newBlockingStub(channel);
   }
 
   public void askServerToParrot(String message) {
@@ -140,6 +143,93 @@ public class Client {
       return;
     }
   }
+
+  public void plantFlower(String flowerName, int waterTimes, int bloomTime) {
+    FlowerReq request = FlowerReq.newBuilder()
+            .setName(flowerName)
+            .setWaterTimes(waterTimes)
+            .setBloomTime(bloomTime)
+            .build();
+
+    FlowerRes response;
+    try {
+      response = flowerStub.plantFlower(request);
+    } catch (Exception e) {
+      System.err.println("RPC plantFlower failed: " + e.getMessage());
+      return;
+    }
+
+    if (response.getIsSuccess()) {
+      System.out.println("Plant Flower Success: " + response.getMessage());
+    } else {
+      System.err.println("Plant Flower Error: " + response.getError());
+    }
+  }
+
+  public void viewFlowers() {
+    Empty request = Empty.newBuilder().build();
+    FlowerViewRes response;
+    try {
+      response = flowerStub.viewFlowers(request);
+    } catch (Exception e) {
+      System.err.println("RPC viewFlowers failed: " + e.getMessage());
+      return;
+    }
+
+    if (response.getIsSuccess()) {
+      System.out.println("Flower List:");
+      response.getFlowersList().forEach(flower -> {
+        System.out.println("Name: " + flower.getName() +
+                ", WaterTimes: " + flower.getWaterTimes() +
+                ", BloomTime: " + flower.getBloomTime() +
+                ", State: " + flower.getFlowerState());
+      });
+    } else {
+      System.err.println("View Flowers Error: " + response.getError());
+    }
+  }
+
+  public void waterFlower(String flowerName) {
+    FlowerCare request = FlowerCare.newBuilder()
+            .setName(flowerName)
+            .build();
+
+    WaterRes response;
+    try {
+      response = flowerStub.waterFlower(request);
+    } catch (Exception e) {
+      System.err.println("RPC waterFlower failed: " + e.getMessage());
+      return;
+    }
+
+    if (response.getIsSuccess()) {
+      System.out.println("Water Flower Success: " + response.getMessage());
+    } else {
+      System.err.println("Water Flower Error: " + response.getError());
+    }
+  }
+
+  public void careForFlower(String flowerName) {
+    FlowerCare request = FlowerCare.newBuilder()
+            .setName(flowerName)
+            .build();
+
+    CareRes response;
+    try {
+      response = flowerStub.careForFlower(request);
+    } catch (Exception e) {
+      System.err.println("RPC careForFlower failed: " + e.getMessage());
+      return;
+    }
+
+    if (response.getIsSuccess()) {
+      System.out.println("Care For Flower Success: " + response.getMessage() +
+              " New bloom time: " + response.getBloomTime());
+    } else {
+      System.err.println("Care For Flower Error: " + response.getError());
+    }
+  }
+
 
   public static void main(String[] args) throws Exception {
     if (args.length != 6) {

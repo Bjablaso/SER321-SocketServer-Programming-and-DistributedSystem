@@ -49,6 +49,11 @@ public final class WeightTrackerProto {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_services_Weight_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_services_Customer_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_services_Customer_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -59,27 +64,32 @@ public final class WeightTrackerProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\034services/weightTracker.proto\022\010services" +
-      "\"4\n\020AddWeightRequest\022 \n\006weight\030\001 \001(\0132\020.s" +
-      "ervices.Weight\"5\n\021AddWeightResponse\022\021\n\ti" +
-      "sSuccess\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\" \n\020GetWeig" +
-      "htRequest\022\014\n\004name\030\001 \001(\t\"W\n\021GetWeightResp" +
-      "onse\022\021\n\tisSuccess\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\022 " +
-      "\n\006weight\030\003 \003(\0132\020.services.Weight\";\n\nBMIR" +
-      "equest\022\016\n\006weight\030\001 \001(\001\022\016\n\006height\030\002 \001(\001\022\r" +
-      "\n\005units\030\003 \001(\t\"<\n\013BMIResponse\022\021\n\tisSucces" +
-      "s\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\022\013\n\003BMI\030\003 \001(\001\")\n\006W" +
-      "eight\022\014\n\004name\030\001 \001(\t\022\021\n\tweightNum\030\002 \001(\0012\330" +
-      "\001\n\rWeightTracker\022F\n\taddWeight\022\032.services" +
-      ".AddWeightRequest\032\033.services.AddWeightRe" +
-      "sponse\"\000\022F\n\tgetWeight\022\032.services.GetWeig" +
-      "htRequest\032\033.services.GetWeightResponse\"\000" +
-      "\0227\n\006getBMI\022\024.services.BMIRequest\032\025.servi" +
-      "ces.BMIResponse\"\000B\037\n\007serviceB\022WeightTrac" +
-      "kerProtoP\001b\006proto3"
+      "\032\037google/protobuf/timestamp.proto\"4\n\020Add" +
+      "WeightRequest\022 \n\006weight\030\001 \001(\0132\020.services" +
+      ".Weight\"5\n\021AddWeightResponse\022\021\n\tisSucces" +
+      "s\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\" \n\020GetWeightReque" +
+      "st\022\014\n\004name\030\001 \001(\t\"W\n\021GetWeightResponse\022\021\n" +
+      "\tisSuccess\030\001 \001(\010\022\r\n\005error\030\002 \001(\t\022 \n\006weigh" +
+      "t\030\003 \003(\0132\020.services.Weight\";\n\nBMIRequest\022" +
+      "\016\n\006weight\030\001 \001(\001\022\016\n\006height\030\002 \001(\001\022\r\n\005units" +
+      "\030\003 \001(\t\"<\n\013BMIResponse\022\021\n\tisSuccess\030\001 \001(\010" +
+      "\022\r\n\005error\030\002 \001(\t\022\013\n\003BMI\030\003 \001(\001\"X\n\006Weight\022\014" +
+      "\n\004name\030\001 \001(\t\022\021\n\tweightNum\030\002 \001(\001\022-\n\ttimeS" +
+      "tamp\030\003 \001(\0132\032.google.protobuf.Timestamp\"R" +
+      "\n\010Customer\022\014\n\004name\030\001 \001(\t\022\013\n\003age\030\002 \001(\t\022\016\n" +
+      "\006height\030\003 \001(\001\022\016\n\006weight\030\004 \001(\001\022\013\n\003BMI\030\005 \001" +
+      "(\0012\330\001\n\rWeightTracker\022F\n\taddWeight\022\032.serv" +
+      "ices.AddWeightRequest\032\033.services.AddWeig" +
+      "htResponse\"\000\022F\n\tgetWeight\022\032.services.Get" +
+      "WeightRequest\032\033.services.GetWeightRespon" +
+      "se\"\000\0227\n\006getBMI\022\024.services.BMIRequest\032\025.s" +
+      "ervices.BMIResponse\"\000B\037\n\007serviceB\022Weight" +
+      "TrackerProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.google.protobuf.TimestampProto.getDescriptor(),
         });
     internal_static_services_AddWeightRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -122,7 +132,14 @@ public final class WeightTrackerProto {
     internal_static_services_Weight_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_services_Weight_descriptor,
-        new java.lang.String[] { "Name", "WeightNum", });
+        new java.lang.String[] { "Name", "WeightNum", "TimeStamp", });
+    internal_static_services_Customer_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_services_Customer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_services_Customer_descriptor,
+        new java.lang.String[] { "Name", "Age", "Height", "Weight", "BMI", });
+    com.google.protobuf.TimestampProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

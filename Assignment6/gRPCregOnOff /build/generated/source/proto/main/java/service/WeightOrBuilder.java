@@ -24,4 +24,19 @@ public interface WeightOrBuilder extends
    * @return The weightNum.
    */
   double getWeightNum();
+
+  /**
+   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+   * @return Whether the timeStamp field is set.
+   */
+  boolean hasTimeStamp();
+  /**
+   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+   * @return The timeStamp.
+   */
+  com.google.protobuf.Timestamp getTimeStamp();
+  /**
+   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+   */
+  com.google.protobuf.TimestampOrBuilder getTimeStampOrBuilder();
 }

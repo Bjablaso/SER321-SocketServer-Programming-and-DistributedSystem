@@ -19,7 +19,7 @@ private static final long serialVersionUID = 0L;
   private Flower(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  public Flower() {
+  private Flower() {
     name_ = "";
     flowerState_ = 0;
   }

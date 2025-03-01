@@ -4,6 +4,9 @@
 
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
+
 option java_multiple_files = true;
 option java_package = "service";
 option java_outer_classname = "WeightTrackerProto";
@@ -56,5 +59,14 @@ message BMIResponse {
 // A single weight
 message Weight {
   string name = 1;  
-  double weightNum = 2; 
+  double weightNum = 2;
+  google.protobuf.Timestamp timeStamp = 3;
+}
+
+message Customer{
+  string name = 1;
+  string age = 2;
+  double height = 3;
+  double weight = 4;
+  double BMI = 5;
 }

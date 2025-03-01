@@ -4,30 +4,27 @@
 package service;
 
 /**
- * <pre>
- * A single weight
- * </pre>
- *
- * Protobuf type {@code services.Weight}
+ * Protobuf type {@code services.Customer}
  */
-public final class Weight extends
+public final class Customer extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:services.Weight)
-    WeightOrBuilder {
+    // @@protoc_insertion_point(message_implements:services.Customer)
+    CustomerOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use Weight.newBuilder() to construct.
-  private Weight(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use Customer.newBuilder() to construct.
+  private Customer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Weight() {
+  private Customer() {
     name_ = "";
+    age_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new Weight();
+    return new Customer();
   }
 
   @java.lang.Override
@@ -35,7 +32,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private Weight(
+  private Customer(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -59,22 +56,25 @@ private static final long serialVersionUID = 0L;
             name_ = s;
             break;
           }
-          case 17: {
+          case 18: {
+            java.lang.String s = input.readStringRequireUtf8();
 
-            weightNum_ = input.readDouble();
+            age_ = s;
             break;
           }
-          case 26: {
-            com.google.protobuf.Timestamp.Builder subBuilder = null;
-            if (timeStamp_ != null) {
-              subBuilder = timeStamp_.toBuilder();
-            }
-            timeStamp_ = input.readMessage(com.google.protobuf.Timestamp.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(timeStamp_);
-              timeStamp_ = subBuilder.buildPartial();
-            }
+          case 25: {
 
+            height_ = input.readDouble();
+            break;
+          }
+          case 33: {
+
+            weight_ = input.readDouble();
+            break;
+          }
+          case 41: {
+
+            bMI_ = input.readDouble();
             break;
           }
           default: {
@@ -100,15 +100,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return service.WeightTrackerProto.internal_static_services_Weight_descriptor;
+    return service.WeightTrackerProto.internal_static_services_Customer_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return service.WeightTrackerProto.internal_static_services_Weight_fieldAccessorTable
+    return service.WeightTrackerProto.internal_static_services_Customer_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            service.Weight.class, service.Weight.Builder.class);
+            service.Customer.class, service.Customer.Builder.class);
   }
 
   public static final int NAME_FIELD_NUMBER = 1;
@@ -149,41 +149,75 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int WEIGHTNUM_FIELD_NUMBER = 2;
-  private double weightNum_;
+  public static final int AGE_FIELD_NUMBER = 2;
+  private volatile java.lang.Object age_;
   /**
-   * <code>double weightNum = 2;</code>
-   * @return The weightNum.
+   * <code>string age = 2;</code>
+   * @return The age.
    */
   @java.lang.Override
-  public double getWeightNum() {
-    return weightNum_;
+  public java.lang.String getAge() {
+    java.lang.Object ref = age_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      age_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string age = 2;</code>
+   * @return The bytes for age.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getAgeBytes() {
+    java.lang.Object ref = age_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      age_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
-  public static final int TIMESTAMP_FIELD_NUMBER = 3;
-  private com.google.protobuf.Timestamp timeStamp_;
+  public static final int HEIGHT_FIELD_NUMBER = 3;
+  private double height_;
   /**
-   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-   * @return Whether the timeStamp field is set.
+   * <code>double height = 3;</code>
+   * @return The height.
    */
   @java.lang.Override
-  public boolean hasTimeStamp() {
-    return timeStamp_ != null;
+  public double getHeight() {
+    return height_;
   }
+
+  public static final int WEIGHT_FIELD_NUMBER = 4;
+  private double weight_;
   /**
-   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-   * @return The timeStamp.
+   * <code>double weight = 4;</code>
+   * @return The weight.
    */
   @java.lang.Override
-  public com.google.protobuf.Timestamp getTimeStamp() {
-    return timeStamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : timeStamp_;
+  public double getWeight() {
+    return weight_;
   }
+
+  public static final int BMI_FIELD_NUMBER = 5;
+  private double bMI_;
   /**
-   * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+   * <code>double BMI = 5;</code>
+   * @return The bMI.
    */
   @java.lang.Override
-  public com.google.protobuf.TimestampOrBuilder getTimeStampOrBuilder() {
-    return getTimeStamp();
+  public double getBMI() {
+    return bMI_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -203,11 +237,17 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
     }
-    if (java.lang.Double.doubleToRawLongBits(weightNum_) != 0) {
-      output.writeDouble(2, weightNum_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(age_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, age_);
     }
-    if (timeStamp_ != null) {
-      output.writeMessage(3, getTimeStamp());
+    if (java.lang.Double.doubleToRawLongBits(height_) != 0) {
+      output.writeDouble(3, height_);
+    }
+    if (java.lang.Double.doubleToRawLongBits(weight_) != 0) {
+      output.writeDouble(4, weight_);
+    }
+    if (java.lang.Double.doubleToRawLongBits(bMI_) != 0) {
+      output.writeDouble(5, bMI_);
     }
     unknownFields.writeTo(output);
   }
@@ -221,13 +261,20 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(name_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
     }
-    if (java.lang.Double.doubleToRawLongBits(weightNum_) != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeDoubleSize(2, weightNum_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(age_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, age_);
     }
-    if (timeStamp_ != null) {
+    if (java.lang.Double.doubleToRawLongBits(height_) != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getTimeStamp());
+        .computeDoubleSize(3, height_);
+    }
+    if (java.lang.Double.doubleToRawLongBits(weight_) != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeDoubleSize(4, weight_);
+    }
+    if (java.lang.Double.doubleToRawLongBits(bMI_) != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeDoubleSize(5, bMI_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -239,21 +286,24 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof service.Weight)) {
+    if (!(obj instanceof service.Customer)) {
       return super.equals(obj);
     }
-    service.Weight other = (service.Weight) obj;
+    service.Customer other = (service.Customer) obj;
 
     if (!getName()
         .equals(other.getName())) return false;
-    if (java.lang.Double.doubleToLongBits(getWeightNum())
+    if (!getAge()
+        .equals(other.getAge())) return false;
+    if (java.lang.Double.doubleToLongBits(getHeight())
         != java.lang.Double.doubleToLongBits(
-            other.getWeightNum())) return false;
-    if (hasTimeStamp() != other.hasTimeStamp()) return false;
-    if (hasTimeStamp()) {
-      if (!getTimeStamp()
-          .equals(other.getTimeStamp())) return false;
-    }
+            other.getHeight())) return false;
+    if (java.lang.Double.doubleToLongBits(getWeight())
+        != java.lang.Double.doubleToLongBits(
+            other.getWeight())) return false;
+    if (java.lang.Double.doubleToLongBits(getBMI())
+        != java.lang.Double.doubleToLongBits(
+            other.getBMI())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -267,81 +317,85 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + NAME_FIELD_NUMBER;
     hash = (53 * hash) + getName().hashCode();
-    hash = (37 * hash) + WEIGHTNUM_FIELD_NUMBER;
+    hash = (37 * hash) + AGE_FIELD_NUMBER;
+    hash = (53 * hash) + getAge().hashCode();
+    hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        java.lang.Double.doubleToLongBits(getWeightNum()));
-    if (hasTimeStamp()) {
-      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + getTimeStamp().hashCode();
-    }
+        java.lang.Double.doubleToLongBits(getHeight()));
+    hash = (37 * hash) + WEIGHT_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        java.lang.Double.doubleToLongBits(getWeight()));
+    hash = (37 * hash) + BMI_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        java.lang.Double.doubleToLongBits(getBMI()));
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static service.Weight parseFrom(byte[] data)
+  public static service.Customer parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static service.Weight parseFrom(java.io.InputStream input)
+  public static service.Customer parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static service.Weight parseDelimitedFrom(java.io.InputStream input)
+  public static service.Customer parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static service.Weight parseDelimitedFrom(
+  public static service.Customer parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static service.Weight parseFrom(
+  public static service.Customer parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -354,7 +408,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(service.Weight prototype) {
+  public static Builder newBuilder(service.Customer prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -370,30 +424,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   * A single weight
-   * </pre>
-   *
-   * Protobuf type {@code services.Weight}
+   * Protobuf type {@code services.Customer}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:services.Weight)
-      service.WeightOrBuilder {
+      // @@protoc_insertion_point(builder_implements:services.Customer)
+      service.CustomerOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return service.WeightTrackerProto.internal_static_services_Weight_descriptor;
+      return service.WeightTrackerProto.internal_static_services_Customer_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return service.WeightTrackerProto.internal_static_services_Weight_fieldAccessorTable
+      return service.WeightTrackerProto.internal_static_services_Customer_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              service.Weight.class, service.Weight.Builder.class);
+              service.Customer.class, service.Customer.Builder.class);
     }
 
-    // Construct using service.Weight.newBuilder()
+    // Construct using service.Customer.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -413,31 +463,31 @@ private static final long serialVersionUID = 0L;
       super.clear();
       name_ = "";
 
-      weightNum_ = 0D;
+      age_ = "";
 
-      if (timeStampBuilder_ == null) {
-        timeStamp_ = null;
-      } else {
-        timeStamp_ = null;
-        timeStampBuilder_ = null;
-      }
+      height_ = 0D;
+
+      weight_ = 0D;
+
+      bMI_ = 0D;
+
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return service.WeightTrackerProto.internal_static_services_Weight_descriptor;
+      return service.WeightTrackerProto.internal_static_services_Customer_descriptor;
     }
 
     @java.lang.Override
-    public service.Weight getDefaultInstanceForType() {
-      return service.Weight.getDefaultInstance();
+    public service.Customer getDefaultInstanceForType() {
+      return service.Customer.getDefaultInstance();
     }
 
     @java.lang.Override
-    public service.Weight build() {
-      service.Weight result = buildPartial();
+    public service.Customer build() {
+      service.Customer result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -445,15 +495,13 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public service.Weight buildPartial() {
-      service.Weight result = new service.Weight(this);
+    public service.Customer buildPartial() {
+      service.Customer result = new service.Customer(this);
       result.name_ = name_;
-      result.weightNum_ = weightNum_;
-      if (timeStampBuilder_ == null) {
-        result.timeStamp_ = timeStamp_;
-      } else {
-        result.timeStamp_ = timeStampBuilder_.build();
-      }
+      result.age_ = age_;
+      result.height_ = height_;
+      result.weight_ = weight_;
+      result.bMI_ = bMI_;
       onBuilt();
       return result;
     }
@@ -492,25 +540,32 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof service.Weight) {
-        return mergeFrom((service.Weight)other);
+      if (other instanceof service.Customer) {
+        return mergeFrom((service.Customer)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(service.Weight other) {
-      if (other == service.Weight.getDefaultInstance()) return this;
+    public Builder mergeFrom(service.Customer other) {
+      if (other == service.Customer.getDefaultInstance()) return this;
       if (!other.getName().isEmpty()) {
         name_ = other.name_;
         onChanged();
       }
-      if (other.getWeightNum() != 0D) {
-        setWeightNum(other.getWeightNum());
+      if (!other.getAge().isEmpty()) {
+        age_ = other.age_;
+        onChanged();
       }
-      if (other.hasTimeStamp()) {
-        mergeTimeStamp(other.getTimeStamp());
+      if (other.getHeight() != 0D) {
+        setHeight(other.getHeight());
+      }
+      if (other.getWeight() != 0D) {
+        setWeight(other.getWeight());
+      }
+      if (other.getBMI() != 0D) {
+        setBMI(other.getBMI());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -527,11 +582,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      service.Weight parsedMessage = null;
+      service.Customer parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (service.Weight) e.getUnfinishedMessage();
+        parsedMessage = (service.Customer) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -617,154 +672,173 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private double weightNum_ ;
+    private java.lang.Object age_ = "";
     /**
-     * <code>double weightNum = 2;</code>
-     * @return The weightNum.
+     * <code>string age = 2;</code>
+     * @return The age.
+     */
+    public java.lang.String getAge() {
+      java.lang.Object ref = age_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        age_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string age = 2;</code>
+     * @return The bytes for age.
+     */
+    public com.google.protobuf.ByteString
+        getAgeBytes() {
+      java.lang.Object ref = age_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        age_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string age = 2;</code>
+     * @param value The age to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAge(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      age_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string age = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAge() {
+      
+      age_ = getDefaultInstance().getAge();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string age = 2;</code>
+     * @param value The bytes for age to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAgeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      age_ = value;
+      onChanged();
+      return this;
+    }
+
+    private double height_ ;
+    /**
+     * <code>double height = 3;</code>
+     * @return The height.
      */
     @java.lang.Override
-    public double getWeightNum() {
-      return weightNum_;
+    public double getHeight() {
+      return height_;
     }
     /**
-     * <code>double weightNum = 2;</code>
-     * @param value The weightNum to set.
+     * <code>double height = 3;</code>
+     * @param value The height to set.
      * @return This builder for chaining.
      */
-    public Builder setWeightNum(double value) {
+    public Builder setHeight(double value) {
       
-      weightNum_ = value;
+      height_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>double weightNum = 2;</code>
+     * <code>double height = 3;</code>
      * @return This builder for chaining.
      */
-    public Builder clearWeightNum() {
+    public Builder clearHeight() {
       
-      weightNum_ = 0D;
+      height_ = 0D;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.Timestamp timeStamp_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> timeStampBuilder_;
+    private double weight_ ;
     /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     * @return Whether the timeStamp field is set.
+     * <code>double weight = 4;</code>
+     * @return The weight.
      */
-    public boolean hasTimeStamp() {
-      return timeStampBuilder_ != null || timeStamp_ != null;
+    @java.lang.Override
+    public double getWeight() {
+      return weight_;
     }
     /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     * @return The timeStamp.
+     * <code>double weight = 4;</code>
+     * @param value The weight to set.
+     * @return This builder for chaining.
      */
-    public com.google.protobuf.Timestamp getTimeStamp() {
-      if (timeStampBuilder_ == null) {
-        return timeStamp_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : timeStamp_;
-      } else {
-        return timeStampBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     */
-    public Builder setTimeStamp(com.google.protobuf.Timestamp value) {
-      if (timeStampBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        timeStamp_ = value;
-        onChanged();
-      } else {
-        timeStampBuilder_.setMessage(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     */
-    public Builder setTimeStamp(
-        com.google.protobuf.Timestamp.Builder builderForValue) {
-      if (timeStampBuilder_ == null) {
-        timeStamp_ = builderForValue.build();
-        onChanged();
-      } else {
-        timeStampBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     */
-    public Builder mergeTimeStamp(com.google.protobuf.Timestamp value) {
-      if (timeStampBuilder_ == null) {
-        if (timeStamp_ != null) {
-          timeStamp_ =
-            com.google.protobuf.Timestamp.newBuilder(timeStamp_).mergeFrom(value).buildPartial();
-        } else {
-          timeStamp_ = value;
-        }
-        onChanged();
-      } else {
-        timeStampBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     */
-    public Builder clearTimeStamp() {
-      if (timeStampBuilder_ == null) {
-        timeStamp_ = null;
-        onChanged();
-      } else {
-        timeStamp_ = null;
-        timeStampBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
-     */
-    public com.google.protobuf.Timestamp.Builder getTimeStampBuilder() {
+    public Builder setWeight(double value) {
       
+      weight_ = value;
       onChanged();
-      return getTimeStampFieldBuilder().getBuilder();
+      return this;
     }
     /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+     * <code>double weight = 4;</code>
+     * @return This builder for chaining.
      */
-    public com.google.protobuf.TimestampOrBuilder getTimeStampOrBuilder() {
-      if (timeStampBuilder_ != null) {
-        return timeStampBuilder_.getMessageOrBuilder();
-      } else {
-        return timeStamp_ == null ?
-            com.google.protobuf.Timestamp.getDefaultInstance() : timeStamp_;
-      }
+    public Builder clearWeight() {
+      
+      weight_ = 0D;
+      onChanged();
+      return this;
+    }
+
+    private double bMI_ ;
+    /**
+     * <code>double BMI = 5;</code>
+     * @return The bMI.
+     */
+    @java.lang.Override
+    public double getBMI() {
+      return bMI_;
     }
     /**
-     * <code>.google.protobuf.Timestamp timeStamp = 3;</code>
+     * <code>double BMI = 5;</code>
+     * @param value The bMI to set.
+     * @return This builder for chaining.
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
-        getTimeStampFieldBuilder() {
-      if (timeStampBuilder_ == null) {
-        timeStampBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
-                getTimeStamp(),
-                getParentForChildren(),
-                isClean());
-        timeStamp_ = null;
-      }
-      return timeStampBuilder_;
+    public Builder setBMI(double value) {
+      
+      bMI_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>double BMI = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearBMI() {
+      
+      bMI_ = 0D;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
@@ -779,41 +853,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:services.Weight)
+    // @@protoc_insertion_point(builder_scope:services.Customer)
   }
 
-  // @@protoc_insertion_point(class_scope:services.Weight)
-  private static final service.Weight DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:services.Customer)
+  private static final service.Customer DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new service.Weight();
+    DEFAULT_INSTANCE = new service.Customer();
   }
 
-  public static service.Weight getDefaultInstance() {
+  public static service.Customer getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Weight>
-      PARSER = new com.google.protobuf.AbstractParser<Weight>() {
+  private static final com.google.protobuf.Parser<Customer>
+      PARSER = new com.google.protobuf.AbstractParser<Customer>() {
     @java.lang.Override
-    public Weight parsePartialFrom(
+    public Customer parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Weight(input, extensionRegistry);
+      return new Customer(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<Weight> parser() {
+  public static com.google.protobuf.Parser<Customer> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<Weight> getParserForType() {
+  public com.google.protobuf.Parser<Customer> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public service.Weight getDefaultInstanceForType() {
+  public service.Customer getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
