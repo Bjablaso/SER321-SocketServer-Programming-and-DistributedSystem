@@ -8,6 +8,10 @@ description = "Protocol Buffers Socket Example"
 
 repositories {
     mavenCentral()
+    maven { url "https://maven.google.com" }
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 repositories {
@@ -26,10 +30,11 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.33.1'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.18.0'
-    protobuf 'com.google.api:proto-google-common-protos:2.17.1'
+
     implementation 'com.google.protobuf:protobuf-java-util:3.21.1'
     implementation "junit:junit:4.12"
 }
+
 
 protobuf {
     protoc {

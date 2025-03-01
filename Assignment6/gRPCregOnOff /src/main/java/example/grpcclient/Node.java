@@ -24,6 +24,7 @@ public class Node {
   Socket clientSocket = null;
 
   net.Network network = null;
+//  static ArrayList<String> services = new ArrayList<>();
 
   Node(int port) {
     this.port = port;
@@ -39,9 +40,7 @@ public class Node {
         .addService(new JokeImpl())
         .addService(new RegistryAnswerImpl(services))
         .addService(new FlowerGuarden())
-         .addService(new WaitWatcher())
-            .build()
-            .start();
+         .addService(new WeighttWatcher()) .build().start();
 
     for (var service : server.getServices()) {
       // returns the services that are available from this node
@@ -73,6 +72,8 @@ public class Node {
       server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
     }
   }
+
+
 
   /**
    * Await termination on the main thread since the grpc library uses daemon

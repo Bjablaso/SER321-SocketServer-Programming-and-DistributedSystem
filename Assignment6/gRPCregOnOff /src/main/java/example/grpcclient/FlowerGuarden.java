@@ -105,19 +105,31 @@ public class FlowerGuarden extends FlowersGrpc.FlowersImplBase {
         }
 
 
-        if (existing.getFlowerState() == State.BLOOMING || existing.getFlowerState() == State.DEAD) {
+        if (existing.getFlowerState() == State.DEAD) {
             WaterRes res = WaterRes.newBuilder()
                     .setIsSuccess(false)
-                    .setError("Flower is either blooming or dead; cannot water.")
+                    .setError("Flower is either blooming or dead; ")
                     .build();
             responseObserver.onNext(res);
             responseObserver.onCompleted();
             return;
         }
 
+        if (existing.getFlowerState() == State.BLOOMING) {
+            WaterRes res = WaterRes.newBuilder()
+                    .setIsSuccess(true)
+                    .setMessage("Flower is blooming")
+                    .build();
+            responseObserver.onNext(res);
+            responseObserver.onCompleted();
+
+            return;
+        }
+
         int newWaterTimes = existing.getWaterTimes() -1;
 
         State newState = newWaterTimes <= 0 ? State.BLOOMING : State.PLANTED;
+        System.out.println("current state of flower " + flowerName + " is " + newState);
 
         Flower updatedFlower = existing.toBuilder()
                 .setWaterTimes(Math.max(0, newWaterTimes)) // don’t go below zero
@@ -125,7 +137,7 @@ public class FlowerGuarden extends FlowersGrpc.FlowersImplBase {
                 .build();
 
 
-        gardenSoil.put(flowerName, existing);
+        gardenSoil.put(flowerName, updatedFlower);
 
         WaterRes res = WaterRes.newBuilder()
                 .setIsSuccess(true)

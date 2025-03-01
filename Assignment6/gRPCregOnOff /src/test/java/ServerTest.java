@@ -20,6 +20,7 @@ public class ServerTest {
     ManagedChannel channel;
     private EchoGrpc.EchoBlockingStub blockingStub;
     private JokeGrpc.JokeBlockingStub blockingStub2;
+    private FlowersGrpc.FlowersBlockingStub flowerStub;
 
 
     @org.junit.Before
@@ -29,6 +30,7 @@ public class ServerTest {
 
         blockingStub = EchoGrpc.newBlockingStub(channel);
         blockingStub2 = JokeGrpc.newBlockingStub(channel);
+        flowerStub = FlowersGrpc.newBlockingStub(channel);
     }
 
     @org.junit.After
@@ -107,6 +109,99 @@ public class ServerTest {
         response = blockingStub2.getJoke(request);
         assertEquals(1, response.getJokeCount());
         assertEquals("whoop", response.getJoke(0));
+    }
+
+    @Test
+    public void testPlantFlower() {
+        // Plant a new flower "Rose"
+        FlowerReq request = FlowerReq.newBuilder()
+                .setName("Rose")
+                .setWaterTimes(3)
+                .setBloomTime(6)
+                .build();
+        FlowerRes response = flowerStub.plantFlower(request);
+        assertTrue(response.getIsSuccess());
+        assertEquals("Flower planted successfully!", response.getMessage());
+
+        // Error case: Planting the same flower again
+        response = flowerStub.plantFlower(request);
+        assertFalse(response.getIsSuccess());
+        assertEquals("A flower with that name already exists.", response.getError());
+    }
+
+    @Test
+    public void testWaterFlower() {
+        // Plant a flower "Tulip" for testing watering
+        FlowerReq plantRequest = FlowerReq.newBuilder()
+                .setName("Tulip")
+                .setWaterTimes(2)
+                .setBloomTime(4)
+                .build();
+        FlowerRes plantResponse = flowerStub.plantFlower(plantRequest);
+        assertTrue(plantResponse.getIsSuccess());
+
+        // Water "Tulip"
+        FlowerCare waterRequest = FlowerCare.newBuilder().setName("Tulip").build();
+        WaterRes waterResponse = flowerStub.waterFlower(waterRequest);
+        assertTrue(waterResponse.getIsSuccess());
+
+        // Error case: Water a non-existent flower
+        waterRequest = FlowerCare.newBuilder().setName("NonExistent").build();
+        waterResponse = flowerStub.waterFlower(waterRequest);
+        assertFalse(waterResponse.getIsSuccess());
+        assertEquals("Flower not found.", waterResponse.getError());
+    }
+
+    @Test
+    public void testViewFlowers() {
+        // Plant a flower "Daisy"
+        FlowerReq plantRequest = FlowerReq.newBuilder()
+                .setName("Daisy")
+                .setWaterTimes(2)
+                .setBloomTime(5)
+                .build();
+        FlowerRes plantResponse = flowerStub.plantFlower(plantRequest);
+        assertTrue(plantResponse.getIsSuccess());
+
+        // View flowers
+        FlowerViewRes viewResponse = flowerStub.viewFlowers(Empty.newBuilder().build());
+        assertTrue(viewResponse.getIsSuccess());
+
+        // Check that "Daisy" is in the returned list
+        boolean found = viewResponse.getFlowersList()
+                .stream()
+                .anyMatch(f -> f.getName().equals("Daisy"));
+        assertTrue("Flower 'Daisy' should be present in the view.", found);
+    }
+
+    @Test
+    public void testCareForFlower() {
+        // Plant a flower "Lily" for testing care
+        FlowerReq plantRequest = FlowerReq.newBuilder()
+                .setName("Lily")
+                .setWaterTimes(3)
+                .setBloomTime(6)
+                .build();
+        FlowerRes plantResponse = flowerStub.plantFlower(plantRequest);
+        assertTrue(plantResponse.getIsSuccess());
+
+        // Water "Lily" three times to transition its state from PLANTED to BLOOMING.
+        FlowerCare waterRequest = FlowerCare.newBuilder().setName("Lily").build();
+        for (int i = 0; i < 3; i++) {
+            WaterRes waterResponse = flowerStub.waterFlower(waterRequest);
+            // In a real test, you might check the intermediate state,
+            // but here we assume after 3 waterings, it becomes BLOOMING.
+        }
+
+        // Now, care for "Lily" (should succeed if the flower is blooming)
+        FlowerCare careRequest = FlowerCare.newBuilder().setName("Lily").build();
+        CareRes careResponse = flowerStub.careForFlower(careRequest);
+        assertTrue(careResponse.getIsSuccess());
+        // Optionally, check that the new bloom time increased by 1.
+        // Error case: Care for a non-existent flower.
+        careRequest = FlowerCare.newBuilder().setName("NonExistent").build();
+        careResponse = flowerStub.careForFlower(careRequest);
+        assertFalse(careResponse.getIsSuccess());
     }
 
 }
