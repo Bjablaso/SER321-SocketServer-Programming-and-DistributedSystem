@@ -1,0 +1,165 @@
+{
+  "menu": [
+    {
+      "category": "Soup",
+      "description": "A variety of classic soups, available for lunch or dinner.",
+      "items": [
+        {
+          "id": "S1",
+          "name": "Hot & Sour Soup",
+          "description": "Traditional spicy and tangy soup with tofu and vegetables.",
+          "price": 4.0,
+          "spicyLevel": "Medium"
+        },
+        {
+          "id": "S2",
+          "name": "Egg Drop Soup",
+          "description": "Light chicken broth swirled with beaten eggs.",
+          "price": 3.5
+        },
+        {
+          "id": "S3",
+          "name": "Wonton in Egg Drop Soup",
+          "description": "Wonton dumplings in a flavorful egg drop broth.",
+          "price": 5.0
+        },
+        {
+          "id": "S4",
+          "name": "Sliced Pork & Mixed Vegetable Soup",
+          "description": "Hearty soup with tender pork and assorted vegetables.",
+          "price": 6.0
+        },
+        {
+          "id": "S5",
+          "name": "West Lake Beef w/ Cilantro Soup",
+          "description": "Savory beef soup with fresh cilantro.",
+          "price": 6.5
+        }
+      ]
+    },
+    {
+      "category": "Hot Appetizers",
+      "description": "Warm, savory starters to begin your meal.",
+      "items": [
+        {
+          "id": "A1",
+          "name": "Egg Rolls",
+          "description": "Crispy rolls stuffed with shredded vegetables and pork.",
+          "price": 3.0
+        },
+        {
+          "id": "A2",
+          "name": "Scallion Pancakes",
+          "description": "Pan-fried flaky pancakes with scallions.",
+          "price": 4.0
+        },
+        {
+          "id": "A3",
+          "name": "Pork Dumplings (6)",
+          "description": "Steamed or pan-fried dumplings with savory pork filling.",
+          "price": 6.0
+        },
+        {
+          "id": "A4",
+          "name": "Chicken Wings",
+          "description": "Fried chicken wings served with a sweet and spicy sauce.",
+          "price": 7.0,
+          "spicyLevel": "Mild"
+        }
+      ]
+    },
+    {
+      "category": "Cold Appetizers",
+      "description": "Chilled dishes with bold, refreshing flavors.",
+      "items": [
+        {
+          "id": "AC1",
+          "name": "Bang-Bang Chicken",
+          "description": "Shredded chicken in a spicy sesame sauce.",
+          "price": 7.0,
+          "spicyLevel": "Medium"
+        },
+        {
+          "id": "AC2",
+          "name": "Dan Dan Cold Noodles",
+          "description": "Cold noodles tossed in a spicy peanut-chili sauce.",
+          "price": 6.0,
+          "spicyLevel": "Spicy"
+        },
+        {
+          "id": "AC3",
+          "name": "Sliced Pork w/ Garlic Sauce",
+          "description": "Chilled pork slices drizzled with garlic-infused chili sauce.",
+          "price": 7.0,
+          "spicyLevel": "Medium"
+        }
+      ]
+    },
+    {
+      "category": "Lunch Special",
+      "description": "Mon-Fri, 11:30 am - 3:00 pm (except holidays). Includes choice of Egg Drop, Hot & Sour, or Wonton Soup. Served with Steamed White Rice, Brown Rice, or Vegetable Fried Rice (except L13 - L17). Price: $12",
+      "items": [
+        {
+          "id": "L1",
+          "name": "General Tso's Tofu",
+          "description": "Tofu stir-fried in a sweet and tangy sauce.",
+          "price": 12.0,
+          "spicyLevel": "Medium"
+        },
+        {
+          "id": "L2",
+          "name": "Broccoli w/ Garlic Sauce",
+          "description": "Fresh broccoli florets in a garlicky brown sauce.",
+          "price": 12.0,
+          "spicyLevel": "Mild"
+        },
+        {
+          "id": "L6",
+          "name": "Chengdu Pork w/ Peking Sauce",
+          "description": "Sliced pork in a sweet and sour style sauce, classic Chengdu flavor.",
+          "price": 12.0,
+          "spicyLevel": "Mild"
+        },
+        {
+          "id": "L11",
+          "name": "Shrimp w/ Mixed Vegetables",
+          "description": "Shrimp stir-fried with a variety of fresh vegetables.",
+          "price": 12.0
+        },
+        {
+          "id": "L13",
+          "name": "Chengdu Spicy Chicken",
+          "description": "Chicken stir-fried with chili peppers, Sichuan style.",
+          "price": 12.0,
+          "spicyLevel": "Spicy"
+        }
+      ]
+    },
+    {
+      "category": "Big Bowl Noodles",
+      "description": "Hearty noodle bowls served hot. Customize spice level on request.",
+      "items": [
+        {
+          "id": "L31",
+          "name": "Seafood Noodle Soup",
+          "description": "Noodle soup with shrimp, fish, and assorted vegetables in a savory broth.",
+          "price": 12.0,
+          "spicyLevel": "Mild"
+        },
+        {
+          "id": "L34",
+          "name": "Chengdu Spicy Beef Noodles",
+          "description": "Sliced beef in a rich spicy broth with noodles and bok choy.",
+          "price": 12.0,
+          "spicyLevel": "Spicy"
+        },
+        {
+          "id": "L36",
+          "name": "Pork & Pickled Cabbage Noodle Soup",
+          "description": "Savory pork with tangy pickled cabbage in a clear broth.",
+          "price": 12.0
+        }
+      ]
+    }
+  ]
+}

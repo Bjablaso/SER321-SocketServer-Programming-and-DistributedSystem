@@ -19,25 +19,22 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
 
     @Override
     public void addWeight(AddWeightRequest request, StreamObserver<AddWeightResponse> responseObserver) {
-        Weight newWeight = request.getWeight();// get access to eight object
+        Weight newWeight = request.getWeight();  // access weight object
+        String name = newWeight.getName();
+        double weight = newWeight.getWeightNum();
 
-        String name = newWeight.getName(); // get field name
-        double weight = newWeight.getWeightNum();  // get field height
-
-        if(Watch.containsKey(name)){
-            Customer customer = Watch.get(name)
-                    .updateCurrentWeight(weight);// update current weight if user exist
-
+        if (Watch.containsKey(name)) {
+            // Update the existing customer in place
+            Watch.get(name).updateCurrentWeight(weight);
             AddWeightResponse response = AddWeightResponse.newBuilder()
                     .setIsSuccess(true)
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
-
             return;
         }
 
-        // if weight dont exist create new customer and add to map
+        // If the customer doesn't exist, create a new one with the initial weight.
         Customer customer = new Customer(name, weight);
         Watch.put(name, customer);
 
@@ -46,8 +43,9 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-
     }
+
+
 
     @Override
     public void getWeight(GetWeightRequest request, StreamObserver<GetWeightResponse> responseObserver) {

@@ -484,7 +484,8 @@ public class Client {
                flowerGardenWindow(client);
             break;
           case 4:
-            //TODO: Open the weight watcher program
+
+               WaitWatcher(client);
             break;
           case 5:
             // TODO: Open the Registry Service window.
@@ -579,16 +580,19 @@ public class Client {
     System.out.println();
   }
 
-  public static void WaitWtacher(Client client){
+  public static void WaitWatcher(Client client){
     Scanner scanner = new Scanner(System.in);
     char choice;
 
     do{
       waitWatcherManueChioce();
 
+      scanner.nextLine();
+
       System.out.println("Enter your choice: ");
       choice = Character.toUpperCase(scanner.nextLine().charAt(0));
       String name;
+      double weight;
 
       switch (choice) {
         case 'A':
@@ -596,10 +600,9 @@ public class Client {
            name = scanner.nextLine();
           scanner.nextLine();
           System.out.println("How much do you weight");
-         double weight = scanner.nextDouble();
+          weight = scanner.nextDouble();
 
          client.addWeight(name, weight);
-
           break;
         case 'R':
           System.out.println("Enter user name to view their weight record");
@@ -608,6 +611,21 @@ public class Client {
           client.viewWeightsHistory(name);
           break;
         case 'B':
+          System.out.println("To calculate BMI you need to enter your weight");
+           weight = scanner.nextDouble();
+
+
+          System.out.println("To calculate BMI you need to enter your height");
+          double height = scanner.nextDouble();
+
+          scanner.nextLine();
+
+          System.out.println("Please choose what meteric you would like to use (metric, imperial)");
+          String unit = scanner.nextLine();
+
+          scanner.nextLine();
+
+          client.calculateBMI(weight,height,unit);
           break;
         case 'E':
           System.out.println("Exiting wait watcher  service window...");

@@ -13,29 +13,34 @@ public class Customer {
     private List<WeightHistory> weightHistory;
     private LocalDateTime currentTime;
 
-    public Customer(String name, double currentWeight) {
+    public Customer(String name, double initialWeight) {
         this.name = name;
-        this.currentWeight = currentWeight;
-        double currentBMI = 0.0;
-        double height = 0.0;
-
+        this.currentWeight = initialWeight;
+        this.currentTime = LocalDateTime.now();
         this.weightHistory = new ArrayList<>();
-        currentBMI = 0;
+        // Add the initial weight to history
+        this.weightHistory.add(new WeightHistory(initialWeight));
+    }
+
+    // Default constructor if needed
+    public Customer(String name) {
+        this(name, 0.0);
     }
 
 
 
     public Customer updateCurrentWeight(double newCurrentWeight) {
+
         this.currentWeight = newCurrentWeight; // keep current weight updated
         this.currentTime = LocalDateTime.now();
-
-        weightChangeTracker(this.currentWeight);// track weight changes
+        addCurrentWeight(this.currentWeight);// track weight changes
 
         return this;
     }
 
-    public void weightChangeTracker(double weight) {
+    public Customer addCurrentWeight(double weight) {
         this.weightHistory.add(new WeightHistory(weight));
+        return this;
     }
 
     public double getCurrentBMI() {
@@ -55,6 +60,9 @@ public class Customer {
     }
 
     public List<WeightHistory> getWeightHistory() {
+        if(weightHistory.isEmpty()){
+            return null;
+        }
         return weightHistory;
     }
 

@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "services";
+option java_outer_classname = "FoodProto";
+
+
+package service;
+import "google/protobuf/empty.proto";
+
+service FoodOrdering {
+  // Retrieve the menu.
+  rpc RetrieveMenu(google.protobuf.Empty) returns (RetrieveMenuResponse);
+
+  // Place an order.
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse);
+
+  // Check order status or history.
+  rpc CheckOrder(CheckOrderRequest) returns (CheckOrderResponse);
+}
+
+
+message RetrieveMenuResponse {
+  repeated FoodItem menu = 1;
+  bool  isSucessful = 2;
+  string error = 3;
+}
+
+message PlaceOrderRequest {
+  repeated OrderItem items = 1;   // List of items being ordered.
+  string delivery_address = 2;    // Delivery address for the order.
+  string customer_name = 3;       // Name of the customer placing the order.
+  int32 order_id = 4;
+}
+
+message PlaceOrderResponse {
+  bool isSuccess = 1;              // Indicates if the order was placed successfully.
+  string error = 2;                // Error message if any.
+  OrderDetails order_details = 3;  // Detailed order info.
+}
+
+message CheckOrderRequest {
+  string  customerName = 1;
+  int32 order_id = 2;              // The order ID to check.
+}
+
+message CheckOrderResponse {
+  bool isSuccess = 1;              // Indicates if the request was successful.
+  string error = 2;                // Error message if any.
+  CustomerX customer = 3;  // Detailed order info.
+}
+
+
+message CustomerX{
+  string name = 1;
+  repeated OrderDetails customerOrder = 2;
+}
+
+message OrderDetails {
+  int32 order_id = 1;              // Unique order identifier.
+  OrderStatus status = 2;          // Current status of the order.
+  repeated OrderItem items = 3;    // Items in the order.
+  double total_price = 4;          // Total price for the order.
+  string delivery_address = 5;     // Delivery address for the order.
+}
+
+
+
+message OrderItem {
+  string itemId = 1;          // ID of the food item.
+  int32 quantity = 2;          // Quantity ordered.
+}
+
+enum OrderStatus {
+  PLACED = 0;          // Order has been received.
+  PREPARING = 1;         // Order is being prepared.
+  OUT_FOR_DELIVERY = 2;  // Order is out for delivery.
+  DELIVERED = 3;         // Order has been delivered.
+  CANCELLED = 4;         // Order was cancelled.
+}
+
+message FoodItem {
+  string itemId = 1;                // Unique identifier for the food item.
+  string name = 2;             // Name of the food item.
+  string description = 3;      // A short description of the food item.
+  double price = 4;            // Price of the food item.
+  string foodcategory = 5; // where part of the manu this belog
+}
