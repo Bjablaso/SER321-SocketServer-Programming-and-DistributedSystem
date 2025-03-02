@@ -61,14 +61,14 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 26: {
-            services.CustomerX.Builder subBuilder = null;
-            if (customer_ != null) {
-              subBuilder = customer_.toBuilder();
+            services.OrderDetails.Builder subBuilder = null;
+            if (order_ != null) {
+              subBuilder = order_.toBuilder();
             }
-            customer_ = input.readMessage(services.CustomerX.parser(), extensionRegistry);
+            order_ = input.readMessage(services.OrderDetails.parser(), extensionRegistry);
             if (subBuilder != null) {
-              subBuilder.mergeFrom(customer_);
-              customer_ = subBuilder.buildPartial();
+              subBuilder.mergeFrom(order_);
+              order_ = subBuilder.buildPartial();
             }
 
             break;
@@ -168,42 +168,42 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int CUSTOMER_FIELD_NUMBER = 3;
-  private services.CustomerX customer_;
+  public static final int ORDER_FIELD_NUMBER = 3;
+  private services.OrderDetails order_;
   /**
    * <pre>
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
-   * @return Whether the customer field is set.
+   * <code>.service.OrderDetails order = 3;</code>
+   * @return Whether the order field is set.
    */
   @java.lang.Override
-  public boolean hasCustomer() {
-    return customer_ != null;
+  public boolean hasOrder() {
+    return order_ != null;
   }
   /**
    * <pre>
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
-   * @return The customer.
+   * <code>.service.OrderDetails order = 3;</code>
+   * @return The order.
    */
   @java.lang.Override
-  public services.CustomerX getCustomer() {
-    return customer_ == null ? services.CustomerX.getDefaultInstance() : customer_;
+  public services.OrderDetails getOrder() {
+    return order_ == null ? services.OrderDetails.getDefaultInstance() : order_;
   }
   /**
    * <pre>
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
+   * <code>.service.OrderDetails order = 3;</code>
    */
   @java.lang.Override
-  public services.CustomerXOrBuilder getCustomerOrBuilder() {
-    return getCustomer();
+  public services.OrderDetailsOrBuilder getOrderOrBuilder() {
+    return getOrder();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -226,8 +226,8 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(error_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, error_);
     }
-    if (customer_ != null) {
-      output.writeMessage(3, getCustomer());
+    if (order_ != null) {
+      output.writeMessage(3, getOrder());
     }
     unknownFields.writeTo(output);
   }
@@ -245,9 +245,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(error_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, error_);
     }
-    if (customer_ != null) {
+    if (order_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getCustomer());
+        .computeMessageSize(3, getOrder());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -268,10 +268,10 @@ private static final long serialVersionUID = 0L;
         != other.getIsSuccess()) return false;
     if (!getError()
         .equals(other.getError())) return false;
-    if (hasCustomer() != other.hasCustomer()) return false;
-    if (hasCustomer()) {
-      if (!getCustomer()
-          .equals(other.getCustomer())) return false;
+    if (hasOrder() != other.hasOrder()) return false;
+    if (hasOrder()) {
+      if (!getOrder()
+          .equals(other.getOrder())) return false;
     }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
@@ -289,9 +289,9 @@ private static final long serialVersionUID = 0L;
         getIsSuccess());
     hash = (37 * hash) + ERROR_FIELD_NUMBER;
     hash = (53 * hash) + getError().hashCode();
-    if (hasCustomer()) {
-      hash = (37 * hash) + CUSTOMER_FIELD_NUMBER;
-      hash = (53 * hash) + getCustomer().hashCode();
+    if (hasOrder()) {
+      hash = (37 * hash) + ORDER_FIELD_NUMBER;
+      hash = (53 * hash) + getOrder().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -430,11 +430,11 @@ private static final long serialVersionUID = 0L;
 
       error_ = "";
 
-      if (customerBuilder_ == null) {
-        customer_ = null;
+      if (orderBuilder_ == null) {
+        order_ = null;
       } else {
-        customer_ = null;
-        customerBuilder_ = null;
+        order_ = null;
+        orderBuilder_ = null;
       }
       return this;
     }
@@ -464,10 +464,10 @@ private static final long serialVersionUID = 0L;
       services.CheckOrderResponse result = new services.CheckOrderResponse(this);
       result.isSuccess_ = isSuccess_;
       result.error_ = error_;
-      if (customerBuilder_ == null) {
-        result.customer_ = customer_;
+      if (orderBuilder_ == null) {
+        result.order_ = order_;
       } else {
-        result.customer_ = customerBuilder_.build();
+        result.order_ = orderBuilder_.build();
       }
       onBuilt();
       return result;
@@ -524,8 +524,8 @@ private static final long serialVersionUID = 0L;
         error_ = other.error_;
         onChanged();
       }
-      if (other.hasCustomer()) {
-        mergeCustomer(other.getCustomer());
+      if (other.hasOrder()) {
+        mergeOrder(other.getOrder());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -695,33 +695,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private services.CustomerX customer_;
+    private services.OrderDetails order_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        services.CustomerX, services.CustomerX.Builder, services.CustomerXOrBuilder> customerBuilder_;
+        services.OrderDetails, services.OrderDetails.Builder, services.OrderDetailsOrBuilder> orderBuilder_;
     /**
      * <pre>
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
-     * @return Whether the customer field is set.
+     * <code>.service.OrderDetails order = 3;</code>
+     * @return Whether the order field is set.
      */
-    public boolean hasCustomer() {
-      return customerBuilder_ != null || customer_ != null;
+    public boolean hasOrder() {
+      return orderBuilder_ != null || order_ != null;
     }
     /**
      * <pre>
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
-     * @return The customer.
+     * <code>.service.OrderDetails order = 3;</code>
+     * @return The order.
      */
-    public services.CustomerX getCustomer() {
-      if (customerBuilder_ == null) {
-        return customer_ == null ? services.CustomerX.getDefaultInstance() : customer_;
+    public services.OrderDetails getOrder() {
+      if (orderBuilder_ == null) {
+        return order_ == null ? services.OrderDetails.getDefaultInstance() : order_;
       } else {
-        return customerBuilder_.getMessage();
+        return orderBuilder_.getMessage();
       }
     }
     /**
@@ -729,17 +729,17 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public Builder setCustomer(services.CustomerX value) {
-      if (customerBuilder_ == null) {
+    public Builder setOrder(services.OrderDetails value) {
+      if (orderBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        customer_ = value;
+        order_ = value;
         onChanged();
       } else {
-        customerBuilder_.setMessage(value);
+        orderBuilder_.setMessage(value);
       }
 
       return this;
@@ -749,15 +749,15 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public Builder setCustomer(
-        services.CustomerX.Builder builderForValue) {
-      if (customerBuilder_ == null) {
-        customer_ = builderForValue.build();
+    public Builder setOrder(
+        services.OrderDetails.Builder builderForValue) {
+      if (orderBuilder_ == null) {
+        order_ = builderForValue.build();
         onChanged();
       } else {
-        customerBuilder_.setMessage(builderForValue.build());
+        orderBuilder_.setMessage(builderForValue.build());
       }
 
       return this;
@@ -767,19 +767,19 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public Builder mergeCustomer(services.CustomerX value) {
-      if (customerBuilder_ == null) {
-        if (customer_ != null) {
-          customer_ =
-            services.CustomerX.newBuilder(customer_).mergeFrom(value).buildPartial();
+    public Builder mergeOrder(services.OrderDetails value) {
+      if (orderBuilder_ == null) {
+        if (order_ != null) {
+          order_ =
+            services.OrderDetails.newBuilder(order_).mergeFrom(value).buildPartial();
         } else {
-          customer_ = value;
+          order_ = value;
         }
         onChanged();
       } else {
-        customerBuilder_.mergeFrom(value);
+        orderBuilder_.mergeFrom(value);
       }
 
       return this;
@@ -789,15 +789,15 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public Builder clearCustomer() {
-      if (customerBuilder_ == null) {
-        customer_ = null;
+    public Builder clearOrder() {
+      if (orderBuilder_ == null) {
+        order_ = null;
         onChanged();
       } else {
-        customer_ = null;
-        customerBuilder_ = null;
+        order_ = null;
+        orderBuilder_ = null;
       }
 
       return this;
@@ -807,26 +807,26 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public services.CustomerX.Builder getCustomerBuilder() {
+    public services.OrderDetails.Builder getOrderBuilder() {
       
       onChanged();
-      return getCustomerFieldBuilder().getBuilder();
+      return getOrderFieldBuilder().getBuilder();
     }
     /**
      * <pre>
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
-    public services.CustomerXOrBuilder getCustomerOrBuilder() {
-      if (customerBuilder_ != null) {
-        return customerBuilder_.getMessageOrBuilder();
+    public services.OrderDetailsOrBuilder getOrderOrBuilder() {
+      if (orderBuilder_ != null) {
+        return orderBuilder_.getMessageOrBuilder();
       } else {
-        return customer_ == null ?
-            services.CustomerX.getDefaultInstance() : customer_;
+        return order_ == null ?
+            services.OrderDetails.getDefaultInstance() : order_;
       }
     }
     /**
@@ -834,20 +834,20 @@ private static final long serialVersionUID = 0L;
      * Detailed order info.
      * </pre>
      *
-     * <code>.service.CustomerX customer = 3;</code>
+     * <code>.service.OrderDetails order = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        services.CustomerX, services.CustomerX.Builder, services.CustomerXOrBuilder> 
-        getCustomerFieldBuilder() {
-      if (customerBuilder_ == null) {
-        customerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            services.CustomerX, services.CustomerX.Builder, services.CustomerXOrBuilder>(
-                getCustomer(),
+        services.OrderDetails, services.OrderDetails.Builder, services.OrderDetailsOrBuilder> 
+        getOrderFieldBuilder() {
+      if (orderBuilder_ == null) {
+        orderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            services.OrderDetails, services.OrderDetails.Builder, services.OrderDetailsOrBuilder>(
+                getOrder(),
                 getParentForChildren(),
                 isClean());
-        customer_ = null;
+        order_ = null;
       }
-      return customerBuilder_;
+      return orderBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

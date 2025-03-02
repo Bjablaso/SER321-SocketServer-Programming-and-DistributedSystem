@@ -80,8 +80,8 @@ public final class FoodProto {
       "vice.OrderDetails\";\n\021CheckOrderRequest\022\024" +
       "\n\014customerName\030\001 \001(\t\022\020\n\010order_id\030\002 \001(\005\"\\" +
       "\n\022CheckOrderResponse\022\021\n\tisSuccess\030\001 \001(\010\022" +
-      "\r\n\005error\030\002 \001(\t\022$\n\010customer\030\003 \001(\0132\022.servi" +
-      "ce.CustomerX\"G\n\tCustomerX\022\014\n\004name\030\001 \001(\t\022" +
+      "\r\n\005error\030\002 \001(\t\022$\n\005order\030\003 \001(\0132\025.service." +
+      "OrderDetails\"G\n\tCustomerX\022\014\n\004name\030\001 \001(\t\022" +
       ",\n\rcustomerOrder\030\002 \003(\0132\025.service.OrderDe" +
       "tails\"\230\001\n\014OrderDetails\022\020\n\010order_id\030\001 \001(\005" +
       "\022$\n\006status\030\002 \001(\0162\024.service.OrderStatus\022!" +
@@ -90,16 +90,15 @@ public final class FoodProto {
       "\"-\n\tOrderItem\022\016\n\006itemId\030\001 \001(\t\022\020\n\010quantit" +
       "y\030\002 \001(\005\"b\n\010FoodItem\022\016\n\006itemId\030\001 \001(\t\022\014\n\004n" +
       "ame\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\r\n\005price\030" +
-      "\004 \001(\001\022\024\n\014foodcategory\030\005 \001(\t*\\\n\013OrderStat" +
-      "us\022\n\n\006PLACED\020\000\022\r\n\tPREPARING\020\001\022\024\n\020OUT_FOR" +
-      "_DELIVERY\020\002\022\r\n\tDELIVERED\020\003\022\r\n\tCANCELLED\020" +
-      "\0042\343\001\n\014FoodOrdering\022E\n\014RetrieveMenu\022\026.goo" +
-      "gle.protobuf.Empty\032\035.service.RetrieveMen" +
-      "uResponse\022E\n\nPlaceOrder\022\032.service.PlaceO" +
-      "rderRequest\032\033.service.PlaceOrderResponse" +
-      "\022E\n\nCheckOrder\022\032.service.CheckOrderReque" +
-      "st\032\033.service.CheckOrderResponseB\027\n\010servi" +
-      "cesB\tFoodProtoP\001b\006proto3"
+      "\004 \001(\001\022\024\n\014foodcategory\030\005 \001(\t*7\n\013OrderStat" +
+      "us\022\n\n\006PLACED\020\000\022\r\n\tDELIVERED\020\001\022\r\n\tCANCELL" +
+      "ED\020\0022\343\001\n\014FoodOrdering\022E\n\014RetrieveMenu\022\026." +
+      "google.protobuf.Empty\032\035.service.Retrieve" +
+      "MenuResponse\022E\n\nPlaceOrder\022\032.service.Pla" +
+      "ceOrderRequest\032\033.service.PlaceOrderRespo" +
+      "nse\022E\n\nCheckOrder\022\032.service.CheckOrderRe" +
+      "quest\032\033.service.CheckOrderResponseB\027\n\010se" +
+      "rvicesB\tFoodProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -135,7 +134,7 @@ public final class FoodProto {
     internal_static_service_CheckOrderResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_CheckOrderResponse_descriptor,
-        new java.lang.String[] { "IsSuccess", "Error", "Customer", });
+        new java.lang.String[] { "IsSuccess", "Error", "Order", });
     internal_static_service_CustomerX_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_service_CustomerX_fieldAccessorTable = new

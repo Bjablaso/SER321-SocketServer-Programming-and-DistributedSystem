@@ -7,22 +7,24 @@ import io.grpc.stub.StreamObserver;
 import services.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class chinaOne extends FoodOrderingGrpc.FoodOrderingImplBase {
     private List<FoodItem> manuView;
     private Map<String, FoodItem> manuArchive;
     private Map<String, CustomerX> customersOrder;
+    private Map<Integer, OrderDetails> orderHistory;
 
 
     public chinaOne() {
          this.manuView =new ArrayList<>();
          this.customersOrder = new HashMap<>();
          this.manuArchive = new HashMap<>();
+         this.orderHistory = new HashMap<>();
          createManue();
     }
 
@@ -114,16 +116,47 @@ public class chinaOne extends FoodOrderingGrpc.FoodOrderingImplBase {
 
         CustomerX customer = customersOrder.get(customerName);
 
-        // Check if the specified order exists within the customer's order list.
-        boolean orderFound = customer.getCustomerOrderList()
+        // Find the order by its ID.
+        Optional<OrderDetails> matchingOrderOpt = customer.getCustomerOrderList()
                 .stream()
-                .anyMatch(o -> o.getOrderId() == orderId);
+                .filter(o -> o.getOrderId() == orderId)
+                .findFirst();
 
-        if (orderFound) {
-            // Return a success response with the customer's details (including orders)
+        if (matchingOrderOpt.isPresent()) {
+            OrderDetails orderDetails = matchingOrderOpt.get();
+
+            // Simulate processing delay.
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Update order status to indicate it's ready (using DELIVERED as a proxy for "ready").
+            OrderDetails updatedOrder = OrderDetails.newBuilder(orderDetails)
+                    .setStatus(OrderStatus.DELIVERED) // Change to READY if your enum is updated.
+                    .build();
+
+            // Remove the order from the customer's order list.
+            List<OrderDetails> updatedOrders = customer.getCustomerOrderList()
+                    .stream()
+                    .filter(o -> o.getOrderId() != orderId)
+                    .collect(Collectors.toList());
+
+            CustomerX updatedCustomer = CustomerX.newBuilder(customer)
+                    .clearCustomerOrder()
+                    .addAllCustomerOrder(updatedOrders)
+                    .build();
+
+            // Update the customer's entry in the map.
+            customersOrder.put(customerName, updatedCustomer);
+
+            // Optionally, add the updated order to an order history (not shown here).
+
+            // Build and send a response with the updated order details.
             CheckOrderResponse response = CheckOrderResponse.newBuilder()
                     .setIsSuccess(true)
-                    .setCustomer(customer)
+                    .setOrder(updatedOrder)
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
@@ -166,8 +199,12 @@ public class chinaOne extends FoodOrderingGrpc.FoodOrderingImplBase {
         List<FoodItem> foodItems = new ArrayList<>();
 
 
-        try{
-            JsonNode rootNode = mapper.readTree(new File("resources/manu.json"));
+        try {
+           File manu = new File("src/main/resources/manu.json");
+            System.out.println("Does file exit"+ manu.exists());
+
+
+            JsonNode rootNode = mapper.readTree(manu);
             JsonNode menuArray = rootNode.get("menu");
 
             if (menuArray != null && menuArray.isArray()) {

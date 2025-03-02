@@ -18,36 +18,20 @@ public enum OrderStatus
   PLACED(0),
   /**
    * <pre>
-   * Order is being prepared.
-   * </pre>
-   *
-   * <code>PREPARING = 1;</code>
-   */
-  PREPARING(1),
-  /**
-   * <pre>
-   * Order is out for delivery.
-   * </pre>
-   *
-   * <code>OUT_FOR_DELIVERY = 2;</code>
-   */
-  OUT_FOR_DELIVERY(2),
-  /**
-   * <pre>
    * Order has been delivered.
    * </pre>
    *
-   * <code>DELIVERED = 3;</code>
+   * <code>DELIVERED = 1;</code>
    */
-  DELIVERED(3),
+  DELIVERED(1),
   /**
    * <pre>
    * Order was cancelled.
    * </pre>
    *
-   * <code>CANCELLED = 4;</code>
+   * <code>CANCELLED = 2;</code>
    */
-  CANCELLED(4),
+  CANCELLED(2),
   UNRECOGNIZED(-1),
   ;
 
@@ -61,36 +45,20 @@ public enum OrderStatus
   public static final int PLACED_VALUE = 0;
   /**
    * <pre>
-   * Order is being prepared.
-   * </pre>
-   *
-   * <code>PREPARING = 1;</code>
-   */
-  public static final int PREPARING_VALUE = 1;
-  /**
-   * <pre>
-   * Order is out for delivery.
-   * </pre>
-   *
-   * <code>OUT_FOR_DELIVERY = 2;</code>
-   */
-  public static final int OUT_FOR_DELIVERY_VALUE = 2;
-  /**
-   * <pre>
    * Order has been delivered.
    * </pre>
    *
-   * <code>DELIVERED = 3;</code>
+   * <code>DELIVERED = 1;</code>
    */
-  public static final int DELIVERED_VALUE = 3;
+  public static final int DELIVERED_VALUE = 1;
   /**
    * <pre>
    * Order was cancelled.
    * </pre>
    *
-   * <code>CANCELLED = 4;</code>
+   * <code>CANCELLED = 2;</code>
    */
-  public static final int CANCELLED_VALUE = 4;
+  public static final int CANCELLED_VALUE = 2;
 
 
   public final int getNumber() {
@@ -118,10 +86,8 @@ public enum OrderStatus
   public static OrderStatus forNumber(int value) {
     switch (value) {
       case 0: return PLACED;
-      case 1: return PREPARING;
-      case 2: return OUT_FOR_DELIVERY;
-      case 3: return DELIVERED;
-      case 4: return CANCELLED;
+      case 1: return DELIVERED;
+      case 2: return CANCELLED;
       default: return null;
     }
   }

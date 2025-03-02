@@ -17,6 +17,7 @@ import service.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import com.google.protobuf.Empty; // needed to use Empty
+import services.*;
 
 
 /**
@@ -29,6 +30,7 @@ public class Client {
   private final RegistryGrpc.RegistryBlockingStub blockingStub4;
   private final FlowersGrpc.FlowersBlockingStub flowerStub;
   private final WeightTrackerGrpc.WeightTrackerBlockingStub weightTrackerStub;
+  private final FoodOrderingGrpc.FoodOrderingBlockingStub foodOrderingStub;
 
 
   /** Construct client for accessing server using the existing channel. */
@@ -45,6 +47,8 @@ public class Client {
     blockingStub4 = RegistryGrpc.newBlockingStub(channel);
     flowerStub = FlowersGrpc.newBlockingStub(channel);
     weightTrackerStub = WeightTrackerGrpc.newBlockingStub(channel);
+    foodOrderingStub = FoodOrderingGrpc.newBlockingStub(channel);
+
   }
 
   /** Construct client for accessing server using the existing channel. */
@@ -61,6 +65,7 @@ public class Client {
     blockingStub4 = null;
     flowerStub = FlowersGrpc.newBlockingStub(channel);
     weightTrackerStub = WeightTrackerGrpc.newBlockingStub(channel);
+    foodOrderingStub = FoodOrderingGrpc.newBlockingStub(channel);
   }
 
   // ----------------------- Service Methods -----------------------
@@ -328,6 +333,139 @@ public class Client {
     return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
   }
 
+  public void oneChinaManu() {
+    Empty request = Empty.newBuilder().build();
+    RetrieveMenuResponse response;
+
+    try {
+
+      response = foodOrderingStub.retrieveMenu(request);
+    } catch (Exception e) {
+      System.err.println("System could not get menu: " + e.getMessage());
+      return;
+    }
+
+    if (response.getIsSucessful()) {
+      System.out.println("=== OneChina Menu ===");
+
+
+      StringBuilder sb = new StringBuilder();
+
+
+      sb.append(String.format("%-20s %-10s %-40s %30s%n",
+              "Category", "Item ID", "Description", "Price"));
+
+
+      response.getMenuList().forEach(foodItem -> {
+        String line = String.format("%-20s %-10s %-40s $%10.2f",
+                foodItem.getFoodcategory(),
+                foodItem.getItemId(),
+                foodItem.getDescription(),
+                foodItem.getPrice());
+        sb.append(line).append(System.lineSeparator());
+      });
+
+
+      System.out.println(sb.toString());
+    } else {
+
+      System.out.println("Error while retrieving menu: " + response.getError());
+    }
+  }
+
+  public void placeOrderClient(String itemId, int quantity,
+                               String userName, String address) {
+    int orderId = (int) (Math.random() * 90000000) + 10000000;
+
+    OrderItem orderItem = OrderItem.newBuilder()
+            .setItemId(itemId)
+            .setQuantity(quantity)
+            .build();
+    PlaceOrderRequest request = PlaceOrderRequest.newBuilder()
+            .setCustomerName(userName)
+            .setDeliveryAddress(address)
+            .setOrderId(orderId)
+            .addItems(orderItem)
+            .build();
+
+    PlaceOrderResponse response;
+
+    try{
+      response = foodOrderingStub.placeOrder(request);
+
+    }catch (Exception e){
+      System.err.println("System could not place order: " + e.getMessage());
+      return;
+    }
+
+
+    if (response.getIsSuccess()) {
+      services.OrderDetails orderDetails = response.getOrderDetails();
+      StringBuilder receipt = new StringBuilder();
+      receipt.append("====== Order Receipt ======\n");
+      receipt.append(String.format("Order ID: %d%n", orderDetails.getOrderId()));
+      receipt.append(String.format("Status: %s%n", orderDetails.getStatus().name()));
+      receipt.append(String.format("Delivery Address: %s%n", orderDetails.getDeliveryAddress()));
+      receipt.append(String.format("Total Price: $%.2f%n", orderDetails.getTotalPrice()));
+      receipt.append("Items Ordered:\n");
+
+      for (services.OrderItem item : orderDetails.getItemsList()) {
+        receipt.append(String.format(" - Item ID: %s, Quantity: %d%n",
+                item.getItemId(), item.getQuantity()));
+      }
+      receipt.append("===========================\n");
+
+      // Display the receipt.
+      System.out.println(receipt.toString());
+    } else {
+      System.out.println("Failed to place order: " + response.getError());
+    }
+
+  }
+
+  public void checkOrderClient(String name, int orderId) {
+
+    CheckOrderRequest request = services.CheckOrderRequest.newBuilder()
+            .setCustomerName(name)
+            .setOrderId(orderId)
+            .build();
+
+    CheckOrderResponse response;
+
+    try{
+      response = foodOrderingStub.checkOrder(request);
+
+    }catch (Exception e){
+      System.err.println("System could not check order: " + e.getMessage());
+      return;
+    }
+
+
+    if (response.getIsSuccess()) {
+      services.OrderDetails order = response.getOrder();
+      StringBuilder receipt = new StringBuilder();
+      receipt.append("====== Order Status ======\n");
+      receipt.append(String.format("Order ID: %d%n", order.getOrderId()));
+      receipt.append(String.format("Status: %s%n", order.getStatus().name()));
+      receipt.append(String.format("Total Price: $%.2f%n", order.getTotalPrice()));
+      receipt.append(String.format("Delivery Address: %s%n", order.getDeliveryAddress()));
+      receipt.append("Items Ordered:\n");
+
+      order.getItemsList().forEach(item -> {
+        receipt.append(String.format(" - Item ID: %s, Quantity: %d%n",
+                item.getItemId(), item.getQuantity()));
+      });
+      receipt.append("==========================\n");
+
+      // Display the composed receipt.
+      System.out.println(receipt.toString());
+    } else {
+      System.out.println("Error checking order: " + response.getError());
+    }
+
+  }
+
+
 
   // ----------------------- Main: Interactive Menu & Disconnect -----------------------
 
@@ -461,8 +599,9 @@ public class Client {
       System.out.println("2. Joke Service");
       System.out.println("3. Flower Service");
       System.out.println("4 Weight Watcher");
-      System.out.println("5. Registry Service");
-      System.out.println("6. Exit");
+      System.out.println("5 Food Service ");
+      System.out.println("6 Registry Service");
+      System.out.println("7 Exit");
       System.out.print("Enter your choice: ");
 
       String input = scanner.nextLine();
@@ -470,14 +609,10 @@ public class Client {
         int option = Integer.parseInt(input);
         switch (option) {
           case 1:
-            // TODO: Open the Echo Service window.
-            // Example: runEchoWindow(client);
-            System.out.println("TODO: Implement Echo Service window.");
+            runEchoWindow( client); 
             break;
           case 2:
-            // TODO: Open the Joke Service window.
-            // Example: runJokeWindow(client);
-            System.out.println("TODO: Implement Joke Service window.");
+             runJokeWindow(client);
             break;
           case 3:
             // For the Flower Service, open a dedicated sub-menu.
@@ -487,12 +622,16 @@ public class Client {
 
                WaitWatcher(client);
             break;
+
           case 5:
+                    OneChina(client);
+            break;
+          case 6:
             // TODO: Open the Registry Service window.
             // Example: runRegistryWindow(client);
             System.out.println("TODO: Implement Registry Service window.");
             break;
-          case 6:
+          case 7:
             System.out.println("Exiting from main menu. Goodbye!");
             scanner.close();
             return;
@@ -505,6 +644,34 @@ public class Client {
       } catch (Exception ex) {
         System.out.println("An error occurred: " + ex.getMessage());
       }
+    }
+  }
+
+  // Echo Service window (placeholder)
+  private static void runEchoWindow(Client client) {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("\n--- Echo Service ---");
+    System.out.print("Enter a message to echo: ");
+    String message = scanner.nextLine();
+    try {
+      client.askServerToParrot(message);
+    } catch (Exception e) {
+      System.out.println("Error calling Echo Service: " + e.getMessage());
+    }
+  }
+
+  // Joke Service window (placeholder)
+  private static void runJokeWindow(Client client) {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("\n--- Joke Service ---");
+    System.out.print("Enter the number of jokes you want: ");
+    try {
+      int num = Integer.parseInt(scanner.nextLine());
+      client.askForJokes(num);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid number. Returning to main menu.");
+    } catch (Exception ex) {
+      System.out.println("Error calling Joke Service: " + ex.getMessage());
     }
   }
 
@@ -569,16 +736,7 @@ public class Client {
   }
 
 
-  public static  void flowerManueChioce(){
-    // Display menu options for the Flower Garden service.
-    System.out.println("=== Flower Garden Menu ===");
-    System.out.println(" (P) Plant Flower");
-    System.out.println(" (W) Water Flower");
-    System.out.println(" (V) View Flowers");
-    System.out.println(" (C) Care For Flower");
-    System.out.println(" (E) Exit Flower Garden");
-    System.out.println();
-  }
+
 
   public static void WaitWatcher(Client client){
     Scanner scanner = new Scanner(System.in);
@@ -638,14 +796,89 @@ public class Client {
 
   }
 
-  public static  void waitWatcherManueChioce(){
+
+
+  public static void OneChina(Client client){
+    Scanner scanner = new Scanner(System.in);
+    char choice;
+
+    do{
+      foodServiceManu();
+
+      scanner.nextLine();
+
+      System.out.println("Enter your choice: ");
+      choice = Character.toUpperCase(scanner.nextLine().charAt(0));
+      String name;
+      double weight;
+
+      switch (choice) {
+        case 'V':
+            client.oneChinaManu();
+
+          break;
+        case 'O':
+
+          System.out.print("Enter your name: ");
+           name = scanner.nextLine();
+          System.out.print("Enter your delivery address: ");
+          String address = scanner.nextLine();
+          System.out.print("Enter the food item ID: ");
+          String itemId = scanner.nextLine();
+          System.out.print("Enter quantity: ");
+          int quantity = Integer.parseInt(scanner.nextLine());
+
+          client.placeOrderClient(itemId, quantity, name, address);
+
+          break;
+        case 'C':
+
+          System.out.print("Enter your name: ");
+          String custName = scanner.nextLine();
+          System.out.print("Enter the order ID to check: ");
+          int orderId = Integer.parseInt(scanner.nextLine());
+
+
+          client.checkOrderClient(custName, orderId);
+
+          break;
+        default:
+          System.out.println("Please enter a valid choice");
+      }
+    }while(choice != 'E');
+
+
+  }
+
+  public static  void flowerManueChioce(){
     // Display menu options for the Flower Garden service.
     System.out.println("=== Flower Garden Menu ===");
+    System.out.println(" (P) Plant Flower");
+    System.out.println(" (W) Water Flower");
+    System.out.println(" (V) View Flowers");
+    System.out.println(" (C) Care For Flower");
+    System.out.println(" (E) Exit Flower Garden");
+    System.out.println();
+  }
+
+  public static  void waitWatcherManueChioce(){
+    // Display menu options for the Flower Garden service.
+    System.out.println("=== Weight Watchr Menu ===");
     System.out.println(" (A) Add wait to be Watch");
     System.out.println(" (R) Get wait from watcher");
     System.out.println(" (B) Calculate BMI of Weght");
     System.out.println(" (E) Exit Flower Garden");
 
+    System.out.println();
+  }
+
+  public static  void foodServiceManu(){
+    // Display menu options for the Flower Garden service.
+    System.out.println("=== Food One Chine Menu ===");
+    System.out.println(" (V) View Manu");
+    System.out.println(" (O) Place Order");
+    System.out.println(" (C) Check On Order");
+    System.out.println(" (E) Exit Flower Garden");
     System.out.println();
   }
 }

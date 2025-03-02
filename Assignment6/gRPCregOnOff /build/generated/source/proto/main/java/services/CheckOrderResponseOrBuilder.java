@@ -42,25 +42,25 @@ public interface CheckOrderResponseOrBuilder extends
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
-   * @return Whether the customer field is set.
+   * <code>.service.OrderDetails order = 3;</code>
+   * @return Whether the order field is set.
    */
-  boolean hasCustomer();
+  boolean hasOrder();
   /**
    * <pre>
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
-   * @return The customer.
+   * <code>.service.OrderDetails order = 3;</code>
+   * @return The order.
    */
-  services.CustomerX getCustomer();
+  services.OrderDetails getOrder();
   /**
    * <pre>
    * Detailed order info.
    * </pre>
    *
-   * <code>.service.CustomerX customer = 3;</code>
+   * <code>.service.OrderDetails order = 3;</code>
    */
-  services.CustomerXOrBuilder getCustomerOrBuilder();
+  services.OrderDetailsOrBuilder getOrderOrBuilder();
 }
