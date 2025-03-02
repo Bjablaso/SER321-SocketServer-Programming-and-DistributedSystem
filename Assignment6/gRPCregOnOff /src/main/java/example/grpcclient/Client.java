@@ -615,7 +615,7 @@ public class Client {
              runJokeWindow(client);
             break;
           case 3:
-            // For the Flower Service, open a dedicated sub-menu.
+
                flowerGardenWindow(client);
             break;
           case 4:
@@ -681,11 +681,11 @@ public class Client {
     char choice;
 
     do {
-      // Display menu options for the Flower Garden service.
-      flowerManueChioce();  // This method prints the menu
+
+      flowerManueChioce();
 
       System.out.print("Enter your choice: ");
-      // Read the first character of the input and convert it to uppercase.
+
       choice = Character.toUpperCase(scanner.nextLine().charAt(0));
       String name;
 
@@ -805,8 +805,6 @@ public class Client {
     do{
       foodServiceManu();
 
-      scanner.nextLine();
-
       System.out.println("Enter your choice: ");
       choice = Character.toUpperCase(scanner.nextLine().charAt(0));
       String name;
@@ -862,7 +860,7 @@ public class Client {
   }
 
   public static  void waitWatcherManueChioce(){
-    // Display menu options for the Flower Garden service.
+
     System.out.println("=== Weight Watchr Menu ===");
     System.out.println(" (A) Add wait to be Watch");
     System.out.println(" (R) Get wait from watcher");
@@ -873,7 +871,7 @@ public class Client {
   }
 
   public static  void foodServiceManu(){
-    // Display menu options for the Flower Garden service.
+
     System.out.println("=== Food One Chine Menu ===");
     System.out.println(" (V) View Manu");
     System.out.println(" (O) Place Order");

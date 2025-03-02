@@ -19,12 +19,12 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
 
     @Override
     public void addWeight(AddWeightRequest request, StreamObserver<AddWeightResponse> responseObserver) {
-        Weight newWeight = request.getWeight();  // access weight object
+        Weight newWeight = request.getWeight();
         String name = newWeight.getName();
         double weight = newWeight.getWeightNum();
 
         if (Watch.containsKey(name)) {
-            // Update the existing customer in place
+
             Watch.get(name).updateCurrentWeight(weight);
             AddWeightResponse response = AddWeightResponse.newBuilder()
                     .setIsSuccess(true)
@@ -34,7 +34,7 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
             return;
         }
 
-        // If the customer doesn't exist, create a new one with the initial weight.
+
         Customer customer = new Customer(name, weight);
         Watch.put(name, customer);
 
@@ -131,13 +131,13 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
                     .setTimeStamp(timestamp)
                     .build();
 
-            // add all weight to a list
+
             overSend.add(newWeight);
         }
 
         response = GetWeightResponse.newBuilder()
                 .setIsSuccess(true)
-                .addAllWeight(overSend)// list of weight history
+                .addAllWeight(overSend)
                 .build();
 
         responseObserver.onNext(response);
@@ -150,19 +150,19 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
     public void getBMI(BMIRequest request, StreamObserver<BMIResponse> responseObserver) {
         double weight = request.getWeight();
         double height = request.getHeight();
-        String units = request.getUnits();  // e.g., "metric" or "imperial"
+        String units = request.getUnits();
 
         double bmi;
 
-        // Compute BMI based on the unit system
+
         if (units.equalsIgnoreCase("metric")) {
-            // Metric BMI: weight (kg) / (height (m))^2
+
             bmi = weight / (height * height);
         } else if (units.equalsIgnoreCase("imperial")) {
-            // Imperial BMI: (weight (lb) / (height (in))^2) * 703
+
             bmi = (weight / (height * height)) * 703;
         } else {
-            // Unrecognized units: send an error response.
+
             BMIResponse response = BMIResponse.newBuilder()
                     .setIsSuccess(false)
                     .setError("Unrecognized units: " + units)
@@ -172,7 +172,7 @@ public class WeighttWatcher extends WeightTrackerGrpc.WeightTrackerImplBase {
             return;
         }
 
-        // Build a successful BMI response.
+
         BMIResponse response = BMIResponse.newBuilder()
                 .setIsSuccess(true)
                 .setBMI(bmi)

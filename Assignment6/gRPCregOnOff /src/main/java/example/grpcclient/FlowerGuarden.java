@@ -18,7 +18,7 @@ public class FlowerGuarden extends FlowersGrpc.FlowersImplBase {
         int bloomTime = request.getBloomTime();
 
         if (flowerName == null || flowerName.trim().isEmpty()) {
-            // If the name is empty or null, return an error
+
             FlowerRes response = FlowerRes.newBuilder()
                     .setIsSuccess(false)
                     .setMessage("Flower not planted.")
@@ -31,7 +31,7 @@ public class FlowerGuarden extends FlowersGrpc.FlowersImplBase {
         }
 
         if (gardenSoil.containsKey(flowerName)) {
-            // If it exists, return an error
+
             FlowerRes response = FlowerRes.newBuilder()
                     .setIsSuccess(false)
                     .setMessage("Flower not planted.")

@@ -2,10 +2,10 @@
 
 ### Project Description
 
-This assignment demonstrates a distributed system using gRPC. The project implements several microservices that interact
-over gRPC, including services for echoing messages, delivering jokes, managing a flower garden, tracking weight 
-(with BMI calculation), and ordering food. A registry service is also included, allowing nodes to register themselves
-and enabling clients to discover available services dynamically.
+This assignment demonstrates a distributed system using gRPC. The project implements several microservices
+that interact over gRPC, including services for echoing messages, delivering jokes, managing a flower garden,
+tracking weight(with BMI calculation ), and ordering food. A registry service is also included, allowing nodes to
+register themselves  and enabling clients to discover available services dynamically.
 
 ### How to Run the Program
 
@@ -86,5 +86,5 @@ experience.
 
 ### Resources
 -  [GitHub](https://github.com/Bjablaso/ser321-spring25-A-Bjablaso/tree/main/Assignment6)
-- [ScreenCast]()
+- [ScreenCast](https://youtu.be/9unvMbOVDKA)
 

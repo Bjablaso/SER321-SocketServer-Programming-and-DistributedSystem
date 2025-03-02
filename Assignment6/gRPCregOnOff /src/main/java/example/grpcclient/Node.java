@@ -24,7 +24,7 @@ public class Node {
   Socket clientSocket = null;
 
   net.Network network = null;
-//  static ArrayList<String> services = new ArrayList<>();
+
 
   Node(int port) {
     this.port = port;
@@ -32,8 +32,7 @@ public class Node {
   }
 
   private void start() throws IOException {
-    /* The port on which the server should run */
-    // Here we are adding the different services that a client can call
+
     ArrayList<String> services = new ArrayList<>();
     server = ServerBuilder.forPort(port)
         .addService(new EchoImpl())
@@ -44,7 +43,7 @@ public class Node {
          .addService(new chinaOne()) .build().start();
 
     for (var service : server.getServices()) {
-      // returns the services that are available from this node
+
       for (ServerMethodDefinition<?, ?> method : service.getMethods()) {
         services.add(method.getMethodDescriptor().getFullMethodName());
         System.out.println(method.getMethodDescriptor().getFullMethodName());
@@ -55,8 +54,7 @@ public class Node {
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
       public void run() {
-        // Use stderr here since the logger may have been reset by its JVM shutdown
-        // hook.
+
         System.err.println("*** shutting down gRPC server since JVM is shutting down");
         try {
           Node.this.stop();
@@ -111,8 +109,8 @@ public class Node {
 
     System.out.println(args[4]);
 
-    // Comment the next 2 lines for your local client server development (Activity 2 task 1, you need this part again for Task 2)
-    if (args[5].equals("true")) { // since I am too lazy to convert it to bool
+
+    if (args[5].equals("true")) {
 
       Register regThread = new Register(args[0], regPort, args[2], nodePort, args[4]);
       regThread.start();

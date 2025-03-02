@@ -6,26 +6,13 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import service.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import com.google.protobuf.Empty; // needed to use Empty
-import services.*;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Scanner;
 
 public class Client2 {
 
@@ -37,7 +24,7 @@ public class Client2 {
     }
 
     public void run() {
-        // 1. Contact Registry to get all available services
+
         GetServicesReq req = GetServicesReq.newBuilder().build();
         ServicesListRes servicesResponse;
         try {
@@ -53,7 +40,7 @@ public class Client2 {
             return;
         }
 
-        // 2. Display the registered services to the user
+
         System.out.println("Registered services:");
         for (int i = 0; i < services.size(); i++) {
             System.out.printf("%d: %s%n", i + 1, services.get(i));
@@ -76,8 +63,7 @@ public class Client2 {
         }
         String chosenService = services.get(selection - 1);
 
-        // 4. Contact registry to find a server offering the chosen service.
-        // Note: You might have a dedicated method on the registry like findServer().
+
         FindServerReq findReq = FindServerReq.newBuilder().setServiceName(chosenService).build();
         SingleServerRes serverRes;
         try {
@@ -87,20 +73,17 @@ public class Client2 {
             return;
         }
 
-        // Extract server info (assume the response includes host and port)
+
         String serverHost = serverRes.getConnection().getUri();
         int serverPort = serverRes.getConnection().getPort();
 
         System.out.println("Connecting to service " + chosenService + " at " + serverHost + ":" + serverPort);
 
-        // 5. Create a new channel for the selected server.
+
         ManagedChannel serviceChannel = ManagedChannelBuilder.forAddress(serverHost, serverPort)
                 .usePlaintext()
                 .build();
 
-        // 6. Adjust the blocking stub based on the chosen service.
-        // For example, if the chosen service is "services.Echo/parrot", we create an Echo stub.
-        // (You may need to create a helper method to map service names to stubs.)
         try {
             if (chosenService.equals("services.Echo/parrot")) {
                 EchoGrpc.EchoBlockingStub echoStub = EchoGrpc.newBlockingStub(serviceChannel);
@@ -119,17 +102,17 @@ public class Client2 {
                 System.out.println("Your jokes:");
                 jokeRes.getJokeList().forEach(joke -> System.out.println(joke));
             }
-            // Add additional else-if branches for other services...
+
         } catch (Exception e) {
             System.err.println("Error calling service: " + e.getMessage());
         } finally {
-            // Shutdown the created service channel
+
             serviceChannel.shutdownNow();
         }
     }
 
     public static void main(String[] args) {
-        // Expect same parameters as the original client (host, port, regHost, regPort, message, regOn)
+
         if (args.length != 6) {
             System.out.println("Expected arguments: <host> <port> <regHost> <regPort> <message> <regOn>");
             System.exit(1);
@@ -137,7 +120,7 @@ public class Client2 {
         String regHost = args[2];
         int regPort = Integer.parseInt(args[3]);
 
-        // Create a channel for connecting to the registry
+
         ManagedChannel regChannel = ManagedChannelBuilder.forAddress(regHost, regPort)
                 .usePlaintext()
                 .build();
@@ -145,7 +128,7 @@ public class Client2 {
         Client2 client2 = new Client2(regChannel);
         client2.run();
 
-        // Clean up the registry channel
+
         regChannel.shutdownNow();
     }
 }
