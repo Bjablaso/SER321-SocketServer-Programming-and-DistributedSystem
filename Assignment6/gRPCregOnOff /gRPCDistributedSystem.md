@@ -36,6 +36,7 @@ run a standalone node:
   3) Finally, in a third terminal, start the client with registry enabled:
   ```
   gradle runClient -PregOn=true
+  gradle runClient2 -PserviceHost=localhost -PservicePort=8000 -PregistryHost=localhost -PgrpcPort=9002 -Pmessage="Hello from Client2"
   ```
    
 ### How to Work with the Program
@@ -80,8 +81,6 @@ The project is built and run using Gradle, with tasks configured for both local 
 
 Service methods include error handling to manage network issues and service unavailability, ensuring a smooth client 
 experience.
-
-
 
 
 ### Resources
