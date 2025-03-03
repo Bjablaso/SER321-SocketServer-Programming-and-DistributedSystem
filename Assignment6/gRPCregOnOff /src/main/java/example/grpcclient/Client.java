@@ -805,6 +805,7 @@ public class Client {
     do{
       foodServiceManu();
 
+      ///
       System.out.println("Enter your choice: ");
       choice = Character.toUpperCase(scanner.nextLine().charAt(0));
       String name;
