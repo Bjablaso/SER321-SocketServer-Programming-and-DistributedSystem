@@ -11,7 +11,6 @@
 **/**/.DS_Store
 
 # Ignore other generated files like jars and logs
-*.jar
 *.war
 *.zip
 *.log
