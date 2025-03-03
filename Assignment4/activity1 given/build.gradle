@@ -17,7 +17,7 @@ task runServer(type: JavaExec) {
 
   classpath = sourceSets.main.runtimeClasspath
 
-  main = 'taskone.Server'
+  main = 'taskone.ThreadedServer'
   standardInput = System.in
   
   // run with arguments e.g.: gradle runServer -Pport=9099 -q --console=plain

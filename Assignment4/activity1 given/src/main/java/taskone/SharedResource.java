@@ -2,9 +2,7 @@ package taskone;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -17,21 +15,37 @@ public class SharedResource {
 
 
 
+
     public  void sendMessage(Socket conn, int id ) {
         try (
-                ObjectInputStream in = new ObjectInputStream(conn.getInputStream());
-                ObjectOutputStream out = new ObjectOutputStream(conn.getOutputStream())
+                InputStream in = conn.getInputStream(); // Use InputStream
+                OutputStream out = conn.getOutputStream() // Use OutputStream
         ) {
-            byte[] incoming = NetworkUtils.receive(in);
+            while (true) {
 
-            JSONObject recievedMessage = JsonUtils.fromByteArray(incoming);
-            int option = handleIncomingMessage(recievedMessage,conn, id);
+                byte[] incoming = NetworkUtils.receive(in);
 
-            JSONObject response = processOption(option, recievedMessage, conn, id);
+                JSONObject recievedMessage = JsonUtils.fromByteArray(incoming);
+                int option = handleIncomingMessage(recievedMessage,conn, id);
+
+                JSONObject response = processOption(option, recievedMessage, conn, id);
+
+                if (option == 0) {
+                    System.out.println("[Thread " + id + "] Client requested to quit. Closing connection.");
+                    JSONObject quitResponse = new JSONObject();
+                    quitResponse.put("type", "quit");
+                    quitResponse.put("data", "Server disconnecting...");
+                    byte[] quitResponseBytes = JsonUtils.toByteArray(quitResponse);
+                    NetworkUtils.send(out, quitResponseBytes); // Inform the client before closing
+                    break;
+                }
+
+                byte[] responseInBytes = JsonUtils.toByteArray(response);
+                NetworkUtils.send(out, responseInBytes);
 
 
-            byte[] responseInBytes = JsonUtils.toByteArray(response);
-            NetworkUtils.send(out, responseInBytes);
+            }
+
 
         } catch (IOException e) {
             System.err.println("[Error] at thread " + id + ": " + e.getMessage());
@@ -62,10 +76,12 @@ public class SharedResource {
     private  JSONObject processOption(int option, JSONObject incomingMessage, Socket socket, int id) {
         JSONObject response = new JSONObject();
         switch (option) {
-            case 0:
-                response  = sharedPerformerData.quite();
-
-                break;
+//            case 0:
+//
+//                response  = sharedPerformerData.quite();
+//
+//
+//                break;
             case 1:
                 String data = incomingMessage.getString("data");
                 lock.writeLock().lock();

@@ -71,8 +71,10 @@ class Performer {
     public JSONObject count(){
         JSONObject json = new JSONObject();
         try {
+            int numberOfStrings = state.size();
+            String total = String.valueOf(numberOfStrings);
             json.put("type", "count");
-            json.put("data", state.size());
+            json.put("data", total);
         } catch (Exception e) {
             return error("Failed to count strings: " + e.getMessage());
         }

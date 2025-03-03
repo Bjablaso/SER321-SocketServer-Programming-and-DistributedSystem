@@ -58,6 +58,8 @@ task arguments {
 }
 
 //gradle runClient -Phost='localhost' -Pport=9099
+//gradle runClient -Phost=51.20.144.68  -Pport=9099
+//
 task runClient(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     description = "Run Client"
