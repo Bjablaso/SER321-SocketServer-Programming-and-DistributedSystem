@@ -91,7 +91,7 @@ sourceSets {
 
  def regOn = false
 
-// task reading in the arguments if any given, if not the default from above will be used
+// task reading in the arguments if any given, if not the default from above will be used ///
 task arguments {
     if (project.hasProperty("nodeName")) {
       nodeName = project.getProperty("nodeName")
